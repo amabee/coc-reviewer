@@ -1,5 +1,5 @@
 <?php
-// include 'includes/connection.php';
+include 'includes/connection.php';
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
 // error_reporting(E_ALL);
@@ -96,20 +96,20 @@ if (isset($_POST['submit'])) {
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-    <title>Document</title>
+    <title>Login</title>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row no-gutter">
-        <div class="col-md-2 d-none d-md-flex"></div>
+            <div class="col-md-2 d-none d-md-flex"></div>
             <div class="col-md-4 d-none d-md-flex bg-image"></div>
             <div class="col-md-4 bg-light  bg-right">
                 <div class="login d-flex align-items-center py-5">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-10 col-xl-7 mx-auto">
-                             
+
                                 <h3 class="display-4">Welcome Back!</h3>
                                 <p class="text-muted mb-4">Enter your credentials to continue.</p>
                                 <form method="POST">

@@ -50,7 +50,7 @@ if (isset($message)) {
                     <?= $fetch_profile['id']; ?>
                 </span>
                 <a href="profile.php" class="btn">view profile</a>
-                <a href="../includes/logout.php" onclick="return confirm('logout from this website?');"
+                <a href="../includes/user_logout.php" onclick="return confirm('logout from this website?');"
                     class="delete-btn">logout</a>
                 <?php
             } else {
