@@ -5,13 +5,19 @@
 } 
 
 .bg-image {
-  background-image: url('../assets/nc.png');
-   background-size: cover; 
+	background-image: url('../assets/nc.png');
+	background-size: 650px 980px;
+	/* Additional CSS properties here */
+  }
 
-}
+
 body {
 	font-family: 'Varela Round', sans-serif;
+	
 }
+/* .bg-right{
+	background-color: rgb(214, 226, 160);
+} */
 .modal-confirm {		
 	color: #434e65;
 	width: 525px;
@@ -97,4 +103,10 @@ body {
 .trigger-btn {
 	display: inline-block;
 	margin: 100px auto;
+}
+
+#customCheck1:checked + .custom-control-label::before {
+	border-color: green;
+	background-color: green;
+
 }

@@ -1,5 +1,5 @@
 <?php
-include 'includes/connection.php';
+// include 'includes/connection.php';
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
 // error_reporting(E_ALL);
@@ -8,7 +8,7 @@ include 'includes/connection.php';
 // if (isset($_COOKIE['user_id'])) {
 //     $user_id = $_COOKIE['user_id'];
 // } else {
-//     $user_id = '';
+//     $user_id = '';   
 // }
 
 // if (isset($_POST['submit'])) {
@@ -102,12 +102,14 @@ if (isset($_POST['submit'])) {
 <body>
     <div class="container-fluid">
         <div class="row no-gutter">
-            <div class="col-md-6 d-none d-md-flex bg-image"></div>
-            <div class="col-md-6 bg-light">
+        <div class="col-md-2 d-none d-md-flex"></div>
+            <div class="col-md-4 d-none d-md-flex bg-image"></div>
+            <div class="col-md-4 bg-light  bg-right">
                 <div class="login d-flex align-items-center py-5">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-10 col-xl-7 mx-auto">
+                             
                                 <h3 class="display-4">Welcome Back!</h3>
                                 <p class="text-muted mb-4">Enter your credentials to continue.</p>
                                 <form method="POST">
@@ -135,7 +137,7 @@ if (isset($_POST['submit'])) {
                                         </div>
                                     </div>
                                     <button type="submit" name="submit"
-                                        class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Sign
+                                        class="btn btn-success btn-block text-uppercase mb-2 rounded-pill shadow-sm">Sign
                                         in</button>
 
                                 </form>
@@ -144,6 +146,8 @@ if (isset($_POST['submit'])) {
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-2 d-none d-md-flex"></div>
         </div>
     </div>
 
