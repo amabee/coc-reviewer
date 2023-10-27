@@ -1,5 +1,5 @@
 <?php
-// include 'includes/connection.php';
+include 'includes/connection.php';
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
 // error_reporting(E_ALL);
@@ -151,7 +151,7 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 
-    <!-- Display the error message within the form -->
+
     <?php if (isset($error_message)): ?>
         <div class="alert alert-danger text-center">
             <?php echo $error_message; ?>
