@@ -27,17 +27,17 @@ if (isset($_POST['save_list'])) {
         $list_id = $_POST['list_id'];
         $list_id = filter_var($list_id, FILTER_SANITIZE_STRING);
 
-        $select_list = $conn->prepare("SELECT * FROM `bookmark` WHERE user_id = ? AND playlist_id = ?");
+        $select_list = $conn->prepare("SELECT * FROM `tbl_bookmark` WHERE user_id = ? AND lesson_id = ?");
         $select_list->execute([$user_id, $list_id]);
 
         if ($select_list->rowCount() > 0) {
-            $remove_bookmark = $conn->prepare("DELETE FROM `bookmark` WHERE user_id = ? AND playlist_id = ?");
+            $remove_bookmark = $conn->prepare("DELETE FROM `tbl_bookmark` WHERE user_id = ? AND lesson_id = ?");
             $remove_bookmark->execute([$user_id, $list_id]);
             $message[] = 'playlist removed!';
         } else {
-            $insert_bookmark = $conn->prepare("INSERT INTO `bookmark`(user_id, playlist_id) VALUES(?,?)");
+            $insert_bookmark = $conn->prepare("INSERT INTO `tbl_bookmark`(user_id, lesson_id) VALUES(?,?)");
             $insert_bookmark->execute([$user_id, $list_id]);
-            $message[] = 'playlist saved!';
+            $message[] = 'lesson saved!';
         }
 
     } else {
@@ -109,7 +109,7 @@ if (isset($_POST['save_list'])) {
                         } else {
                             ?>
                             <button type="submit" name="save_list"><i class="far fa-bookmark"></i><span>Save
-                                    Material</span></button>
+                                    Lesson</span></button>
                             <?php
                         }
                         ?>
@@ -174,11 +174,11 @@ if (isset($_POST['save_list'])) {
             if ($select_content->rowCount() > 0) {
                 while ($fetch_content = $select_content->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <a href="watch_video.php?get_id=<?= $fetch_content['id']; ?>" class="box">
+                    <a href="view_material.php?get_id=<?= $fetch_content['material_id']; ?>" class="box">
                         <i class="fas fa-play"></i>
-                        <img src="../tmp/<?= $fetch_content['thumb']; ?>" alt="">
+                        <img src="../tmp/<?= $fetch_content['thumbnail']; ?>" alt="">
                         <h3>
-                            <?= $fetch_content['title']; ?>
+                            <?= $fetch_content['material_title']; ?>
                         </h3>
                     </a>
                     <?php
