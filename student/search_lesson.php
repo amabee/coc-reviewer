@@ -79,7 +79,7 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
                         <?php
                     }
                 } else {
-                    echo '<p class="empty">no courses found!</p>';
+                    echo '<p class="empty">no lessons found!</p>';
                 }
             } else {
                 echo '<p class="empty">please search something!</p>';

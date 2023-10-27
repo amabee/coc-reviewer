@@ -46,7 +46,9 @@ if (isset($message)) {
                     <?= $fetch_profile['firstname']; ?>
                     <?= $fetch_profile['lastname']; ?>
                 </h3>
-                <span>student</span>
+                <span>
+                    <?= $fetch_profile['id']; ?>
+                </span>
                 <a href="profile.php" class="btn">view profile</a>
                 <a href="../includes/logout.php" onclick="return confirm('logout from this website?');"
                     class="delete-btn">logout</a>
@@ -89,7 +91,9 @@ if (isset($message)) {
                 <?= $fetch_profile['firstname']; ?>
                 <?= $fetch_profile['lastname']; ?>
             </h3>
-            <span>student</span>
+            <span>
+                <?= $fetch_profile['id']; ?>
+            </span>
             <a href="profile.php" class="btn">view profile</a>
 
             <nav class="navbar">

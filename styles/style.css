@@ -1022,7 +1022,7 @@ section{
    margin-top: .5rem;
 }
 
-.teachers .search-tutor{
+.teachers .search-teacher{
    margin-bottom: 3rem;
    display: flex;
    align-items: center;
@@ -1032,21 +1032,21 @@ section{
    border-radius: .5rem;
 }
 
-.teachers .search-tutor input{
+.teachers .search-teacher input{
    width: 100%;
    font-size: 1.8rem;
    color: var(--black);
    background: none;
 }
 
-.teachers .search-tutor button{
+.teachers .search-teacher button{
    font-size: 2rem;
    cursor: pointer;
    color: var(--black);
    background: none;
 }
 
-.teachers .search-tutor button:hover{
+.teachers .search-teacher button:hover{
    color: var(--main-color);
 }
 
