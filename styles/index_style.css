@@ -6,8 +6,9 @@
 
 .bg-image {
 	background-image: url('../assets/nc.png');
-	background-size: 650px 980px;
-	/* Additional CSS properties here */
+
+
+	background-size: 640px 1080px;
   }
 
 
