@@ -202,6 +202,58 @@ if (isset($_POST['update_now'])) {
 
     </section>
 
+    <!-- <section class="watch-video">
+        <?php
+        $select_content = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE material_id = ? AND status = ?");
+        $select_content->execute([$get_id, 'active']);
+        $select_tutor = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ? LIMIT 1");
+        $select_tutor->execute([$fetch_content['teacher_id']]);
+        $fetch_tutor = $select_tutor->fetch(PDO::FETCH_ASSOC);
+        if ($select_content->rowCount() > 0) {
+            while ($fetch_content = $select_content->fetch(PDO::FETCH_ASSOC)) {
+                $content_id = $fetch_content['material_id'];
+
+
+                ?>
+                <div class="document-details">
+                    <embed src="../tmp/<?= $fetch_content['file']; ?>" type="application/pdf" class="document" width="100%"
+                        height="500">
+                    <h3 class="title">
+                        <?= $fetch_content['lesson_title']; ?>
+                    </h3>
+                    <div class="info">
+                        <p><i class="fas fa-calendar"></i><span>
+                                <?= $fetch_content['date']; ?>
+                            </span></p>
+                    </div>
+                    <div class="tutor">
+                        <img src="../tmp/<?= $fetch_tutor['image']; ?>" alt="">
+                        <div>
+                            <h3>
+                                <?= $fetch_tutor['firstname']; ?>
+                                <?= $fetch_tutor['lastname']; ?>
+                            </h3>
+                        </div>
+                    </div>
+                    <form action="" method="post" class="flex">
+                        <input type="hidden" name="content_id" value="<?= $content_id; ?>">
+                        <a href="lessons.php?get_id=<?= $fetch_content['lessons_id']; ?>" class="inline-btn">view playlist</a>
+                    </form>
+                    <div class="description">
+                        <p>
+                            <?= $fetch_content['lesson_desc']; ?>
+                        </p>
+                    </div>
+                </div>
+                <?php
+            }
+        } else {
+            echo '<p class="empty">no documents added yet!</p>';
+        }
+        ?>
+    </section> -->
+
+
     <!-- watch video section ends -->
 
     <!-- comments section starts  -->
