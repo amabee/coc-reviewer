@@ -39,7 +39,7 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
 
     <section class="teachers">
 
-        <h1 class="heading">Expert Teachers</h1>
+        <h1 class="heading">Teachers</h1>
 
         <form action="search_teacher.php" method="post" class="search-teacher">
             <input type="text" name="search_teacher" maxlength="100" placeholder="search teacher..." required>

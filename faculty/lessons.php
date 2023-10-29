@@ -43,7 +43,7 @@ if (isset($_POST['delete'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playlists</title>
+    <title>Lessons</title>
 
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -59,13 +59,13 @@ if (isset($_POST['delete'])) {
 
     <section class="playlists">
 
-        <h1 class="heading">added playlists</h1>
+        <h1 class="heading">Added Lessons</h1>
 
         <div class="box-container">
 
             <div class="box" style="text-align: center;">
-                <h3 class="title" style="margin-bottom: .5rem;">create new playlist</h3>
-                <a href="add_playlist.php" class="btn">add playlist</a>
+                <h3 class="title" style="margin-bottom: .5rem;">create new lesson</h3>
+                <a href="add_lesson.php" class="btn">add lesson</a>
             </div>
 
             <?php
@@ -76,7 +76,7 @@ if (isset($_POST['delete'])) {
                     $playlist_id = $fetch_playlist['lesson_id'];
                     $count_videos = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE lesson_id = ?");
                     $count_videos->execute([$playlist_id]);
-                    $total_videos = $count_videos->rowCount();
+                    $total_materials = $count_videos->rowCount();
                     ?>
                     <div class="box">
                         <div class="flex">
@@ -97,7 +97,7 @@ if (isset($_POST['delete'])) {
                         </div>
                         <div class="thumb">
                             <span>
-                                <?= $total_videos; ?>
+                                <?= $total_materials; ?>
                             </span>
                             <img src="../tmp/<?= $fetch_playlist['thumb']; ?>" alt="">
                         </div>
