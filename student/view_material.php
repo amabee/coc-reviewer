@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include '../includes/connection.php';
 
@@ -20,49 +21,6 @@ if (isset($_GET['get_id'])) {
     header('location:home.php');
 }
 
-// if (isset($_POST['add_comment'])) {
-
-//     if ($user_id != '') {
-
-//         $id = uniqid();
-//         $comment_box = $_POST['comment_box'];
-//         $comment_box = filter_var($comment_box, FILTER_SANITIZE_STRING);
-//         $content_id = $_POST['content_id'];
-//         $content_id = filter_var($content_id, FILTER_SANITIZE_STRING);
-
-//         $select_content = $conn->prepare("SELECT L.teacher_id
-//                                 FROM `tbl_learningmaterials` LM
-//                                 JOIN `tbl_lessons` L ON LM.lesson_id = L.lesson_id
-//                                 WHERE LM.material_id = ? LIMIT 1");
-
-//         $select_content->execute([$content_id]);
-//         $fetch_content = $select_content->fetch(PDO::FETCH_ASSOC);
-
-//         $tutor_id = $fetch_content['teacher_id'];
-
-
-//         if ($select_content->rowCount() > 0) {
-
-//             $select_comment = $conn->prepare("SELECT * FROM `tbl_comments` WHERE material_id = ? AND user_id = ? AND teacher_id = ? AND comment = ?");
-//             $select_comment->execute([$content_id, $user_id, $tutor_id, $comment_box]);
-
-//             if ($select_comment->rowCount() > 0) {
-//                 $message[] = 'comment already added!';
-//             } else {
-//                 $insert_comment = $conn->prepare("INSERT INTO `tbl_comments`(`comment_id`, `material_id`, `user_id`, `teacher_id`, `comment`, `date`) VALUES(?,?,?,?,?,NOW())");
-//                 $insert_comment->execute([$id, $content_id, $user_id, $tutor_id, $comment_box]);
-//                 $message[] = 'new comment added!';
-//             }
-
-//         } else {
-//             $message[] = 'something went wrong!';
-//         }
-
-//     } else {
-//         $message[] = 'please login first!';
-//     }
-
-// }
 
 if (isset($_POST['add_comment'])) {
     if ($user_id != '') {
@@ -83,10 +41,8 @@ if (isset($_POST['add_comment'])) {
 
         if ($select_content->rowCount() > 0) {
 
-            $comment_id = date("YmdHi");
-
-            $insert_comment = $conn->prepare("INSERT INTO `tbl_comments`(`comment_id`, `material_id`, `user_id`, `teacher_id`, `comment`, `date`) VALUES(?,?,?,?,?,NOW())");
-            $insert_comment->execute([$comment_id, $content_id, $user_id, $tutor_id, $comment_box]);
+            $insert_comment = $conn->prepare("INSERT INTO `tbl_comments`(`material_id`, `user_id`, `teacher_id`, `comment`, `date`) VALUES(?,?,?,?,NOW())");
+            $insert_comment->execute([$content_id, $user_id, $tutor_id, $comment_box]);
             $message[] = 'New comment added!';
         } else {
             $message[] = 'Something went wrong!';
@@ -96,29 +52,16 @@ if (isset($_POST['add_comment'])) {
     }
 }
 
-
-function generateUniqueId($conn)
-{
-    return uniqid();
-}
-
-function isIdInUse($conn, $id)
-{
-    $query = $conn->prepare("SELECT COUNT(*) FROM `tbl_comments` WHERE `comment_id` = ?");
-    $query->execute([$id]);
-    return $query->fetchColumn() > 0;
-}
-
 if (isset($_POST['delete_comment'])) {
 
     $delete_id = $_POST['comment_id'];
     $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
 
-    $verify_comment = $conn->prepare("SELECT * FROM `comments` WHERE id = ?");
+    $verify_comment = $conn->prepare("SELECT * FROM `tbl_comments` WHERE comment_id = ?");
     $verify_comment->execute([$delete_id]);
 
     if ($verify_comment->rowCount() > 0) {
-        $delete_comment = $conn->prepare("DELETE FROM `comments` WHERE id = ?");
+        $delete_comment = $conn->prepare("DELETE FROM `tbl_comments` WHERE comment_id = ?");
         $delete_comment->execute([$delete_id]);
         $message[] = 'comment deleted successfully!';
     } else {
@@ -134,13 +77,13 @@ if (isset($_POST['update_now'])) {
     $update_box = $_POST['update_box'];
     $update_box = filter_var($update_box, FILTER_SANITIZE_STRING);
 
-    $verify_comment = $conn->prepare("SELECT * FROM `comments` WHERE id = ? AND comment = ?");
+    $verify_comment = $conn->prepare("SELECT * FROM `tbl_comments` WHERE comment_id = ? AND comment = ?");
     $verify_comment->execute([$update_id, $update_box]);
 
     if ($verify_comment->rowCount() > 0) {
         $message[] = 'comment already added!';
     } else {
-        $update_comment = $conn->prepare("UPDATE `comments` SET comment = ? WHERE id = ?");
+        $update_comment = $conn->prepare("UPDATE `tbl_comments` SET comment = ? WHERE comment_id = ?");
         $update_comment->execute([$update_box, $update_id]);
         $message[] = 'comment edited successfully!';
     }
@@ -164,6 +107,12 @@ if (isset($_POST['update_now'])) {
     <!-- custom css file link  -->
     <link rel="stylesheet" href="../styles/style.css">
 
+    <!-- PDF JS CDN LINK -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"
+        integrity="sha512-Z8CqofpIcnJN80feS2uccz+pXWgZzeKxDsDNMD/dJ6997/LSRY+W4NmEt9acwR+Gt9OHN0kkI1CTianCwoqcjQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
 </head>
 
 <body>
@@ -180,7 +129,7 @@ if (isset($_POST['update_now'])) {
             $fetch_edit_comment = $verify_comment->fetch(PDO::FETCH_ASSOC);
             ?>
             <section class="edit-comment">
-                <h1 class="heading">edti comment</h1>
+                <h1 class="heading">edit comment</h1>
                 <form action="" method="post">
                     <input type="hidden" name="update_id" value="<?= $fetch_edit_comment['id']; ?>">
                     <textarea name="update_box" class="box" maxlength="1000" required placeholder="please enter your comment"
@@ -203,6 +152,7 @@ if (isset($_POST['update_now'])) {
     <section class="watch-video">
 
         <?php
+
         $select_content = $conn->prepare("SELECT LM.*, T.* FROM `tbl_learningmaterials` LM
         JOIN `tbl_lessons` L ON LM.lesson_id = L.lesson_id
         JOIN `tbl_teachers` T ON L.teacher_id = T.teacher_id
@@ -218,8 +168,10 @@ if (isset($_POST['update_now'])) {
                 $fetch_tutor = $select_tutor->fetch(PDO::FETCH_ASSOC);
                 ?>
                 <div class="video-details">
-                    <embed src="../tmp/<?= $fetch_content['file']; ?>" type="application/pdf" class="document" width="100%"
-                        height="500">
+
+                    <iframe src="../tmp/<?= $fetch_content['file']; ?>" frameborder="0" width='100%' height="100%"
+                        crossorigin="anonymous"></iframe>
+
                     <h3 class="title">
                         <?= $fetch_content['material_title']; ?>
                     </h3>
@@ -240,6 +192,8 @@ if (isset($_POST['update_now'])) {
                     <form action="" method="post" class="flex">
                         <input type="hidden" name="content_id" value="<?= $content_id; ?>">
                         <a href="lessons.php?get_id=<?= $fetch_content['lesson_id']; ?>" class="inline-btn">view lessons</a>
+                        <a href="download_material.php?get_id=<?= $fetch_content['file']; ?>" class="inline-btn">Download
+                            Material</a>
                     </form>
                     <div class="description">
                         <p>
@@ -250,7 +204,7 @@ if (isset($_POST['update_now'])) {
                 <?php
             }
         } else {
-            echo '<p class="empty">no videos added yet!</p>';
+            echo '<p class="empty">no material added yet!</p>';
         }
         ?>
 
@@ -276,7 +230,7 @@ if (isset($_POST['update_now'])) {
 
         <div class="show-comments">
             <?php
-            $select_comments = $conn->prepare("SELECT * FROM `tbl_comments` WHERE material_id = ?");
+            $select_comments = $conn->prepare("SELECT * FROM `tbl_comments` WHERE material_id = ? ORDER BY date DESC");
             $select_comments->execute([$get_id]);
             if ($select_comments->rowCount() > 0) {
                 while ($fetch_comment = $select_comments->fetch(PDO::FETCH_ASSOC)) {

@@ -79,16 +79,16 @@ $total_bookmarked = $select_bookmark->rowCount();
             <div class="box">
                 <h3 class="title">Categories</h3>
                 <div class="flex">
-                    <a href="search_course.php?"><i class="fa-solid fa-gavel"></i><span>Criminal Law and
+                    <a href="search_lesson.php?"><i class="fa-solid fa-gavel"></i><span>Criminal Law and
                             Jurisprudence</span></a>
-                    <a href="#"><i class="fa-solid fa-scale-balanced"></i><span>Law Enforcement
+                    <a href="search_lesson.php?"><i class="fa-solid fa-scale-balanced"></i><span>Law Enforcement
                             Administration</span></a>
-                    <a href="#"><i class="fas fa-chart-simple"></i><span>Forensics/Criminalistics</span></a>
-                    <a href="#"><i class="fa-solid fa-magnifying-glass"></i><span>Crime Detection and
+                    <a href="search_lesson.php?"><i class="fas fa-chart-simple"></i><span>Forensics/Criminalistics</span></a>
+                    <a href="search_lesson.php?"><i class="fa-solid fa-magnifying-glass"></i><span>Crime Detection and
                             Investigation</span></a>
-                    <a href="#"><i class="fa-solid fa-people-robbery"></i><span>Sociology of Crimes and
+                    <a href="search_lesson.php?"><i class="fa-solid fa-people-robbery"></i><span>Sociology of Crimes and
                             Ethics</span></a>
-                    <a href="#"><i class="fa-solid fa-handcuffs"></i><span>Correctional Administration</span></a>
+                    <a href="search_lesson.php?"><i class="fa-solid fa-handcuffs"></i><span>Correctional Administration</span></a>
                 </div>
             </div>
         </div>

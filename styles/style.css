@@ -91,7 +91,7 @@ section{
 .inline-btn,
 .inline-option-btn,
 .inline-delete-btn{
-   display: inline-block;
+   display: table;
 }
 
 .btn,

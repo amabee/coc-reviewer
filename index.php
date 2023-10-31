@@ -4,36 +4,6 @@ include 'includes/connection.php';
 // ini_set('display_startup_errors', 1);
 // error_reporting(E_ALL);
 
-
-// if (isset($_COOKIE['user_id'])) {
-//     $user_id = $_COOKIE['user_id'];
-// } else {
-//     $user_id = '';   
-// }
-
-// if (isset($_POST['submit'])) {
-
-//     $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
-//     $password = $_POST['pass'];
-//     $hashed_password = sha1($password);
-
-
-//     $select_user = $conn->prepare("SELECT * FROM `tbl_users` WHERE email = ? AND password = ? LIMIT 1");
-//     $select_user->execute([$email, $hashed_password]);
-
-//     if ($select_user->rowCount() > 0) {
-//         $row = $select_user->fetch(PDO::FETCH_ASSOC);
-
-//         setcookie('user_id', $row['id'], time() + 60 * 60 * 24 * 30, '/');
-
-//         header('Location: google.com');
-//         //echo '<script>alert("Logged in successfully");</script>';
-//     } else {
-
-//         $message = 'Incorrect email or password!';
-//     }
-// }
-
 session_start();
 
 if (isset($_COOKIE['user_id']) || isset($_SESSION['user_id'])) {

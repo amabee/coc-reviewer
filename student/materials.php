@@ -33,11 +33,11 @@ if (isset($_POST['save_list'])) {
         if ($select_list->rowCount() > 0) {
             $remove_bookmark = $conn->prepare("DELETE FROM `tbl_bookmark` WHERE user_id = ? AND lesson_id = ?");
             $remove_bookmark->execute([$user_id, $list_id]);
-            $message[] = 'playlist removed!';
+            $message[] = 'Lesson removed!';
         } else {
             $insert_bookmark = $conn->prepare("INSERT INTO `tbl_bookmark`(user_id, lesson_id) VALUES(?,?)");
             $insert_bookmark->execute([$user_id, $list_id]);
-            $message[] = 'lesson saved!';
+            $message[] = 'Lesson saved!';
         }
 
     } else {
@@ -85,7 +85,7 @@ if (isset($_POST['save_list'])) {
 
                 $lessons_id = $fetch_lesson['lesson_id'];
 
-                $count_materials = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE material_id = ?");
+                $count_materials = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE lesson_id = ?");
                 $count_materials->execute([$lessons_id]);
                 $total_materials = $count_materials->rowCount();
 
@@ -165,9 +165,8 @@ if (isset($_POST['save_list'])) {
     <section class="videos-container">
 
         <h1 class="heading">Lesson Materials</h1>
-
         <div class="box-container">
-
+       
             <?php
             $select_content = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE lesson_id = ? AND status = ? ORDER BY date_created DESC");
             $select_content->execute([$get_id, 'active']);
@@ -179,16 +178,16 @@ if (isset($_POST['save_list'])) {
                         <img src="../tmp/<?= $fetch_content['thumbnail']; ?>" alt="">
                         <h3>
                             <?= $fetch_content['material_title']; ?>
-                        </h3>
+                        </h3>  
                     </a>
+                    
                     <?php
                 }
             } else {
                 echo '<p class="empty">no materials added yet!</p>';
             }
             ?>
-
-        </div>
+            
 
     </section>
 

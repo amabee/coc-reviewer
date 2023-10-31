@@ -70,7 +70,7 @@ $total_bookmarked = $select_bookmark->rowCount();
                             <span>saved lessons</span>
                         </div>
                     </div>
-                    <a href="#" class="inline-btn">view bookmarks</a>
+                    <a href="bookmark.php" class="inline-btn">view bookmarks</a>
                 </div>
 
                 <div class="box">
@@ -80,7 +80,7 @@ $total_bookmarked = $select_bookmark->rowCount();
                             <h3>
                                 <?= $total_comments; ?>
                             </h3>
-                            <span>video comments</span>
+                            <span>my comments</span>
                         </div>
                     </div>
                     <a href="#" class="inline-btn">view comments</a>
