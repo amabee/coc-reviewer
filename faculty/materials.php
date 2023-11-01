@@ -65,7 +65,7 @@ if (isset($_POST['delete_material'])) {
 
             <div class="box" style="text-align: center;">
                 <h3 class="title" style="margin-bottom: .5rem;">create new material</h3>
-                <a href="add_content.php" class="btn">add content</a>
+                <a href="add_materials.php" class="btn">add content</a>
             </div>
 
             <?php

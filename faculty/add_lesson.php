@@ -30,8 +30,8 @@ if (isset($_POST['submit'])) {
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folder = '../tmp/' . $rename;
 
-    $add_playlist = $conn->prepare("INSERT INTO `tbl_lessons` (`lesson_id`, `category_id`, `teacher_id`, `lesson_title`, `lesson_desc`, `thumb`, `date`, `status`) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
-    $add_playlist->execute([$id, $category_id, $teacher_id, $title, $description, $rename, $status]);
+    $add_playlist = $conn->prepare("INSERT INTO `tbl_lessons` (`category_id`, `teacher_id`, `lesson_title`, `lesson_desc`, `thumb`, `date`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
+    $add_playlist->execute([$category_id, $teacher_id, $title, $description, $rename, $status]);
 
     move_uploaded_file($image_tmp_name, $image_folder);
 

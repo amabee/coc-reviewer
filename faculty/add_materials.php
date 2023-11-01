@@ -9,50 +9,7 @@ if (isset($_COOKIE['teacher_id'])) {
     header('location:index.php');
 }
 
-// if (isset($_POST['submit'])) {
-
-//     $id = date('dmYHis');
-//     $status = $_POST['status'];
-//     $status = filter_var($status, FILTER_SANITIZE_STRING);
-//     $title = $_POST['title'];
-//     $title = filter_var($title, FILTER_SANITIZE_STRING);
-//     $description = $_POST['description'];
-//     $description = filter_var($description, FILTER_SANITIZE_STRING);
-//     $playlist = $_POST['playlist'];
-//     $playlist = filter_var($playlist, FILTER_SANITIZE_STRING);
-
-//     $thumb = $_FILES['thumb']['name'];
-//     $thumb = filter_var($thumb, FILTER_SANITIZE_STRING);
-//     $thumb_ext = pathinfo($thumb, PATHINFO_EXTENSION);
-//     $rename_thumb = date('dmYHis') . '.' . $thumb_ext;
-//     $thumb_size = $_FILES['thumb']['size'];
-//     $thumb_tmp_name = $_FILES['thumb']['tmp_name'];
-//     $thumb_folder = '../tmp/' . $rename_thumb;
-
-//     $video = $_FILES['video']['name'];
-//     $video = filter_var($video, FILTER_SANITIZE_STRING);
-//     $video_ext = pathinfo($video, PATHINFO_EXTENSION);
-//     $rename_video = date('dmYHis') . '.' . $video_ext;
-//     $video_tmp_name = $_FILES['video']['tmp_name'];
-//     $video_folder = '../tmp/' . $rename_video;
-
-//     if ($thumb_size > 2000000) {
-//         $message[] = 'image size is too large!';
-//     } else {
-//         $add_playlist = $conn->prepare("INSERT INTO `tbl_learningmaterials`(`material_id`, `lesson_id`, `material_title`, `material_description`, `file`, `thumbnail`, `date_created`, `status`) VALUES(?,?,?,?,?,?,?,?)");
-//         $add_playlist->execute([$id, $teacher_id, $playlist, $title, $description, $rename_video, $rename_thumb, $status]);
-//         move_uploaded_file($thumb_tmp_name, $thumb_folder);
-//         move_uploaded_file($video_tmp_name, $video_folder);
-//         $message[] = 'new material uploaded!';
-//     }
-
-
-
-// }
-
-
 if (isset($_POST['submit'])) {
-    $id = date('dmYHis');
     $status = $_POST['status'];
     $status = filter_var($status, FILTER_SANITIZE_STRING);
     $title = $_POST['title'];
@@ -80,8 +37,8 @@ if (isset($_POST['submit'])) {
     if ($thumb_size > 2000000) {
         $message[] = 'Image size is too large!';
     } else {
-        $add_material = $conn->prepare("INSERT INTO `tbl_learningmaterials` (`material_id`, `lesson_id`, `material_title`, `material_description`, `file`, `thumbnail`, `date_created`, `status`) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)");
-        $add_material->execute([$id, $playlist, $title, $description, $rename_video, $rename_thumb, $status]);
+        $add_material = $conn->prepare("INSERT INTO `tbl_learningmaterials` (`lesson_id`, `material_title`, `material_description`, `file`, `thumbnail`, `date_created`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
+        $add_material->execute([$playlist, $title, $description, $rename_video, $rename_thumb, $status]);
         move_uploaded_file($thumb_tmp_name, $thumb_folder);
         move_uploaded_file($video_tmp_name, $video_folder);
         $message[] = 'New material uploaded!';
