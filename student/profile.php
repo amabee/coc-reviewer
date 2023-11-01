@@ -83,7 +83,7 @@ $total_bookmarked = $select_bookmark->rowCount();
                             <span>my comments</span>
                         </div>
                     </div>
-                    <a href="#" class="inline-btn">view comments</a>
+                    <a href="comments.php" class="inline-btn">view comments</a>
                 </div>
 
             </div>

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600&display=swap');
 
 :root{
-   --main-color:#065e2a;
+   --main-color:#056916;
    --red:#e74c3c;
    --oragen:#f39c12;
    --white:#fff;
@@ -91,7 +91,7 @@ section{
 .inline-btn,
 .inline-option-btn,
 .inline-delete-btn{
-   display: table;
+   display: inline-block;
 }
 
 .btn,

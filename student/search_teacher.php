@@ -37,7 +37,7 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
 
     <section class="teachers">
 
-        <h1 class="heading">expert tutors</h1>
+        <h1 class="heading">expert teachers</h1>
 
         <form action="" method="post" class="search-teacher">
             <input type="text" name="search_tutor" maxlength="100" placeholder="search tutor..." required>
@@ -65,7 +65,7 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
                         JOIN `tbl_lessons` L ON LM.lesson_id = L.lesson_id
                         WHERE L.teacher_id = ?");
                         $count_contents->execute([$tutor_id]);
-                        $total_contents = $count_contents->rowCount();
+                        $total_contents = $count_contents->rowCount()
                         ?>
                         <div class="box">
                             <div class="tutor">

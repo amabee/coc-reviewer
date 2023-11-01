@@ -169,7 +169,7 @@ if (isset($_POST['update_now'])) {
                 ?>
                 <div class="video-details">
 
-                    <iframe src="../tmp/<?= $fetch_content['file']; ?>" frameborder="0" width='100%' height="100%"
+                    <iframe src="../tmp/<?= $fetch_content['file']; ?>" frameborder="0" width='100%' height="700px"
                         crossorigin="anonymous"></iframe>
 
                     <h3 class="title">
@@ -263,7 +263,7 @@ if (isset($_POST['update_now'])) {
                                 <input type="hidden" name="comment_id" value="<?= $fetch_comment['comment_id']; ?>">
                                 <button type="submit" name="edit_comment" class="inline-option-btn">edit comment</button>
                                 <button type="submit" name="delete_comment" class="inline-delete-btn"
-                                    onclick="return confirm('delete this comment?');">delete comment</button>
+                                    onclick="return confirm('delete this comment?');">remove comment</button>
                             </form>
                             <?php
                         }

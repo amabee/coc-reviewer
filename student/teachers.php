@@ -96,7 +96,7 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
                     <?php
                 }
             } else {
-                echo '<p class="empty">no tutors found!</p>';
+                echo '<p class="empty">no teachers found!</p>';
             }
             ?>
 
