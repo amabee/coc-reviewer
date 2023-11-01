@@ -9,29 +9,27 @@ if (isset($_COOKIE['teacher_id'])) {
     header('location:index.php');
 }
 
-if (isset($_POST['delete_video'])) {
-    $delete_id = $_POST['video_id'];
+if (isset($_POST['delete_material'])) {
+    $delete_id = $_POST['material_id'];
     $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
-    $verify_video = $conn->prepare("SELECT * FROM `content` WHERE id = ? LIMIT 1");
-    $verify_video->execute([$delete_id]);
-    if ($verify_video->rowCount() > 0) {
-        $delete_video_thumb = $conn->prepare("SELECT * FROM `content` WHERE id = ? LIMIT 1");
-        $delete_video_thumb->execute([$delete_id]);
-        $fetch_thumb = $delete_video_thumb->fetch(PDO::FETCH_ASSOC);
-        unlink('../uploaded_files/' . $fetch_thumb['thumb']);
-        $delete_video = $conn->prepare("SELECT * FROM `content` WHERE id = ? LIMIT 1");
-        $delete_video->execute([$delete_id]);
-        $fetch_video = $delete_video->fetch(PDO::FETCH_ASSOC);
-        unlink('../uploaded_files/' . $fetch_video['video']);
-        $delete_likes = $conn->prepare("DELETE FROM `likes` WHERE content_id = ?");
-        $delete_likes->execute([$delete_id]);
-        $delete_comments = $conn->prepare("DELETE FROM `comments` WHERE content_id = ?");
+    $verify_material = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE material_id = ? LIMIT 1");
+    $verify_material->execute([$delete_id]);
+    if ($verify_material->rowCount() > 0) {
+        $delete_material_thumb = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE material_id = ? LIMIT 1");
+        $delete_material_thumb->execute([$delete_id]);
+        $fetch_thumb = $delete_material_thumb->fetch(PDO::FETCH_ASSOC);
+        unlink('../tmp/' . $fetch_thumb['thumbnail']);
+        $delete_material = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE material_id = ? LIMIT 1");
+        $delete_material->execute([$delete_id]);
+        $fetch_material = $delete_material->fetch(PDO::FETCH_ASSOC);
+        unlink('../tmp/' . $fetch_material['file']);
+        $delete_comments = $conn->prepare("DELETE FROM `tbl_comments` WHERE material_id = ?");
         $delete_comments->execute([$delete_id]);
-        $delete_content = $conn->prepare("DELETE FROM `content` WHERE id = ?");
+        $delete_content = $conn->prepare("DELETE FROM `tbl_learningmaterials` WHERE material_id = ?");
         $delete_content->execute([$delete_id]);
-        $message[] = 'video deleted!';
+        $message[] = 'material deleted!';
     } else {
-        $message[] = 'video already deleted!';
+        $message[] = 'material already deleted!';
     }
 
 }
@@ -71,44 +69,44 @@ if (isset($_POST['delete_video'])) {
             </div>
 
             <?php
-            $select_videos = $conn->prepare("SELECT lm.*, l.teacher_id 
+            $select_materials = $conn->prepare("SELECT lm.*, l.teacher_id 
             FROM tbl_learningmaterials lm
             INNER JOIN tbl_lessons l ON lm.lesson_id = l.lesson_id
             WHERE l.teacher_id = ? 
             ORDER BY lm.date_created DESC");
-            $select_videos->execute([$teacher_id]);
-            if ($select_videos->rowCount() > 0) {
-                while ($fecth_videos = $select_videos->fetch(PDO::FETCH_ASSOC)) {
-                    $video_id = $fecth_videos['material_id'];
+            $select_materials->execute([$teacher_id]);
+            if ($select_materials->rowCount() > 0) {
+                while ($fecth_materials = $select_materials->fetch(PDO::FETCH_ASSOC)) {
+                    $material_id = $fecth_materials['material_id'];
                     ?>
                     <div class="box">
                         <div class="flex">
-                            <div><i class="fas fa-dot-circle" style="<?php if ($fecth_videos['status'] == 'active') {
+                            <div><i class="fas fa-dot-circle" style="<?php if ($fecth_materials['status'] == 'active') {
                                 echo 'color:limegreen';
                             } else {
                                 echo 'color:red';
-                            } ?>"></i><span style="<?php if ($fecth_videos['status'] == 'active') {
+                            } ?>"></i><span style="<?php if ($fecth_materials['status'] == 'active') {
                                  echo 'color:limegreen';
                              } else {
                                  echo 'color:red';
                              } ?>">
-                                    <?= $fecth_videos['status']; ?>
+                                    <?= $fecth_materials['status']; ?>
                                 </span></div>
                             <div><i class="fas fa-calendar"></i><span>
-                                    <?= $fecth_videos['date_created']; ?>
+                                    <?= $fecth_materials['date_created']; ?>
                                 </span></div>
                         </div>
-                        <img src="../tmp/<?= $fecth_videos['thumbnail']; ?>" class="thumb" alt="">
+                        <img src="../tmp/<?= $fecth_materials['thumbnail']; ?>" class="thumb" alt="">
                         <h3 class="title">
-                            <?= $fecth_videos['material_title']; ?>
+                            <?= $fecth_materials['material_title']; ?>
                         </h3>
                         <form action="" method="post" class="flex-btn">
-                            <input type="hidden" name="video_id" value="<?= $video_id; ?>">
-                            <a href="update_content.php?get_id=<?= $video_id; ?>" class="option-btn">update</a>
+                            <input type="hidden" name="material_id" value="<?= $material_id; ?>">
+                            <a href="update_content.php?get_id=<?= $material_id; ?>" class="option-btn">update</a>
                             <input type="submit" value="delete" class="delete-btn"
-                                onclick="return confirm('delete this video?');" name="delete_video">
+                                onclick="return confirm('delete this material?');" name="delete_material">
                         </form>
-                        <a href="view_content.php?get_id=<?= $video_id; ?>" class="btn">view content</a>
+                        <a href="view_material.php?get_id=<?= $material_id; ?>" class="btn">view content</a>
                     </div>
                     <?php
                 }

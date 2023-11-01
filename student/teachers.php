@@ -89,8 +89,8 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
                                 <?= $total_contents ?>
                             </span></p>
                         <form action="teacher_profile.php" method="post">
-                            <input type="hidden" name="tutor_email" value="<?= $fetch_tutor['email']; ?>" disabled>
-                            <input type="submit" value="view profile" name="tutor_fetch" class="inline-btn" disabled>
+                            <input type="hidden" name="tutor_email" value="<?= $fetch_tutor['email']; ?>" >
+                            <input type="submit" value="view profile" name="tutor_fetch" class="inline-btn" >
                         </form>
                     </div>
                     <?php
