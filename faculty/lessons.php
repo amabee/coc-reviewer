@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 include '../includes/connection.php';
 
 if (isset($_COOKIE['teacher_id'])) {
@@ -18,9 +18,7 @@ if (isset($_POST['delete'])) {
 
     if ($verify_playlist->rowCount() > 0) {
 
-
-
-        $delete_playlist_thumb = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE id = ? LIMIT 1");
+        $delete_playlist_thumb = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE lesson_id = ? LIMIT 1");
         $delete_playlist_thumb->execute([$delete_id]);
         $fetch_thumb = $delete_playlist_thumb->fetch(PDO::FETCH_ASSOC);
         unlink('../tmp/' . $fetch_thumb['thumb']);
@@ -108,7 +106,7 @@ if (isset($_POST['delete'])) {
                             <?= $fetch_playlist['lesson_desc']; ?>
                         </p>
                         <form action="" method="post" class="flex-btn">
-                            <input type="hidden" name="playlist_id" value="<?= $playlist_id; ?>">
+                            <input type="hidden" name="lesson_id" value="<?= $playlist_id; ?>">
                             <a href="update_playlist.php?get_id=<?= $playlist_id; ?>" class="option-btn">update</a>
                             <input type="submit" value="delete" class="delete-btn"
                                 onclick="return confirm('delete this playlist?');" name="delete">
