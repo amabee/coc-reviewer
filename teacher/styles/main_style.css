@@ -453,6 +453,34 @@ section{
    flex: 1 1 25rem;
 }
 
+.pagination {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin-top: 20px;
+   margin-bottom: 10px;
+}
+
+.pagination a, .pagination span {
+   padding: 8px 16px;
+   margin: 0 5px;
+   border: 1px solid #ddd;
+   text-decoration: none;
+   color: #fff;
+   border-radius: 4px;
+   transition: background-color 0.3s;
+   cursor: pointer;
+}
+
+.pagination a:hover {
+   background-color: #ddd;
+}
+
+.pagination .active {
+   background-color: #4CAF50;
+   color: white;
+}
+
 .dashboard .box-container{
    display: grid;
    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
@@ -987,19 +1015,6 @@ section{
    clip-path: polygon(50% 0%, 0% 100%, 100% 100%); 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 .footer{
    position: sticky;
    bottom: 0; right: 0; left: 0;
@@ -1040,11 +1055,13 @@ section{
 
 }
 
-@media (max-width:991px){
+@media (max-width:970px){
    
    html{
       font-size: 55%;
    }
+
+  
 
 }
 
@@ -1078,8 +1095,8 @@ section{
    .view-content .container .video{
       height: 30rem;
    }
-
 }
+
 
 @media (max-width:450px){
    
@@ -1104,4 +1121,7 @@ section{
       height: auto;
    }
 
+
+
 }
+

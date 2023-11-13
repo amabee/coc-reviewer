@@ -199,7 +199,7 @@ if (isset($_POST['delete_video'])) {
                     <input type="file" name="thumb" accept="image/*" class="box">
                     <iframe src="../tmp/<?= $fecth_videos['file']; ?>" frameborder="" width="100%" height="700px"></iframe>
                     <p>update file</p>
-                    <input type="file" name="video" accept="application/pdf">
+                    <input type="file" name="video" accept="application/pdf" class="box">
                     <input type="submit" value="update content" name="update" class="btn">
                     <div class="flex-btn">
                         <a href="view_content.php?get_id=<?= $video_id; ?>" class="option-btn">view content</a>

@@ -67,8 +67,17 @@ if (isset($_POST['delete'])) {
             </div>
 
             <?php
-            $select_playlist = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE teacher_id = ? ORDER BY date DESC");
+            $itemsPerPage = 3;
+            $page = isset($_GET['page']) ? $_GET['page'] : 1;
+            $offset = ($page - 1) * $itemsPerPage;
+
+            $countQuery = $conn->prepare("SELECT COUNT(*) FROM `tbl_lessons` WHERE teacher_id = ?");
+            $countQuery->execute([$teacher_id]);
+            $totalItems = $countQuery->fetchColumn();
+            
+            $select_playlist = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE teacher_id = ? ORDER BY date DESC LIMIT $offset, $itemsPerPage");
             $select_playlist->execute([$teacher_id]);
+
             if ($select_playlist->rowCount() > 0) {
                 while ($fetch_playlist = $select_playlist->fetch(PDO::FETCH_ASSOC)) {
                     $playlist_id = $fetch_playlist['lesson_id'];
@@ -120,10 +129,24 @@ if (isset($_POST['delete'])) {
             }
             ?>
 
-        </div>
-
     </section>
 
+    <?php
+    // Display pagination links
+    $totalPages = ceil($totalItems / $itemsPerPage);
+
+    echo '<div class="pagination">';
+    if ($page > 1) {
+        echo '<a href="?page=' . ($page - 1) . '">Previous</a>';
+    }
+    for ($i = 1; $i <= $totalPages; $i++) {
+        echo '<a href="?page=' . $i . '" class="' . ($page == $i ? 'active' : '') . '">' . $i . '</a>';
+    }
+    if ($page < $totalPages) {
+        echo '<a href="?page=' . ($page + 1) . '">Next</a>';
+    }
+    echo '</div>';
+    ?>
 
 
     <script src="../scripts/script.js"></script>

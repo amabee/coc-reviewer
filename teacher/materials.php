@@ -69,12 +69,25 @@ if (isset($_POST['delete_material'])) {
             </div>
 
             <?php
+
+            $itemsPerPageMaterials = 3;
+            $pageMaterials = isset($_GET['pageMaterials']) ? $_GET['pageMaterials'] : 1;
+            $offsetMaterials = ($pageMaterials - 1) * $itemsPerPageMaterials;
+
+            $countQuery = $conn->prepare("SELECT COUNT(*) FROM tbl_learningmaterials lm
+                                    INNER JOIN tbl_lessons l ON lm.lesson_id = l.lesson_id
+                                    WHERE l.teacher_id = ?");
+            $countQuery->execute([$teacher_id]);
+            $totalItemsMaterials = $countQuery->fetchColumn();
+
             $select_materials = $conn->prepare("SELECT lm.*, l.teacher_id 
-            FROM tbl_learningmaterials lm
-            INNER JOIN tbl_lessons l ON lm.lesson_id = l.lesson_id
-            WHERE l.teacher_id = ? 
-            ORDER BY lm.date_created DESC");
+        FROM tbl_learningmaterials lm
+        INNER JOIN tbl_lessons l ON lm.lesson_id = l.lesson_id
+        WHERE l.teacher_id = ? 
+        ORDER BY lm.date_created DESC
+        LIMIT $offsetMaterials, $itemsPerPageMaterials");
             $select_materials->execute([$teacher_id]);
+
             if ($select_materials->rowCount() > 0) {
                 while ($fecth_materials = $select_materials->fetch(PDO::FETCH_ASSOC)) {
                     $material_id = $fecth_materials['material_id'];
@@ -118,6 +131,23 @@ if (isset($_POST['delete_material'])) {
         </div>
 
     </section>
+
+    <?php
+    $totalPagesMaterials = ceil($totalItemsMaterials / $itemsPerPageMaterials);
+
+    echo '<div class="pagination">';
+    if ($pageMaterials > 1) {
+        echo '<a href="?pageMaterials=' . ($pageMaterials - 1) . '">Previous</a>';
+    }
+    for ($i = 1; $i <= $totalPagesMaterials; $i++) {
+        echo '<a href="?pageMaterials=' . $i . '" class="' . ($pageMaterials == $i ? 'active' : '') . '">' . $i . '</a>';
+    }
+    if ($pageMaterials < $totalPagesMaterials) {
+        echo '<a href="?pageMaterials=' . ($pageMaterials + 1) . '">Next</a>';
+    }
+    echo '</div>';
+    ?>
+
 
 
     <script src="../scripts/script.js"></script>
