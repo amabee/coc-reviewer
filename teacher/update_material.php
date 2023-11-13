@@ -67,7 +67,7 @@ if (isset($_POST['update'])) {
     $video = $_FILES['video']['name'];
     $video = filter_var($video, FILTER_SANITIZE_STRING);
     $video_ext = pathinfo($video, PATHINFO_EXTENSION);
-    $randomBytes = random_bytes(24);
+    $randomBytes = random_bytes(16);
     $uniqueId = bin2hex($randomBytes);
     $rename_video = $uniqueId . '.' . $video_ext;
     $video_tmp_name = $_FILES['video']['tmp_name'];
@@ -82,7 +82,7 @@ if (isset($_POST['update'])) {
         }
     }
 
-    $message[] = 'content updated!';
+    $message[] = 'material updated!';
 
 }
 
@@ -91,24 +91,26 @@ if (isset($_POST['delete_video'])) {
     $delete_id = $_POST['video_id'];
     $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
 
-    $delete_video_thumb = $conn->prepare("SELECT thumb FROM `content` WHERE id = ? LIMIT 1");
+    $delete_video_thumb = $conn->prepare("SELECT thumbnail FROM `tbl_learningmaterials` WHERE material_id = ? LIMIT 1");
     $delete_video_thumb->execute([$delete_id]);
     $fetch_thumb = $delete_video_thumb->fetch(PDO::FETCH_ASSOC);
-    unlink('../uploaded_files/' . $fetch_thumb['thumb']);
+    unlink('../tmp/' . $fetch_thumb['thumbnail']);
 
-    $delete_video = $conn->prepare("SELECT video FROM `content` WHERE id = ? LIMIT 1");
+    $delete_video = $conn->prepare("SELECT file FROM `tbl_learningmaterials` WHERE material_id = ? LIMIT 1");
     $delete_video->execute([$delete_id]);
-    $fetch_video = $delete_video->fetch(PDO::FETCH_ASSOC);
-    unlink('../uploaded_files/' . $fetch_video['video']);
 
-    $delete_likes = $conn->prepare("DELETE FROM `likes` WHERE content_id = ?");
-    $delete_likes->execute([$delete_id]);
-    $delete_comments = $conn->prepare("DELETE FROM `comments` WHERE content_id = ?");
+    $fetch_video = $delete_video->fetch(PDO::FETCH_ASSOC);
+    unlink('../tmp/' . $fetch_video['file']);
+    if(!unlink('../tmp/' . $fetch_video['file'])){
+        $message[] = 'no such image here!';
+    }
+
+    $delete_comments = $conn->prepare("DELETE FROM `tbl_comments` WHERE material_id = ?");
     $delete_comments->execute([$delete_id]);
 
-    $delete_content = $conn->prepare("DELETE FROM `content` WHERE id = ?");
+    $delete_content = $conn->prepare("DELETE FROM `tbl_learningmaterials` WHERE material_id = ?");
     $delete_content->execute([$delete_id]);
-    header('location:contents.php');
+    header('location:materials.php');
 
 }
 
@@ -163,7 +165,7 @@ if (isset($_POST['delete_video'])) {
                             <?= $fecth_videos['status']; ?>
                         </option>
                         <option value="active">active</option>
-                        <option value="deactive">deactive</option>
+                        <option value="inactive">deactivate</option>
                     </select>
                     <p>update title <span>*</span></p>
                     <input type="text" name="title" maxlength="100" required placeholder="enter material title" class="box"
@@ -188,7 +190,7 @@ if (isset($_POST['delete_video'])) {
                             ?>
                             <?php
                         } else {
-                            echo '<option value="" disabled>no playlist created yet!</option>';
+                            echo '<option value="" disabled>no lesson created yet!</option>';
                         }
                         ?>
                     </select>
