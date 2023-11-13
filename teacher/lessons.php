@@ -107,7 +107,7 @@ if (isset($_POST['delete'])) {
                         </p>
                         <form action="" method="post" class="flex-btn">
                             <input type="hidden" name="lesson_id" value="<?= $playlist_id; ?>">
-                            <a href="update_playlist.php?get_id=<?= $playlist_id; ?>" class="option-btn">update</a>
+                            <a href="update_lesson.php?get_id=<?= $playlist_id; ?>" class="option-btn">update</a>
                             <input type="submit" value="delete" class="delete-btn"
                                 onclick="return confirm('delete this playlist?');" name="delete">
                         </form>
