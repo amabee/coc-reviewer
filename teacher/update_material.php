@@ -202,7 +202,7 @@ if (isset($_POST['delete_video'])) {
                     <input type="file" name="video" accept="application/pdf" class="box">
                     <input type="submit" value="update content" name="update" class="btn">
                     <div class="flex-btn">
-                        <a href="view_content.php?get_id=<?= $video_id; ?>" class="option-btn">view content</a>
+                        <a href="view_material.php?get_id=<?= $video_id; ?>" class="option-btn">view content</a>
                         <input type="submit" value="delete content" name="delete_video" class="delete-btn">
                     </div>
                 </form>
