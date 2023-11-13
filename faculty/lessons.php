@@ -111,7 +111,7 @@ if (isset($_POST['delete'])) {
                             <input type="submit" value="delete" class="delete-btn"
                                 onclick="return confirm('delete this playlist?');" name="delete">
                         </form>
-                        <a href="view_playlist.php?get_id=<?= $playlist_id; ?>" class="btn">view playlist</a>
+                        <a href="view_lesson.php?get_id=<?= $playlist_id; ?>" class="btn">view playlist</a>
                     </div>
                     <?php
                 }

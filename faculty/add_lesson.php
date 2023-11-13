@@ -90,7 +90,7 @@ if (isset($_POST['submit'])) {
             </select>
             <p>lesson thumbnail <span>*</span></p>
             <input type="file" name="image" accept="image/*" required class="box">
-            <input type="submit" value="create playlist" name="submit" class="btn">
+            <input type="submit" value="create lesson" name="submit" class="btn">
         </form>
 
     </section>
