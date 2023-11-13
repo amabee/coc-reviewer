@@ -102,7 +102,7 @@ if (isset($_POST['delete_material'])) {
                         </h3>
                         <form action="" method="post" class="flex-btn">
                             <input type="hidden" name="material_id" value="<?= $material_id; ?>">
-                            <a href="update_content.php?get_id=<?= $material_id; ?>" class="option-btn">update</a>
+                            <a href="update_material.php?get_id=<?= $material_id; ?>" class="option-btn">update</a>
                             <input type="submit" value="delete" class="delete-btn"
                                 onclick="return confirm('delete this material?');" name="delete_material">
                         </form>

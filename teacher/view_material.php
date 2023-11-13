@@ -85,7 +85,6 @@ if (isset($_POST['delete_comment'])) {
     <section class="view-content">
 
         <?php
-        //   $select_content = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE material_id = ? AND teacher_id = ?");
         $select_content = $conn->prepare("SELECT LM.* 
     FROM `tbl_learningmaterials` LM
     JOIN `tbl_lessons` L ON LM.lesson_id = L.lesson_id
@@ -103,8 +102,8 @@ if (isset($_POST['delete_comment'])) {
                 $total_comments = $count_comments->rowCount();
                 ?>
                 <div class="container">
-                    <material src="../tmp/<?= $fetch_content['file']; ?>" autoplay controls
-                        poster="../uploaded_files/<?= $fetch_content['thumbnail']; ?>" class="material"></material>
+                    <iframe src="../tmp/<?= $fetch_content['file']; ?>" frameborder="0" width='100%' height="700px"
+                        crossorigin="anonymous" id="pdfFrame"></iframe>
                     <div class="date"><i class="fas fa-calendar"></i><span>
                             <?= $fetch_content['date_created']; ?>
                         </span></div>
@@ -122,7 +121,7 @@ if (isset($_POST['delete_comment'])) {
                     <form action="" method="post">
                         <div class="flex-btn">
                             <input type="hidden" name="material_id" value="<?= $material_id; ?>">
-                            <a href="update_content.php?get_id=<?= $material_id; ?>" class="option-btn">update</a>
+                            <a href="update_material.php?get_id=<?= $material_id; ?>" class="option-btn">update</a>
                             <input type="submit" value="remove" class="delete-btn"
                                 onclick="return confirm('Remove this material?');" name="delete_material">
                         </div>
@@ -131,7 +130,7 @@ if (isset($_POST['delete_comment'])) {
                 <?php
             }
         } else {
-            echo '<p class="empty">no contents added yet! <a href="add_content.php" class="btn" style="margin-top: 1.5rem;">add materials</a></p>';
+            echo '<p class="empty">no materials added yet! <a href="add_content.php" class="btn" style="margin-top: 1.5rem;">add materials</a></p>';
         }
 
         ?>
@@ -188,6 +187,14 @@ if (isset($_POST['delete_comment'])) {
 
 
     <script src="scripts/script.js"></script>
+
+    <script>
+        
+        function printContent() {
+            var iframe = document.getElementById('pdfFrame').contentWindow;
+            iframe.print();
+        }
+    </script>
 
 </body>
 
