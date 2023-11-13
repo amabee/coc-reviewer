@@ -171,12 +171,12 @@ if (isset($_POST['delete_file'])) {
                             <input type="submit" value="Remove" class="delete-btn"
                                 onclick="return confirm('remove this lesson?');" name="delete_file">
                         </form>
-                        <a href="view_content.php?get_id=<?= $file_id; ?>" class="btn">Read File</a>
+                        <a href="view_material.php?get_id=<?= $file_id; ?>" class="btn">Read File</a>
                     </div>
                     <?php
                 }
             } else {
-                echo '<p class="empty">no materials added yet! <a href="add_content.php" class="btn" style="margin-top: 1.5rem;">add videos</a></p>';
+                echo '<p class="empty">no materials added yet! <a href="add_materials.php" class="btn" style="margin-top: 1.5rem;">add materials</a></p>';
             }
             ?>
 
