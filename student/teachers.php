@@ -49,7 +49,16 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
         <div class="box-container">
 
             <?php
-            $select_tutors = $conn->prepare("SELECT * FROM `tbl_teachers`");
+            $select_tutors = $conn->prepare("
+            SELECT tbl_section.section_id, tbl_teachers.firstname, tbl_teachers.lastname, tbl_teachers.teacher_id,
+            tbl_teachers.image, tbl_teachers.email
+            FROM tbl_section
+            INNER JOIN tbl_teachers ON tbl_section.teacher_id = tbl_teachers.teacher_id
+            WHERE tbl_section.student_id = :student_id
+        ");
+
+            $select_tutors->bindParam(':student_id', $user_id);
+
             $select_tutors->execute();
             if ($select_tutors->rowCount() > 0) {
                 while ($fetch_tutor = $select_tutors->fetch(PDO::FETCH_ASSOC)) {
@@ -89,8 +98,8 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
                                 <?= $total_contents ?>
                             </span></p>
                         <form action="teacher_profile.php" method="post">
-                            <input type="hidden" name="tutor_email" value="<?= $fetch_tutor['email']; ?>" >
-                            <input type="submit" value="view profile" name="tutor_fetch" class="inline-btn" >
+                            <input type="hidden" name="tutor_email" value="<?= $fetch_tutor['email']; ?>">
+                            <input type="submit" value="view profile" name="tutor_fetch" class="inline-btn">
                         </form>
                     </div>
                     <?php

@@ -45,7 +45,7 @@ $total_comments = $select_comments->rowCount();
 
 <body>
 
-    <?php include '../includes/admin_header.php'; ?>
+    <?php include '../includes/teacher_header.php'; ?>
 
     <section class="tutor-profile" style="min-height: calc(100vh - 19rem);">
 

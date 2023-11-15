@@ -16,7 +16,7 @@ if (isset($message)) {
 
     <section class="flex">
 
-        <a href="dashboard.php" class="logo">ADMIN</a>
+        <a href="dashboard.php" class="logo">Faculty</a>
 
         <form action="search_page.php" method="post" class="search-form">
             <input type="text" name="search" placeholder="search here..." required maxlength="100">
@@ -32,8 +32,8 @@ if (isset($message)) {
 
         <div class="profile">
             <?php
-            $select_profile = $conn->prepare("SELECT * FROM `tbl_admin` WHERE admin_id = ?");
-            $select_profile->execute([$admin_id]);
+            $select_profile = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ?");
+            $select_profile->execute([$teacher_id]);
             if ($select_profile->rowCount() > 0) {
                 $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
                 ?>
@@ -44,7 +44,7 @@ if (isset($message)) {
                 </h3>
                 <span>
                     <!-- <?= $fetch_profile['profession']; ?> -->
-                    ADMIN
+                    TEACHER
                 </span>
                 <a href="profile.php" class="btn">view profile</a>
                 <a href="../includes/teacher_logout.php" onclick="return confirm('logout from this website?');"
@@ -79,8 +79,8 @@ if (isset($message)) {
 
     <div class="profile">
         <?php
-        $select_profile = $conn->prepare("SELECT * FROM `tbl_admin` WHERE admin_id = ?");
-        $select_profile->execute([$admin_id]);
+        $select_profile = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ?");
+        $select_profile->execute([$teacher_id]);
         if ($select_profile->rowCount() > 0) {
             $fetch_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
             ?>
@@ -90,7 +90,7 @@ if (isset($message)) {
                 <?= $fetch_profile['lastname']; ?>
             </h3>
             <span>
-                <?= $fetch_profile['admin_id']; ?>
+                <?= $fetch_profile['teacher_id']; ?>
             </span>
             <a href="profile.php" class="btn">view profile</a>
             <?php
@@ -107,10 +107,10 @@ if (isset($message)) {
     </div>
 
     <nav class="navbar">
-        <!-- <a href="dashboard.php"><i class="fas fa-home"></i><span>HOME</span></a>
+        <a href="dashboard.php"><i class="fas fa-home"></i><span>HOME</span></a>
         <a href="lessons.php"><i class="fa-solid fa-bars-staggered"></i><span>LESSONS</span></a>
         <a href="materials.php"><i class="fas fa-graduation-cap"></i><span>MATERIALS</span></a>
-        <a href="quizzes.php"><i class="fas fa-pen-fancy"></i><span>QUIZZES</span></a> -->
+        <a href="quizzes.php"><i class="fas fa-pen-fancy"></i><span>QUIZZES</span></a>
         <!-- <a href="../components/teacher_logout.php" onclick="return confirm('logout from this website?');"><i
                 class="fas fa-right-from-bracket"></i><span>LOGOUT</span></a> -->
     </nav>

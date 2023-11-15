@@ -16,7 +16,7 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
 
 if (isset($_POST['submit'])) {
 
-    $select_user = $conn->prepare("SELECT * FROM `tbl_users` WHERE id = ? LIMIT 1");
+    $select_user = $conn->prepare("SELECT * FROM `tbl_students` WHERE id = ? LIMIT 1");
     $select_user->execute([$user_id]);
     $fetch_user = $select_user->fetch(PDO::FETCH_ASSOC);
 
@@ -29,7 +29,7 @@ if (isset($_POST['submit'])) {
     $lastname = filter_var($lastname, FILTER_SANITIZE_STRING);
 
     if (!empty($firstname)) {
-        $update_name = $conn->prepare("UPDATE `tbl_users` SET firstname = ? WHERE id = ?");
+        $update_name = $conn->prepare("UPDATE `tbl_students` SET firstname = ? WHERE id = ?");
         if ($update_name->execute([$firstname, $user_id])) {
             $message[] = 'First name updated successfully!';
         } else {
@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
     }
 
     if (!empty($lastname)) {
-        $update_lastname = $conn->prepare("UPDATE `tbl_users` SET lastname = ? WHERE id = ?");
+        $update_lastname = $conn->prepare("UPDATE `tbl_students` SET lastname = ? WHERE id = ?");
         if ($update_lastname->execute([$lastname, $user_id])) {
             $message[] = 'Last name updated successfully!';
         } else {
@@ -50,12 +50,12 @@ if (isset($_POST['submit'])) {
     $email = filter_var($email, FILTER_SANITIZE_STRING);
 
     if (!empty($email)) {
-        $select_email = $conn->prepare("SELECT email FROM `tbl_users` WHERE email = ?");
+        $select_email = $conn->prepare("SELECT email FROM `tbl_students` WHERE email = ?");
         $select_email->execute([$email]);
         if ($select_email->rowCount() > 0) {
             $message[] = 'email already taken!';
         } else {
-            $update_email = $conn->prepare("UPDATE `tbl_users` SET email = ? WHERE id = ?");
+            $update_email = $conn->prepare("UPDATE `tbl_students` SET email = ? WHERE id = ?");
             $update_email->execute([$email, $user_id]);
             $message[] = 'email updated successfully!';
         }
@@ -73,7 +73,7 @@ if (isset($_POST['submit'])) {
         if ($image_size > 2000000) {
             $message[] = 'image size too large!';
         } else {
-            $update_image = $conn->prepare("UPDATE `tbl_users` SET `image` = ? WHERE id = ?");
+            $update_image = $conn->prepare("UPDATE `tbl_students` SET `image` = ? WHERE id = ?");
             $update_image->execute([$rename, $user_id]);
             move_uploaded_file($image_tmp_name, $image_folder);
             if ($prev_image != '' and $prev_image != $rename) {
@@ -98,7 +98,7 @@ if (isset($_POST['submit'])) {
             $message[] = 'confirm password not matched!';
         } else {
             if ($new_pass != $empty_pass) {
-                $update_pass = $conn->prepare("UPDATE `tbl_users` SET password = ? WHERE id = ?");
+                $update_pass = $conn->prepare("UPDATE `tbl_students` SET password = ? WHERE id = ?");
                 $update_pass->execute([$cpass, $user_id]);
                 $message[] = 'password updated successfully!';
             } else {

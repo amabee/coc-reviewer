@@ -135,7 +135,7 @@ if (isset($_POST['delete_video'])) {
 
 <body>
 
-    <?php include '../includes/admin_header.php'; ?>
+    <?php include '../includes/teacher_header.php'; ?>
 
     <section class="video-form">
 

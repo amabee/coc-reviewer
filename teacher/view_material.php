@@ -79,7 +79,7 @@ if (isset($_POST['delete_comment'])) {
 
 <body>
 
-    <?php include '../includes/admin_header.php'; ?>
+    <?php include '../includes/teacher_header.php'; ?>
 
 
     <section class="view-content">
@@ -148,7 +148,7 @@ if (isset($_POST['delete_comment'])) {
             $select_comments->execute([$get_id]);
             if ($select_comments->rowCount() > 0) {
                 while ($fetch_comment = $select_comments->fetch(PDO::FETCH_ASSOC)) {
-                    $select_commentor = $conn->prepare("SELECT * FROM `tbl_users` WHERE id = ?");
+                    $select_commentor = $conn->prepare("SELECT * FROM `tbl_students` WHERE id = ?");
                     $select_commentor->execute([$fetch_comment['user_id']]);
                     $fetch_commentor = $select_commentor->fetch(PDO::FETCH_ASSOC);
                     ?>

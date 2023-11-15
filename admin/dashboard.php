@@ -1,28 +1,12 @@
 <?php
 include '../includes/connection.php';
 
-if (isset($_COOKIE['teacher_id'])) {
-    $teacher_id = $_COOKIE['teacher_id'];
+if (isset($_COOKIE['admin_id'])) {
+    $admin_id = $_COOKIE['admin_id'];
 } else {
-    $teacher_id = '';
+    $admin_id = '';
     header('location:login.php');
 }
-
-$select_contents = $conn->prepare("SELECT L.teacher_id, LM.* 
-                                   FROM `tbl_learningmaterials` LM
-                                   INNER JOIN `tbl_lessons` L ON LM.lesson_id = L.lesson_id
-                                   WHERE L.teacher_id = ?");
-$select_contents->execute([$teacher_id]);
-$total_contents = $select_contents->rowCount();
-
-
-$select_playlists = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE teacher_id = ?");
-$select_playlists->execute([$teacher_id]);
-$total_lessons = $select_playlists->rowCount();
-
-$select_comments = $conn->prepare("SELECT * FROM `tbl_comments` WHERE teacher_id = ?");
-$select_comments->execute([$teacher_id]);
-$total_comments = $select_comments->rowCount();
 
 ?>
 
@@ -47,7 +31,7 @@ $total_comments = $select_comments->rowCount();
 
 <body>
 
-    <?php include '../includes/teacher_header.php'; ?>
+    <?php include '../includes/admin_header.php'; ?>
 
     <section class="dashboard">
 
@@ -65,25 +49,25 @@ $total_comments = $select_comments->rowCount();
             </div>
 
             <div class="box">
-                <h3>
+                <!-- <h3>
                     <?= $total_contents; ?>
-                </h3>
+                </h3> -->
                 <p>total contents</p>
                 <a href="add_content.php" class="btn">add new content</a>
             </div>
 
             <div class="box">
-                <h3>
+                <!-- <h3>
                     <?= $total_lessons; ?>
-                </h3>
+                </h3> -->
                 <p>total Lessons</p>
                 <a href="add_playlist.php" class="btn">add new Lesson</a>
             </div>
 
             <div class="box">
-                <h3>
+                <!-- <h3>
                     <?= $total_comments; ?>
-                </h3>
+                </h3> -->
                 <p>total comments</p>
                 <a href="comments.php" class="btn">view comments</a>
             </div>

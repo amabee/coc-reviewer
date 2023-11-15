@@ -53,7 +53,7 @@ if (isset($_POST['delete'])) {
 
 <body>
 
-    <?php include '../includes/admin_header.php'; ?>
+    <?php include '../includes/teacher_header.php'; ?>
 
     <section class="playlists">
 
