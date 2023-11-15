@@ -7,6 +7,6 @@ session_unset();
 
 session_destroy();
 setcookie('teacher_id', '', time() - 1, '/');
-header('location:../faculty/index.php');
+header('location:../teacher/index.php');
 
 ?>

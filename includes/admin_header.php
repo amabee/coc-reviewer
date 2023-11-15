@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 if (isset($message)) {
     foreach ($message as $message) {
@@ -55,8 +56,9 @@ if (isset($message)) {
                 <h3>please login or register</h3>
                 <div class="flex-btn">
                     <a href="login.php" class="option-btn">login</a>
-                    <a href="register.php" class="option-btn">register</a>
-                </div>
+                     <a href="register.php" class="option-btn">register</a>
+                    </div>
+                
                 <?php
             }
             ?>
@@ -109,7 +111,7 @@ if (isset($message)) {
         <a href="dashboard.php"><i class="fas fa-home"></i><span>HOME</span></a>
         <a href="lessons.php"><i class="fa-solid fa-bars-staggered"></i><span>LESSONS</span></a>
         <a href="materials.php"><i class="fas fa-graduation-cap"></i><span>MATERIALS</span></a>
-        <!-- <a href="comments.php"><i class="fas fa-comment"></i><span>COMMENTS</span></a> -->
+        <a href="quizzes.php"><i class="fas fa-pen-fancy"></i><span>QUIZZES</span></a>
         <!-- <a href="../components/admin_logout.php" onclick="return confirm('logout from this website?');"><i
                 class="fas fa-right-from-bracket"></i><span>LOGOUT</span></a> -->
     </nav>
