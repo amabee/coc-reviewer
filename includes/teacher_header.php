@@ -55,9 +55,9 @@ if (isset($message)) {
                 <h3>please login or register</h3>
                 <div class="flex-btn">
                     <a href="login.php" class="option-btn">login</a>
-                     <a href="register.php" class="option-btn">register</a>
-                    </div>
-                
+                    <a href="register.php" class="option-btn">register</a>
+                </div>
+
                 <?php
             }
             ?>
@@ -95,13 +95,14 @@ if (isset($message)) {
             <a href="profile.php" class="btn">view profile</a>
             <?php
         } else {
-            ?>
-            <h3>please login or register</h3>
-            <div class="flex-btn">
-                <a href="login.php" class="option-btn">login</a>
-                <a href="register.php" class="option-btn">register</a>
-            </div>
-            <?php
+
+            session_start();
+            session_unset();
+
+
+            session_destroy();
+            setcookie('teacher_id', '', time() - 1, '/');
+            header('location:../teacher/index.php');
         }
         ?>
     </div>
@@ -109,7 +110,8 @@ if (isset($message)) {
     <nav class="navbar">
         <a href="dashboard.php"><i class="fas fa-home"></i><span>HOME</span></a>
         <a href="lessons.php"><i class="fa-solid fa-bars-staggered"></i><span>LESSONS</span></a>
-        <a href="materials.php"><i class="fas fa-graduation-cap"></i><span>MATERIALS</span></a>
+        <a href="materials.php"><i class="fa-solid fa-file"></i><span>MATERIALS</span></a>
+        <a href="myclass.php"><i class="fas fa-graduation-cap"></i><span>MY CLASSES</span></a>
         <a href="quizzes.php"><i class="fas fa-pen-fancy"></i><span>QUIZZES</span></a>
         <!-- <a href="../components/teacher_logout.php" onclick="return confirm('logout from this website?');"><i
                 class="fas fa-right-from-bracket"></i><span>LOGOUT</span></a> -->

@@ -69,7 +69,7 @@ $total_comments = $select_comments->rowCount();
                     <?= $total_contents; ?>
                 </h3>
                 <p>total contents</p>
-                <a href="add_content.php" class="btn">add new content</a>
+                <a href="add_materials.php" class="btn">add new content</a>
             </div>
 
             <div class="box">
@@ -77,7 +77,7 @@ $total_comments = $select_comments->rowCount();
                     <?= $total_lessons; ?>
                 </h3>
                 <p>total Lessons</p>
-                <a href="add_playlist.php" class="btn">add new Lesson</a>
+                <a href="add_lesson.php" class="btn">add new Lesson</a>
             </div>
 
             <div class="box">

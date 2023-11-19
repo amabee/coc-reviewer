@@ -1,5 +1,4 @@
 let body = document.body;
-
 let profile = document.querySelector('.header .flex .profile');
 
 document.querySelector('#user-btn').onclick = () =>{
@@ -50,6 +49,7 @@ const enabelDarkMode = () =>{
    toggleBtn.classList.replace('fa-sun', 'fa-moon');
    body.classList.add('dark');
    localStorage.setItem('dark-mode', 'enabled');
+
 }
 
 const disableDarkMode = () =>{

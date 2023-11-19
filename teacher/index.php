@@ -2,19 +2,13 @@
 session_start();
 include '../includes/connection.php';
 
-if (isset($_COOKIE['teacher_id'])) {
+
+if (isset($_SESSION['teacher_id']) || isset($_COOKIE['teacher_id'])) {
     header('location: dashboard.php');
     exit();
 }
-
-if (isset($_SESSION['teacher_id'])) {
-    header('location: dashboard.php');
-    exit();
-}
-
 
 if (isset($_POST['submit'])) {
-
     $email = $_POST['email'];
     $email = filter_var($email, FILTER_SANITIZE_STRING);
     $pass = sha1($_POST['pass']);
@@ -25,15 +19,26 @@ if (isset($_POST['submit'])) {
     $row = $select_tutor->fetch(PDO::FETCH_ASSOC);
 
     if ($select_tutor->rowCount() > 0) {
-        setcookie('teacher_id', $row['teacher_id'], time() + 60 * 60 * 24 * 30, '/');
-        header('location:dashboard.php');
-    } else {
-        $message[] = 'incorrect email or password!';
-    }
+       
+        $_SESSION['teacher_id'] = $row['teacher_id'];
+        $_SESSION['last_activity'] = time();
 
+        setcookie('teacher_id', $row['teacher_id'], time() + 60 * 60 * 24 * 30, '/');
+
+        header('location: dashboard.php');
+        exit();
+    } else {
+        $message[] = 'Incorrect email or password!';
+    }
+}
+
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 3600)) {
+    session_unset();
+    session_destroy();
 }
 
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

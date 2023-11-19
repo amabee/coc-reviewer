@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
     $description = filter_var($description, FILTER_SANITIZE_STRING);
     $status = $_POST['status'];
     $status = filter_var($status, FILTER_SANITIZE_STRING);
-
+    
     $category_id = $_POST['category_id'];
     $category_id = filter_var($category_id, FILTER_SANITIZE_STRING);
 
@@ -30,7 +30,7 @@ if (isset($_POST['submit'])) {
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folder = '../tmp/' . $rename;
 
-    $add_playlist = $conn->prepare("INSERT INTO `tbl_lessons` (`category_id`, `teacher_id`, `lesson_title`, `lesson_desc`, `thumb`, `date`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
+    $add_playlist = $conn->prepare("INSERT INTO `tbl_lessons` (`category_id`, `teacher_id`,`lesson_title`, `lesson_desc`, `thumb`, `date`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
     $add_playlist->execute([$category_id, $teacher_id, $title, $description, $rename, $status]);
 
     move_uploaded_file($image_tmp_name, $image_folder);
@@ -69,7 +69,7 @@ if (isset($_POST['submit'])) {
         <form action="" method="post" enctype="multipart/form-data">
             <p>lesson status <span>*</span></p>
             <select name="status" class="box" required>
-                <option value="" selected disabled>-- select status</option>
+                <option value="" selected disabled>-- Select Status --</option>
                 <option value="active">active</option>
                 <option value="deactive">deactive</option>
             </select>
@@ -80,13 +80,30 @@ if (isset($_POST['submit'])) {
                 rows="10"></textarea>
             <p>Category <span>*</span></p>
             <select name="category_id" class="box" required>
-                <option value="" selected disabled>-- Select category</option>
+                <option value="" selected disabled>-- Select Category --</option>
                 <?php
                 $categories_query = $conn->query("SELECT * FROM tbl_categories");
                 while ($category = $categories_query->fetch(PDO::FETCH_ASSOC)) {
                     echo "<option value='{$category['category_id']}'>{$category['category_name']}</option>";
                 }
                 ?>
+            </select>
+            <!-- <p>Section <span>*</span></p>
+            <select name="section_id" class="box" required>
+                <option value="" selected disabled>-- Select Section --</option>
+                <?php
+                try {
+                    $section_query = $conn->prepare("SELECT section_id FROM tbl_section WHERE teacher_id = :teacher_id");
+                    $section_query->bindParam(':teacher_id', $teacher_id, PDO::PARAM_STR);
+                    $section_query->execute();
+
+                    while ($section = $section_query->fetch(PDO::FETCH_ASSOC)) {
+                        echo "<option value='{$section['section_id']}'>{$section['section_id']}</option>";
+                    }
+                } catch (PDOException $e) {
+                    echo "<script>console.log('Error: " . $e->getMessage() . "');</script>";
+                }
+                ?> -->
             </select>
             <p>lesson thumbnail <span>*</span></p>
             <input type="file" name="image" accept="image/*" required class="box">
