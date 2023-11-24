@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2023 at 10:18 AM
+-- Generation Time: Nov 23, 2023 at 12:30 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -24,6 +24,28 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_admin`
+--
+
+CREATE TABLE `tbl_admin` (
+  `admin_id` varchar(50) NOT NULL,
+  `firstname` varchar(30) NOT NULL,
+  `lastname` varchar(30) NOT NULL,
+  `email` varchar(128) NOT NULL,
+  `password` varchar(150) NOT NULL,
+  `image` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_admin`
+--
+
+INSERT INTO `tbl_admin` (`admin_id`, `firstname`, `lastname`, `email`, `password`, `image`) VALUES
+('0101-5552-4177', 'Minji', 'Kim', 'admin_mail@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '1.gif');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_bookmark`
 --
 
@@ -31,13 +53,6 @@ CREATE TABLE `tbl_bookmark` (
   `user_id` varchar(30) NOT NULL,
   `lesson_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_bookmark`
---
-
-INSERT INTO `tbl_bookmark` (`user_id`, `lesson_id`) VALUES
-('02-1234-5678', 3);
 
 -- --------------------------------------------------------
 
@@ -74,15 +89,8 @@ CREATE TABLE `tbl_comments` (
   `user_id` varchar(50) NOT NULL,
   `teacher_id` varchar(50) NOT NULL,
   `comment` varchar(500) NOT NULL,
-  `date` date NOT NULL
+  `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_comments`
---
-
-INSERT INTO `tbl_comments` (`comment_id`, `material_id`, `user_id`, `teacher_id`, `comment`, `date`) VALUES
-(2147483647, 3, '02-1234-5678', '02-1920-03954', 'comment', '2023-10-28');
 
 -- --------------------------------------------------------
 
@@ -106,9 +114,7 @@ CREATE TABLE `tbl_learningmaterials` (
 --
 
 INSERT INTO `tbl_learningmaterials` (`material_id`, `lesson_id`, `material_title`, `material_description`, `file`, `thumbnail`, `date_created`, `status`) VALUES
-(3, 3, 'Chapter 1 - Introduction to Law Enforcement Administration', 'Reading material for Introduction to Law Enforcement Administration.', 'sample.pdf', 'lea.png', '2023-10-28', 'active'),
-(4, 3, 'Chapter 2 - Introduction to Law Enforcement Administration', 'Chapter 2 of Introduction to Law Enforcement Administration', 'sample.pdf', 'lea.png', '2023-10-28', 'active'),
-(2147483647, 653, 'Law Enforcement Administration Fundamentals Chapter 1', 'Law Enforcement Administration Fundamentals Chapter 1', '28102023073144.pdf', '28102023073144.webp', '2023-10-28', 'active');
+(18, 16, 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 1', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 1', '17112023123956.pdf', '17112023123956.jpg', '2023-11-17', 'active');
 
 -- --------------------------------------------------------
 
@@ -132,9 +138,71 @@ CREATE TABLE `tbl_lessons` (
 --
 
 INSERT INTO `tbl_lessons` (`lesson_id`, `category_id`, `teacher_id`, `lesson_title`, `lesson_desc`, `thumb`, `date`, `status`) VALUES
-(3, 2, '02-1920-03954', 'Introduction to Law Enforcement Administration', 'An Introduction to Law Enforcement Administration', 'lea.png', '2023-10-28', 'active'),
-(653, 2, '02-1920-03954', 'Law Enforcement Administration Fundamentals', 'Law Enforcement Administration Fundamentals', '653c97de6ea82.webp', '2023-10-28', 'active'),
-(2147483647, 2, '02-1920-03954', 'Advance Law Enforcement Administration Lesson', 'Advance Law Enforcement Administration Lesson', '28102023071326.webp', '2023-10-28', 'active');
+(16, 2, '02-1920-03954', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION: A comprehensive guide to law enforcement administration.', '17112023123836.png', '2023-11-17', 'active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_section`
+--
+
+CREATE TABLE `tbl_section` (
+  `section_id` varchar(50) NOT NULL,
+  `teacher_id` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_section`
+--
+
+INSERT INTO `tbl_section` (`section_id`, `teacher_id`) VALUES
+('CRIM-02A', '02-1920-03954'),
+('CRIM-02B', '02-1920-03954');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_studentclasses`
+--
+
+CREATE TABLE `tbl_studentclasses` (
+  `primaryID` int(11) NOT NULL,
+  `section_name` varchar(50) NOT NULL,
+  `student_id` varchar(50) NOT NULL,
+  `lesson_id` int(11) NOT NULL,
+  `material_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_studentclasses`
+--
+
+INSERT INTO `tbl_studentclasses` (`primaryID`, `section_name`, `student_id`, `lesson_id`, `material_id`) VALUES
+(3, 'CRIM-02A', '02-1234-5678', 16, 18),
+(4, 'CRIM-02A', '02-1718-01059', 16, 18);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_students`
+--
+
+CREATE TABLE `tbl_students` (
+  `id` varchar(50) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `email` varchar(128) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `image` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_students`
+--
+
+INSERT INTO `tbl_students` (`id`, `firstname`, `lastname`, `email`, `password`, `image`) VALUES
+('02-1234-5678', 'Dominic', 'Kionisala', 'domskie@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '653bcd1503a85.png'),
+('02-1718-01059', 'Dexter', 'Maghanoy', 'depa.maghanoy.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'dexter.jpg');
 
 -- --------------------------------------------------------
 
@@ -157,35 +225,18 @@ CREATE TABLE `tbl_teachers` (
 --
 
 INSERT INTO `tbl_teachers` (`teacher_id`, `firstname`, `lastname`, `email`, `password`, `active`, `image`) VALUES
-('02-1920-03954', 'John Paul', 'Orencio', 'joda.orencio.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'nj.jpg'),
-('02-2021-01611', 'Shan', 'Gorra', 'shma.gorra.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'nj.jpg');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_users`
---
-
-CREATE TABLE `tbl_users` (
-  `id` varchar(50) NOT NULL,
-  `firstname` varchar(50) NOT NULL,
-  `lastname` varchar(50) NOT NULL,
-  `email` varchar(128) NOT NULL,
-  `password` varchar(128) NOT NULL,
-  `image` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_users`
---
-
-INSERT INTO `tbl_users` (`id`, `firstname`, `lastname`, `email`, `password`, `image`) VALUES
-('02-1234-5678', 'Dominic', 'Kionisala', 'domskie@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '653bcd1503a85.png'),
-('02-1718-01059', 'Dexter', 'Maghanoy', 'depa.maghanoy.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'dexter.jpg');
+('02-1920-03952', 'Shan', 'Gorra', 'shma.gorra.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'nj.jpg'),
+('02-1920-03954', 'John Paul', 'Orencio', 'joda.orencio.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'nj.jpg');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_admin`
+--
+ALTER TABLE `tbl_admin`
+  ADD PRIMARY KEY (`admin_id`);
 
 --
 -- Indexes for table `tbl_bookmark`
@@ -225,17 +276,34 @@ ALTER TABLE `tbl_lessons`
   ADD KEY `category_id` (`category_id`);
 
 --
+-- Indexes for table `tbl_section`
+--
+ALTER TABLE `tbl_section`
+  ADD PRIMARY KEY (`section_id`),
+  ADD KEY `teacher_id` (`teacher_id`);
+
+--
+-- Indexes for table `tbl_studentclasses`
+--
+ALTER TABLE `tbl_studentclasses`
+  ADD PRIMARY KEY (`primaryID`),
+  ADD KEY `section_name` (`section_name`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `lesson_id` (`lesson_id`),
+  ADD KEY `material_id` (`material_id`);
+
+--
+-- Indexes for table `tbl_students`
+--
+ALTER TABLE `tbl_students`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- Indexes for table `tbl_teachers`
 --
 ALTER TABLE `tbl_teachers`
   ADD PRIMARY KEY (`teacher_id`),
-  ADD UNIQUE KEY `email` (`email`);
-
---
--- Indexes for table `tbl_users`
---
-ALTER TABLE `tbl_users`
-  ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
@@ -252,19 +320,25 @@ ALTER TABLE `tbl_categories`
 -- AUTO_INCREMENT for table `tbl_comments`
 --
 ALTER TABLE `tbl_comments`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_learningmaterials`
 --
 ALTER TABLE `tbl_learningmaterials`
-  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
+  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `tbl_lessons`
 --
 ALTER TABLE `tbl_lessons`
-  MODIFY `lesson_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2147483648;
+  MODIFY `lesson_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT for table `tbl_studentclasses`
+--
+ALTER TABLE `tbl_studentclasses`
+  MODIFY `primaryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
@@ -274,29 +348,43 @@ ALTER TABLE `tbl_lessons`
 -- Constraints for table `tbl_bookmark`
 --
 ALTER TABLE `tbl_bookmark`
-  ADD CONSTRAINT `tbl_bookmark_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`),
-  ADD CONSTRAINT `tbl_bookmark_ibfk_2` FOREIGN KEY (`lesson_id`) REFERENCES `tbl_lessons` (`lesson_id`);
+  ADD CONSTRAINT `tbl_bookmark_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_students` (`id`);
 
 --
 -- Constraints for table `tbl_comments`
 --
 ALTER TABLE `tbl_comments`
   ADD CONSTRAINT `tbl_comments_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `tbl_learningmaterials` (`material_id`),
-  ADD CONSTRAINT `tbl_comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`),
+  ADD CONSTRAINT `tbl_comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_students` (`id`),
   ADD CONSTRAINT `tbl_comments_ibfk_3` FOREIGN KEY (`teacher_id`) REFERENCES `tbl_teachers` (`teacher_id`);
 
 --
 -- Constraints for table `tbl_learningmaterials`
 --
 ALTER TABLE `tbl_learningmaterials`
-  ADD CONSTRAINT `tbl_learningmaterials_ibfk_1` FOREIGN KEY (`lesson_id`) REFERENCES `tbl_lessons` (`lesson_id`);
+  ADD CONSTRAINT `tbl_learningmaterials_ibfk_1` FOREIGN KEY (`lesson_id`) REFERENCES `tbl_lessons` (`lesson_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `tbl_lessons`
 --
 ALTER TABLE `tbl_lessons`
-  ADD CONSTRAINT `tbl_lessons_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `tbl_teachers` (`teacher_id`),
-  ADD CONSTRAINT `tbl_lessons_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `tbl_categories` (`category_id`);
+  ADD CONSTRAINT `tbl_lessons_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `tbl_categories` (`category_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tbl_lessons_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `tbl_teachers` (`teacher_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `tbl_section`
+--
+ALTER TABLE `tbl_section`
+  ADD CONSTRAINT `tbl_section_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `tbl_teachers` (`teacher_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `tbl_studentclasses`
+--
+ALTER TABLE `tbl_studentclasses`
+  ADD CONSTRAINT `tbl_studentclasses_ibfk_1` FOREIGN KEY (`section_name`) REFERENCES `tbl_section` (`section_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tbl_studentclasses_ibfk_2` FOREIGN KEY (`student_id`) REFERENCES `tbl_students` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tbl_studentclasses_ibfk_3` FOREIGN KEY (`lesson_id`) REFERENCES `tbl_lessons` (`lesson_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tbl_studentclasses_ibfk_4` FOREIGN KEY (`material_id`) REFERENCES `tbl_learningmaterials` (`material_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

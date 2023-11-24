@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
     $description = filter_var($description, FILTER_SANITIZE_STRING);
     $status = $_POST['status'];
     $status = filter_var($status, FILTER_SANITIZE_STRING);
-    
+
     $category_id = $_POST['category_id'];
     $category_id = filter_var($category_id, FILTER_SANITIZE_STRING);
 
@@ -30,15 +30,31 @@ if (isset($_POST['submit'])) {
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folder = '../tmp/' . $rename;
 
-    $add_playlist = $conn->prepare("INSERT INTO `tbl_lessons` (`category_id`, `teacher_id`,`lesson_title`, `lesson_desc`, `thumb`, `date`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
-    $add_playlist->execute([$category_id, $teacher_id, $title, $description, $rename, $status]);
+    try {
+        $conn->beginTransaction();
 
-    move_uploaded_file($image_tmp_name, $image_folder);
+        $add_playlist = $conn->prepare("INSERT INTO `tbl_lessons` (`category_id`, `teacher_id`,`lesson_title`, `lesson_desc`, `thumb`, `date`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
+        $add_playlist->execute([$category_id, $teacher_id, $title, $description, $rename, $status]);
 
-    $message[] = 'New lesson created!';
+        $lesson_id = $conn->lastInsertId();
+
+        $selected_sections = $_POST['selected_sections'];
+
+        foreach ($selected_sections as $section_id) {
+            $add_classlesson = $conn->prepare("INSERT INTO `tbl_classlessons` ( `section_name`, `lesson_id`) VALUES (?, ?)");
+            $add_classlesson->execute([$section_id,$lesson_id]);
+        }
+
+        $conn->commit();
+
+        move_uploaded_file($image_tmp_name, $image_folder);
+
+        $message[] = 'New lesson created!';
+    } catch (PDOException $e) {
+        $conn->rollBack();
+        echo "<script>console.log('Error: " . $e->getMessage() . "');</script>";
+    }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -88,9 +104,8 @@ if (isset($_POST['submit'])) {
                 }
                 ?>
             </select>
-            <!-- <p>Section <span>*</span></p>
-            <select name="section_id" class="box" required>
-                <option value="" selected disabled>-- Select Section --</option>
+            <p>Section <span>*</span></p>
+            <div class="box">
                 <?php
                 try {
                     $section_query = $conn->prepare("SELECT section_id FROM tbl_section WHERE teacher_id = :teacher_id");
@@ -98,13 +113,15 @@ if (isset($_POST['submit'])) {
                     $section_query->execute();
 
                     while ($section = $section_query->fetch(PDO::FETCH_ASSOC)) {
-                        echo "<option value='{$section['section_id']}'>{$section['section_id']}</option>";
+                        echo "<input type='checkbox' name='selected_sections[]' value='{$section['section_id']}' id='{$section['section_id']}' />";
+                        echo "<label for='{$section['section_id']}'>{$section['section_id']}</label><br>";
                     }
                 } catch (PDOException $e) {
                     echo "<script>console.log('Error: " . $e->getMessage() . "');</script>";
                 }
-                ?> -->
-            </select>
+                ?>
+            </div>
+
             <p>lesson thumbnail <span>*</span></p>
             <input type="file" name="image" accept="image/*" required class="box">
             <input type="submit" value="create lesson" name="submit" class="btn">

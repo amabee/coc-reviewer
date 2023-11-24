@@ -50,11 +50,11 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
 
             <?php
             $select_tutors = $conn->prepare("
-            SELECT tbl_section.section_id, tbl_teachers.firstname, tbl_teachers.lastname, tbl_teachers.teacher_id,
-            tbl_teachers.image, tbl_teachers.email
+            SELECT tbl_section.teacher_id, tbl_teachers.firstname, tbl_teachers.lastname ,tbl_studentclasses.student_id, tbl_teachers.email, tbl_teachers.image
             FROM tbl_section
             INNER JOIN tbl_teachers ON tbl_section.teacher_id = tbl_teachers.teacher_id
-            WHERE tbl_section.student_id = :student_id
+            INNER JOIN tbl_studentclasses ON tbl_section.section_id = tbl_studentclasses.section_name
+            WHERE student_id = :student_id;
         ");
 
             $select_tutors->bindParam(':student_id', $user_id);

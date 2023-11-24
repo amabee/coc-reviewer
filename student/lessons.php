@@ -11,7 +11,6 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
     exit();
 }
 
-
 ?>
 
 <!DOCTYPE html>
@@ -42,13 +41,23 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
         <div class="box-container">
 
             <?php
-            $select_courses = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE status = ? ORDER BY date DESC");
-            $select_courses->execute(['active']);
+            $select_courses = $conn->prepare("SELECT tbl_classlessons.lesson_id, tbl_studentclasses.section_name, tbl_studentclasses.student_id, tbl_lessons.status, 
+            tbl_lessons.teacher_id, tbl_lessons.date, tbl_lessons.lesson_title, tbl_lessons.thumb
+            FROM tbl_studentclasses
+            INNER JOIN tbl_classlessons ON tbl_classlessons.section_name = tbl_studentclasses.section_name
+            INNER JOIN tbl_lessons ON tbl_classlessons.lesson_id = tbl_lessons.lesson_id 
+            WHERE tbl_lessons.status = ? AND tbl_studentclasses.student_id = ? ORDER BY date DESC;
+            ");
+            $select_courses->execute(['active', $user_id]);
             if ($select_courses->rowCount() > 0) {
                 while ($fetch_course = $select_courses->fetch(PDO::FETCH_ASSOC)) {
                     $course_id = $fetch_course['lesson_id'];
+                    $select_tutor = $conn->prepare("
+                                        SELECT * FROM tbl_teachers
+                                        INNER JOIN tbl_section ON tbl_teachers.teacher_id = tbl_section.teacher_id
+                                        WHERE tbl_teachers.teacher_id = ?;
+                                    ");
 
-                    $select_tutor = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ?");
                     $select_tutor->execute([$fetch_course['teacher_id']]);
                     $fetch_tutor = $select_tutor->fetch(PDO::FETCH_ASSOC);
                     ?>

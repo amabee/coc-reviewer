@@ -59,6 +59,11 @@ body.dark {
    --border: .1rem solid rgba(255, 255, 255, .2);
 }
 
+.dark #myTable {
+   background-color: #333;
+   color: #fff;
+}
+
 body.active {
    padding-left: 0;
 }
@@ -459,7 +464,7 @@ section {
    flex: 1 1 25rem;
 }
 
-table {
+/* table {
    width: 100%;
    border-collapse: collapse;
    margin-top: 20px;
@@ -487,7 +492,7 @@ td {
 tr:hover {
    background-color: #f5f5f5;
    transition: background-color 0.3s ease; 
-}
+} */
 
 
 .pagination {
@@ -618,16 +623,16 @@ tr:hover {
    align-items: center;
    gap: 1.5rem;
    padding: 1.5rem 2rem;
-   background-color: var(--light-bg);
+   background-color: white;
    border-radius: .5rem;
    width: 60rem;
-   color: white;
+   color: rgb(8, 8, 8);
 }
 
 .student_view .search-student input {
    width: 100%;
    font-size: 1.8rem;
-   color: var(--black);
+   color: black;
    background: none;
 }
 
@@ -1243,8 +1248,6 @@ tr:hover {
 }
 
 
-
-
 @media (max-width:450px) {
 
    html {
@@ -1268,8 +1271,6 @@ tr:hover {
       height: auto;
    }
 
-
-   /* Force table to not be like tables anymore */
    table,
    thead,
    tbody,
@@ -1279,7 +1280,6 @@ tr:hover {
       display: block;
    }
 
-   /* Hide table headers (but not display: none;, for accessibility) */
    thead tr {
       position: absolute;
       top: -9999px;
@@ -1291,50 +1291,21 @@ tr:hover {
    }
 
    td {
-      /* Behave  like a "row" */
+
       border: none;
       border-bottom: 1px solid #eee;
       position: relative;
-      padding-left: 50%;
-      font-size: 12px;
+      padding-left: 20%;
    }
 
    td:before {
-      /* Now like a table header */
       position: absolute;
-      /* Top/left values mimic padding */
       top: 6px;
       left: 6px;
       width: 45%;
       padding-right: 10px;
-      white-space: nowrap;
+      white-space: wrap;
    }
 
-   /*
-	Label the data
-	*/
-   td:nth-of-type(1):before {
-      content: "Student ID:";
-   }
 
-   td:nth-of-type(2):before {
-      content: "Student Firstname:";
-   }
-
-   td:nth-of-type(3):before {
-      content: "Student Lastname:";
-   }
-
-   td:nth-of-type(4):before {
-      content: "Student Email:";
-   }
-
-   td:nth-of-type(5):before {
-      content: "Actions:";
-   }
-
-   .student_view .search-student {
-      width: 35rem;
-      margin-left: 10px;
-   }
 }

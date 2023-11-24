@@ -35,6 +35,9 @@ if (isset($_POST['submit'])) {
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 3600)) {
     session_unset();
     session_destroy();
+    header('location: index.php');
+    exit();
+
 }
 
 ?>
