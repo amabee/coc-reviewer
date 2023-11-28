@@ -42,7 +42,7 @@ if (isset($_POST['submit'])) {
 
         foreach ($selected_sections as $section_id) {
             $add_classlesson = $conn->prepare("INSERT INTO `tbl_classlessons` ( `section_name`, `lesson_id`) VALUES (?, ?)");
-            $add_classlesson->execute([$section_id,$lesson_id]);
+            $add_classlesson->execute([$section_id, $lesson_id]);
         }
 
         $conn->commit();

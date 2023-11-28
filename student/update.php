@@ -126,6 +126,9 @@ if (isset($_POST['submit'])) {
     <!-- custom css file link  -->
     <link rel="stylesheet" href="../styles/style.css">
 
+      <!-- sweet alert -->
+
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>

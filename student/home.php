@@ -32,9 +32,16 @@ $total_bookmarked = $select_bookmark->rowCount();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  
 
+      <!-- sweet alert -->
+
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/style.css">
+
+
 
 </head>
 
@@ -83,12 +90,14 @@ $total_bookmarked = $select_bookmark->rowCount();
                             Jurisprudence</span></a>
                     <a href="search_lesson.php?"><i class="fa-solid fa-scale-balanced"></i><span>Law Enforcement
                             Administration</span></a>
-                    <a href="search_lesson.php?"><i class="fas fa-chart-simple"></i><span>Forensics/Criminalistics</span></a>
+                    <a href="search_lesson.php?"><i
+                            class="fas fa-chart-simple"></i><span>Forensics/Criminalistics</span></a>
                     <a href="search_lesson.php?"><i class="fa-solid fa-magnifying-glass"></i><span>Crime Detection and
                             Investigation</span></a>
                     <a href="search_lesson.php?"><i class="fa-solid fa-people-robbery"></i><span>Sociology of Crimes and
                             Ethics</span></a>
-                    <a href="search_lesson.php?"><i class="fa-solid fa-handcuffs"></i><span>Correctional Administration</span></a>
+                    <a href="search_lesson.php?"><i class="fa-solid fa-handcuffs"></i><span>Correctional
+                            Administration</span></a>
                 </div>
             </div>
         </div>
@@ -154,6 +163,7 @@ $total_bookmarked = $select_bookmark->rowCount();
 
     <!-- custom js file link  -->
     <script src="../scripts/script.js"></script>
+
 
 </body>
 

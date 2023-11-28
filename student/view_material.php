@@ -112,6 +112,9 @@ if (isset($_POST['update_now'])) {
         integrity="sha512-Z8CqofpIcnJN80feS2uccz+pXWgZzeKxDsDNMD/dJ6997/LSRY+W4NmEt9acwR+Gt9OHN0kkI1CTianCwoqcjQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+      <!-- sweet alert -->
+
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 

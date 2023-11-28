@@ -26,6 +26,9 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
 
     <link rel="stylesheet" href="../styles/style.css">
 
+      <!-- sweet alert -->
+
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>

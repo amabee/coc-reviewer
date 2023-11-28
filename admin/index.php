@@ -2,13 +2,8 @@
 session_start();
 include '../includes/connection.php';
 
-if (isset($_COOKIE['admin_id'])) {
-    header('location: dashboard.php');
-    exit();
-}
-
 if (isset($_SESSION['admin_id'])) {
-    header('location: dashboard.php');
+    header('location: home.php');
     exit();
 }
 
@@ -25,13 +20,15 @@ if (isset($_POST['submit'])) {
     $row = $select_tutor->fetch(PDO::FETCH_ASSOC);
 
     if ($select_tutor->rowCount() > 0) {
-        setcookie('admin_id', $row['admin_id'], time() + 60 * 60 * 24 * 30, '/');
-        header('location:dashboard.php');
+        session_start();
+        $_SESSION['admin_id'] = $row['admin_id'];
+        header('location:home.php');
+        exit(); 
     } else {
-        $message[] = 'incorrect email or password!';
+        $message[] = 'Incorrect email or password!';
     }
-
 }
+
 
 ?>
 
