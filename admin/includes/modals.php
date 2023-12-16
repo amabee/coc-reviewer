@@ -137,8 +137,6 @@
   </div>
 </div>
 
-
-
 <div class="modal fade" id="yawa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <form class="refreshFrm" id="addExamineeFrm" method="post">
@@ -169,16 +167,6 @@
                 <option value="female">Female</option>
               </select>
             </div>
-            <!-- <div class="form-group">
-            <label>Year Level</label>
-            <select class="form-control" name="year_level" id="year_level">
-              <option value="0">Select year level</option>
-              <option value="first year">First Year</option>
-              <option value="second year">Second Year</option>
-              <option value="third year">Third Year</option>
-              <option value="fourth year">Fourth Year</option>
-            </select>
-          </div> -->
             <div class="form-group">
               <label>Email</label>
               <input type="email" name="email" id="email" class="form-control" placeholder="Input Email"
