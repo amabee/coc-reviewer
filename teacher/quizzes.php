@@ -131,7 +131,7 @@ if (isset($_SESSION['teacher_id'])) {
                     <?php
                 }
             } else {
-                echo '<p class="empty">no contents added yet!</p>';
+                echo '<p class="empty">no quizzes made yet!</p>';
             }
             ?>
 
