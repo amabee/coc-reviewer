@@ -88,45 +88,45 @@ if (isset($_SESSION['teacher_id'])) {
             $select_quiz->execute([$teacher_id]);
 
             if ($select_quiz->rowCount() > 0) {
-                while ($fetch_materials = $select_quiz->fetch(PDO::FETCH_ASSOC)) {
-                    $material_id = $fetch_materials['material_id'];
+                while ($fetch_quizzes = $select_quiz->fetch(PDO::FETCH_ASSOC)) {
+                    $material_id = $fetch_quizzes['quiz_id'];
                     ?>
                     <div class="box">
                         <div class="flex">
                             <div>
                                 <i class="fas fa-dot-circle" style="<?php
-                                if ($fetch_materials['status'] == 'active') {
+                                if ($fetch_quizzes['status'] == 'active') {
                                     echo 'color:limegreen';
                                 } else {
                                     echo 'color:red';
                                 } ?>"></i>
                                 <span style="<?php
-                                if ($fetch_materials['status'] == 'active') {
+                                if ($fetch_quizzes['status'] == 'active') {
                                     echo 'color:limegreen';
                                 } else {
                                     echo 'color:red';
                                 } ?>">
-                                    <?= $fetch_materials['status']; ?>
+                                    <?= $fetch_quizzes['status']; ?>
                                 </span>
                             </div>
                             <div>
                                 <i class="fas fa-calendar"></i>
                                 <span>
-                                    <?= $fetch_materials['quiz_created']; ?>
+                                    <?= $fetch_quizzes['quiz_created']; ?>
                                 </span>
                             </div>
                         </div>
-                        <img src="../tmp/<?= $fetch_materials['thumbnail']; ?>" class="thumb" alt="">
+                     
                         <h3 class="title">
-                            <?= $fetch_materials['material_title']; ?>
+                            <?= $fetch_quizzes['quiz_title']; ?>
                         </h3>
                         <form action="" method="post" class="flex-btn">
                             <input type="hidden" name="material_id" value="<?= $material_id; ?>">
-                            <a href="update_material.php?get_id=<?= $material_id; ?>" class="option-btn">update</a>
+                            <a href="update_quiz.php?quiz_id=<?= $material_id; ?>" class="option-btn">update</a>
                             <input type="submit" value="delete" class="delete-btn"
-                                onclick="return confirm('delete this material?');" name="delete_material">
+                                onclick="return confirm('remove this quiz?');" name="delete_material">
                         </form>
-                        <a href="view_material.php?get_id=<?= $material_id; ?>" class="btn">view content</a>
+                        <a href="manage_quiz.php?quiz_id=<?= $material_id; ?>" class="btn">manage quiz</a>
                     </div>
                     <?php
                 }

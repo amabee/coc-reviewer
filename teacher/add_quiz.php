@@ -1,8 +1,6 @@
 <?php
 session_start();
 include '../includes/connection.php';
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 if (isset($_SESSION['teacher_id'])) {
     $teacher_id = $_SESSION['teacher_id'];
@@ -12,17 +10,12 @@ if (isset($_SESSION['teacher_id'])) {
 }
 
 if (isset($_POST['submit'])) {
-    $status = $_POST['status'];
-    $status = filter_var($status, FILTER_SANITIZE_STRING);
-    $title = $_POST['title'];
-    $title = filter_var($title, FILTER_SANITIZE_STRING);
-    $description = $_POST['description'];
-    $description = filter_var($description, FILTER_SANITIZE_STRING);
-    $lessons = $_POST['lessons'];
-    $lessons = filter_var($lessons, FILTER_SANITIZE_STRING);
-    $quiz_type = $_POST['quiz_type'];
-    $quiz_type = filter_var($quiz_type, FILTER_SANITIZE_STRING);
-    $retryAfter = $_POST['retryAfter'];
+    $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
+    $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
+    $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
+    $lessons = filter_var($_POST['lessons'], FILTER_SANITIZE_STRING);
+    $quiz_type = filter_var($_POST['quiz_type'], FILTER_SANITIZE_STRING);
+    $retryAfter = filter_var($_POST['retryAfter'], FILTER_SANITIZE_STRING);
     $retryAfterSeconds = $retryAfter * 3600;
 
     $add_quiz = $conn->prepare("INSERT INTO `tbl_quiz` (`lesson_id`, `quiz_title`, `quiz_description`, `quiz_type`, `retryAfter`, `quiz_created`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
@@ -30,8 +23,8 @@ if (isset($_POST['submit'])) {
 
     $message[] = 'New quiz added!';
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +49,7 @@ if (isset($_POST['submit'])) {
 
     <section class="video-form">
 
-        <h1 class="heading">upload content</h1>
+        <h1 class="heading">create quiz</h1>
 
         <form action="" method="post" enctype="multipart/form-data">
             <p>Quiz status <span>*</span></p>
@@ -87,7 +80,7 @@ if (isset($_POST['submit'])) {
                     ?>
                     <?php
                 } else {
-                    echo '<option value="" disabled>no material created yet!</option>';
+                    echo '<option value="" disabled>no quizzes made yet!</option>';
                 }
                 ?>
             </select>
