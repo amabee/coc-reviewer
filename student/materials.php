@@ -2,23 +2,20 @@
 session_start();
 include '../includes/connection.php';
 
-if (isset($_COOKIE['user_id'])) {
-    $user_id = $_COOKIE['user_id'];
-} else {
-    $user_id = '';
-}
-
-if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
+if (empty($_SESSION['user_id'])) {
     header("Location: ../unauthorized.php");
     exit();
 }
 
-if (isset($_GET['get_id'])) {
-    $get_id = $_GET['get_id'];
-} else {
-    $get_id = '';
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
+
+if (!isset($_COOKIE['get_materialsPage_id'])) {
     header('location:home.php');
+    exit();
 }
+
+$get_id = $_COOKIE['get_materialsPage_id'];
+
 
 if (isset($_POST['save_list'])) {
 
@@ -43,8 +40,17 @@ if (isset($_POST['save_list'])) {
     } else {
         $message[] = 'please login first!';
     }
-
 }
+
+
+$pretest_query = $conn->prepare("SELECT * FROM tbl_quiz WHERE lesson_id = ? AND quiz_type = 'pre-test' AND status = 'active'");
+$pretest_query->execute([$get_id]);
+$pretest_exists = $pretest_query->rowCount() > 0;
+
+$posttest_query = $conn->prepare("SELECT * FROM tbl_quiz WHERE lesson_id = ? AND quiz_type = 'post-test' AND status = 'active'");
+$posttest_query->execute([$get_id]);
+$posttest_exists = $posttest_query->rowCount() > 0;
+
 
 ?>
 
@@ -63,9 +69,17 @@ if (isset($_POST['save_list'])) {
     <!-- custom css file link  -->
     <link rel="stylesheet" href="../styles/style.css">
 
-      <!-- sweet alert -->
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.location.href.indexOf('get_id=') > -1) {
+                var newUrl = window.location.href.replace(/[\?&]get_id=([^&#]*)/, '');
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -81,8 +95,32 @@ if (isset($_POST['save_list'])) {
         <div class="row">
 
             <?php
-            $select_lesson = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE lesson_id = ? and status = ? LIMIT 1");
-            $select_lesson->execute([$get_id, 'active']);
+            $select_lesson = $conn->prepare("
+            SELECT 
+                tbl_classlessons.*,
+                tbl_section.*,
+                tbl_studentclasses.*,
+                tbl_lessons.*,
+                tbl_teachers.*
+            FROM 
+                `tbl_classlessons`
+            INNER JOIN 
+                `tbl_section` ON tbl_classlessons.section_name = tbl_section.section_id
+            INNER JOIN 
+                `tbl_studentclasses` ON tbl_section.section_id = tbl_studentclasses.section_name
+            INNER JOIN 
+                `tbl_lessons` ON tbl_classlessons.lesson_id = tbl_lessons.lesson_id
+            INNER JOIN 
+                `tbl_teachers` ON tbl_teachers.teacher_id = tbl_lessons.teacher_id
+            WHERE 
+                tbl_classlessons.lesson_id = ?
+                AND tbl_lessons.status = 'active' 
+                AND tbl_studentclasses.student_id = ?
+            LIMIT 1
+        ");
+
+            $select_lesson->execute([$get_id, $user_id]);
+
             if ($select_lesson->rowCount() > 0) {
                 $fetch_lesson = $select_lesson->fetch(PDO::FETCH_ASSOC);
 
@@ -91,10 +129,11 @@ if (isset($_POST['save_list'])) {
                 $count_materials = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE lesson_id = ?");
                 $count_materials->execute([$lessons_id]);
                 $total_materials = $count_materials->rowCount();
-
-                $select_teacher = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ? LIMIT 1");
-                $select_teacher->execute([$fetch_lesson['teacher_id']]);
-                $fetch_tutor = $select_teacher->fetch(PDO::FETCH_ASSOC);
+                $fetch_tutor = [
+                    'firstname' => $fetch_lesson['firstname'],
+                    'lastname' => $fetch_lesson['lastname'],
+                    'image' => $fetch_lesson['image'],
+                ];
 
                 $select_bookmark = $conn->prepare("SELECT * FROM `tbl_bookmark` WHERE user_id = ? AND lesson_id = ?");
                 $select_bookmark->execute([$user_id, $lessons_id]);
@@ -134,8 +173,8 @@ if (isset($_POST['save_list'])) {
                                 <?= $fetch_tutor['lastname']; ?>
                             </h3>
                             <!-- <span>
-                                <?= $fetch_tutor['profession']; ?>
-                            </span> -->
+                            <?= $fetch_tutor['profession']; ?>
+                        </span> -->
                         </div>
                     </div>
                     <div class="details">
@@ -161,42 +200,84 @@ if (isset($_POST['save_list'])) {
 
     </section>
 
-    <!-- playlist section ends -->
+    <!-- lessons section ends -->
 
-    <!-- videos container section starts  -->
+    <!-- materials container section starts  -->
 
     <section class="videos-container">
 
         <h1 class="heading">Lesson Materials</h1>
         <div class="box-container">
-       
+
             <?php
+            // Pre-test section
+            if ($pretest_exists) {
+                // Fetch pre-test data and display it here
+                while ($fetch_pretest = $pretest_query->fetch(PDO::FETCH_ASSOC)) {
+                    ?>
+                    <a href="view_material.php?get_id=<?= $fetch_pretest['quiz_id']; ?>" class="box"
+                        onclick="setTempCookie('get_id', <?= $fetch_pretest['quiz_id']; ?>)">
+                        <h3>
+                            <?= $fetch_pretest['quiz_title']; ?>
+                        </h3>
+                    </a>
+                    <?php
+                }
+            }
+            // END Pre-test section
+
+            // Reading materials section
             $select_content = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE lesson_id = ? AND status = ? ORDER BY date_created DESC");
             $select_content->execute([$get_id, 'active']);
             if ($select_content->rowCount() > 0) {
                 while ($fetch_content = $select_content->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <a href="view_material.php?get_id=<?= $fetch_content['material_id']; ?>" class="box">
-                        <i class="fas fa-play"></i>
+                    <a href="view_material.php?get_id=<?= $fetch_content['material_id']; ?>" class="box"
+                        onclick="setTempCookie('get_id', <?= $fetch_content['material_id']; ?>)">
+                        <i class="fa-solid fa-eye"></i>
                         <img src="../tmp/<?= $fetch_content['thumbnail']; ?>" alt="">
                         <h3>
                             <?= $fetch_content['material_title']; ?>
-                        </h3>  
+                        </h3>
                     </a>
-                    
+
+                    <script>
+                        function setTempCookie(cookieName, cookieValue) {
+                            document.cookie = cookieName + '=' + cookieValue + '; path=/';
+                        }
+                    </script>
                     <?php
                 }
             } else {
                 echo '<p class="empty">no materials added yet!</p>';
             }
+
+            // END OF READING MATERIALS
+
+             // POST-TEST AREA
+            if ($posttest_exists) {
+               
+                while ($fetch_postest = $posttest_query->fetch(PDO::FETCH_ASSOC)) {
+                    ?>
+                    <a href="view_material.php?get_id=<?= $fetch_postest['quiz_id']; ?>" class="box"
+                        onclick="setTempCookie('quiz_id', <?= $fetch_postest['quiz_id']; ?>)">
+                        <h3>
+                            <?= $fetch_postest['quiz_title']; ?>
+                        </h3>
+                    </a>
+                    <?php
+                }
+                
+            }
+             // END POST-TEST AREA
             ?>
-            
+
+        </div>
 
     </section>
 
+
     <!-- videos container section ends -->
-
-
 
     <!-- custom js file link  -->
     <script src="../scripts/script.js"></script>

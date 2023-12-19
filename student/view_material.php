@@ -3,24 +3,18 @@
 session_start();
 include '../includes/connection.php';
 
-if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
+if (empty($_SESSION['user_id'])) {
     header("Location: ../unauthorized.php");
     exit();
 }
 
-if (isset($_COOKIE['user_id'])) {
-    $user_id = $_COOKIE['user_id'];
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 } else {
     $user_id = '';
 }
 
-if (isset($_GET['get_id'])) {
-    $get_id = $_GET['get_id'];
-} else {
-    $get_id = '';
-    header('location:home.php');
-}
-
+$get_id = $_COOKIE['get_id'];
 
 if (isset($_POST['add_comment'])) {
     if ($user_id != '') {
@@ -87,7 +81,6 @@ if (isset($_POST['update_now'])) {
         $update_comment->execute([$update_box, $update_id]);
         $message[] = 'comment edited successfully!';
     }
-
 }
 
 ?>
@@ -112,9 +105,18 @@ if (isset($_POST['update_now'])) {
         integrity="sha512-Z8CqofpIcnJN80feS2uccz+pXWgZzeKxDsDNMD/dJ6997/LSRY+W4NmEt9acwR+Gt9OHN0kkI1CTianCwoqcjQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-      <!-- sweet alert -->
+    <!-- sweet alert -->
 
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.location.href.indexOf('get_id=') > -1) {
+                var newUrl = window.location.href.replace(/[\?&]get_id=([^&#]*)/, '');
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        });
+    </script>
 
 </head>
 

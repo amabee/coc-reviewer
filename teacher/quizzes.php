@@ -77,7 +77,7 @@ if (isset($_SESSION['teacher_id'])) {
                             INNER JOIN tbl_lessons l ON q.lesson_id = l.lesson_id
                             WHERE l.teacher_id = ?");
             $countQuery->execute([$teacher_id]);
-            $totalItemsMaterials = $countQuery->fetchColumn();
+            $totalQuizMaterials = $countQuery->fetchColumn();
 
             $select_quiz = $conn->prepare("SELECT q.*, l.teacher_id 
             FROM tbl_quiz q
@@ -141,16 +141,15 @@ if (isset($_SESSION['teacher_id'])) {
     </section>
 
     <?php
-    $totalPagesMaterials = ceil($totalItemsMaterials / $itemsPerPageMaterials);
-
+    $totalQuizzes = ceil($totalQuizMaterials / $itemsPerPageMaterials);
     echo '<div class="pagination">';
     if ($pageMaterials > 1) {
         echo '<a href="?pageMaterials=' . ($pageMaterials - 1) . '">Previous</a>';
     }
-    for ($i = 1; $i <= $totalPagesMaterials; $i++) {
+    for ($i = 1; $i <= $totalQuizzes && $totalQuizzes > 5; $i++) {
         echo '<a href="?pageMaterials=' . $i . '" class="' . ($pageMaterials == $i ? 'active' : '') . '">' . $i . '</a>';
     }
-    if ($pageMaterials < $totalPagesMaterials) {
+    if ($pageMaterials < $totalQuizzes) {
         echo '<a href="?pageMaterials=' . ($pageMaterials + 1) . '">Next</a>';
     }
     echo '</div>';

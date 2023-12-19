@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
         $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
         if ($hashed_password === $row['password']) {
-            setcookie('user_id', $row['id'], time() + 60 * 60 * 24 * 30, '/');
+            echo ($_SESSION['user_id']);
             $_SESSION['user_id'] = $row['id'];
             header('Location: student/home.php');
             exit;

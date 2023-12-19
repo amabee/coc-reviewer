@@ -1,11 +1,14 @@
 <?php
-
+session_start();
 include '../includes/connection.php';
 
-if (isset($_COOKIE['user_id'])) {
-    $user_id = $_COOKIE['user_id'];
-} else {
-    $user_id = '';
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+}
+
+if (empty($_SESSION['user_id'])) {
+    header("Location: ../unauthorized.php");
+    exit();
 }
 
 if (isset($_POST['tutor_fetch'])) {
@@ -96,58 +99,6 @@ if (isset($_POST['tutor_fetch'])) {
     </section>
 
     <!-- teachers profile section ends -->
-
-    <section class="courses">
-
-        <h1 class="heading">Lessons uploaded</h1>
-
-        <div class="box-container">
-
-            <?php
-            $select_courses = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE teacher_id = ? AND status = ?");
-            $select_courses->execute([$tutor_id, 'active']);
-            if ($select_courses->rowCount() > 0) {
-                while ($fetch_course = $select_courses->fetch(PDO::FETCH_ASSOC)) {
-                    $course_id = $fetch_course['lesson_id'];
-
-                    $select_tutor = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ?");
-                    $select_tutor->execute([$fetch_course['teacher_id']]);
-                    $fetch_tutor = $select_tutor->fetch(PDO::FETCH_ASSOC);
-                    ?>
-                    <div class="box">
-                        <div class="tutor">
-                            <img src="../tmp/<?= $fetch_tutor['image']; ?>" alt="">
-                            <div>
-                                <h3>
-                                    <?= $fetch_tutor['firstname']; ?>
-                                    <?= $fetch_tutor['lastname']; ?>
-                                </h3>
-                                <span>
-                                    <?= $fetch_course['date']; ?>
-                                </span>
-                            </div>
-                        </div>
-                        <img src="../tmp/<?= $fetch_course['thumb']; ?>" class="thumb" alt="">
-                        <h3 class="title">
-                            <?= $fetch_course['lesson_title']; ?>
-                        </h3>
-                        <a href="lessons.php?get_id=<?= $course_id; ?>" class="inline-btn">view lesson</a>
-                    </div>
-                    <?php
-                }
-            } else {
-                echo '<p class="empty">no lessons added yet!</p>';
-            }
-            ?>
-
-        </div>
-
-    </section>
-
-    <!-- courses section ends -->
-
-
-
     <!-- custom js file link  -->
     <script src="../scripts/script.js"></script>
 
