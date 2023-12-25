@@ -2,8 +2,8 @@
 session_start();
 include '../includes/connection.php';
 
-if (isset($_COOKIE['teacher_id'])) {
-    $teacher_id = $_COOKIE['teacher_id'];
+if (isset($_SESSION['teacher_id'])) {
+    $teacher_id = $_SESSION['teacher_id'];
 } else {
     $teacher_id = '';
     header('location:index.php');

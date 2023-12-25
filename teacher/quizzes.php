@@ -122,7 +122,6 @@ if (isset($_SESSION['teacher_id'])) {
                         </h3>
                         <form action="" method="post" class="flex-btn">
                             <input type="hidden" name="material_id" value="<?= $material_id; ?>">
-                            <a href="update_quiz.php?quiz_id=<?= $material_id; ?>" class="option-btn">update</a>
                             <input type="submit" value="delete" class="delete-btn"
                                 onclick="return confirm('remove this quiz?');" name="delete_material">
                         </form>

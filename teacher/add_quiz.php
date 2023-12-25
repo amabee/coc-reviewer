@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
     $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
     $lessons = filter_var($_POST['lessons'], FILTER_SANITIZE_STRING);
     $quiz_type = filter_var($_POST['quiz_type'], FILTER_SANITIZE_STRING);
-    $retryAfter = filter_var($_POST['retryAfter'], FILTER_SANITIZE_STRING);
+    $retryAfter = filter_var($_POST['retryAfter'], FILTER_VALIDATE_INT);
     $retryAfterSeconds = $retryAfter * 3600;
 
     $add_quiz = $conn->prepare("INSERT INTO `tbl_quiz` (`lesson_id`, `quiz_title`, `quiz_description`, `quiz_type`, `retryAfter`, `quiz_created`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)");

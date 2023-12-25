@@ -52,7 +52,7 @@ if (isset($_POST['tutor_fetch'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tutor's profile</title>
+    <title>teacher's profile</title>
 
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
@@ -82,9 +82,6 @@ if (isset($_POST['tutor_fetch'])) {
                     <?= $fetch_tutor['firstname']; ?>
                     <?= $fetch_tutor['lastname']; ?>
                 </h3>
-                <!-- <span>
-                    <?= $fetch_tutor['profession']; ?>
-                </span> -->
             </div>
             <div class="flex">
                 <p>total lessons : <span>

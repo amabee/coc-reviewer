@@ -707,61 +707,61 @@ tr:hover {
 }
 
 .playlist-form form {
-   background-color: var(--white);
-   border-radius: .5rem;
-   padding: 2rem;
-   padding-top: 1rem;
-   max-width: 50rem;
-   margin: 0 auto;
+   background-color: var(--white) !important;
+   border-radius: .5rem !important;
+   padding: 2rem !important;
+   padding-top: 1rem !important;
+   max-width: 50rem !important;
+   margin: 0 auto !important;
 }
 
 .playlist-form form p {
-   font-size: 1.7rem;
-   color: var(--light-color);
-   padding-top: 1rem;
+   font-size: 1.7rem !important;
+   color: var(--light-color) !important;
+   padding-top: 1rem !important;
 }
 
 .playlist-form form p span {
-   color: var(--red);
+   color: var(--red) !important;
 }
 
 .playlist-form form .box {
-   margin: 1rem 0;
-   border-radius: .5rem;
-   padding: 1.4rem;
-   font-size: 1.8rem;
-   color: var(--black);
-   background: var(--light-bg);
-   width: 100%;
+   margin: 1rem 0 !important;
+   border-radius: .5rem !important;
+   padding: 1.4rem !important;
+   font-size: 1.8rem !important;
+   color: var(--black) !important;
+   background: var(--light-bg) !important;
+   width: 100% !important;
 }
 
 .playlist-form form textarea {
-   height: 20rem;
-   resize: none;
+   height: 20rem !important;
+   resize: none !important;
 }
 
 .playlist-form form .thumb {
-   height: 22rem;
-   margin-top: 1rem;
-   position: relative;
+   height: 22rem !important;
+   margin-top: 1rem !important;
+   position: relative !important;
 }
 
 .playlist-form form .thumb img {
-   height: 100%;
-   width: 100%;
-   object-fit: cover;
-   border-radius: .5rem;
+   height: 100% !important;
+   width: 100% !important;
+   object-fit: cover !important;
+   border-radius: .5rem !important;
 }
 
 .playlist-form form .thumb span {
-   background-color: rgba(0, 0, 0, .3);
-   color: #fff;
-   border-radius: .5rem;
-   position: absolute;
-   top: 1rem;
-   left: 1rem;
-   padding: .5rem 1.5rem;
-   font-size: 2rem;
+   background-color: rgba(0, 0, 0, .3) !important;
+   color: #fff !important;
+   border-radius: .5rem !important;
+   position: absolute !important;
+   top: 1rem !important;
+   left: 1rem !important;
+   padding: .5rem 1.5rem !important;
+   font-size: 2rem !important;
 }
 
 .playlists .box-container {
@@ -776,6 +776,13 @@ tr:hover {
    background-color: var(--white);
    border-radius: .5rem;
    padding: 2rem;
+   overflow-x: hidden;
+}
+
+.playlists .box-container .box#boxbox{
+   background-color: var(--white);
+   border-radius: .5rem;
+   padding: 0rem;
    overflow-x: hidden;
 }
 
@@ -1005,6 +1012,7 @@ tr:hover {
    text-overflow: ellipsis;
    overflow-x: hidden;
 }
+
 
 .view-content .container {
    background-color: var(--white);
