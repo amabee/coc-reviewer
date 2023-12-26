@@ -97,7 +97,6 @@ if (isset($_COOKIE['teacher_id'])) {
                             <input type="hidden" name="lesson_id" value="<?= $section_id; ?>">
                             <a href="studentview.php?section_id=<?= $section_id; ?>" class="option-btn">View students</a>
                         </form>
-                        <a href="view_lesson.php?get_id=<?= $section_id; ?>" class="btn">Add Lesson</a>
                     </div>
                     <?php
                 }

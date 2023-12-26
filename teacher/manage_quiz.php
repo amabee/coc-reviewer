@@ -105,7 +105,7 @@ if (isset($_POST['submit'])) {
 
     <section class="playlists playlist-form">
         <h1 class="heading">Manage Quizzes</h1>
-        <div class="box-container">
+        <div class="box-container" style="grid-template-columns: repeat(auto-fit, 55rem);">
             <?php if ($quizDetails): ?>
                 <div class="box" id="boxbox" style="text-align: center;">
                     <form action="" method="post" onsubmit="return updateSelectedOption() && validateQuestionForm()">
@@ -175,12 +175,144 @@ if (isset($_POST['submit'])) {
                 </div>
 
                 <div class="box" id="boxbox" style="text-align: center;">
+
                     <form action="post">
                         <h3 class="title" style="margin-bottom: .5rem; font-size: 25px;">Quiz Questions</h3>
+                        <style>
+                            .table-container {
+                                width: 100%;
+                                max-height: 500px;
+                                overflow-x: auto;
+                                overflow-y: auto;
+                            }
+
+                            .title {
+                                font-size: 20px;
+                                justify-content: center;
+                            }
+
+                            .question-container {
+                                display: flex;
+                                align-items: flex-start;
+                            }
+
+                            .question {
+                                font-size: 30px;
+                                margin-left: 0;
+                                word-wrap: break-word;
+                            }
+
+                            .options-list {
+                                list-style: none;
+                                padding-left: 0;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: space-around;
+                                align-items: flex-start;
+                            }
+
+                            .actions {
+                                text-align: right;
+                                display: flex;
+                                flex-direction: column;
+                                align-items: flex-end;
+                                height: 100%;
+                            }
+
+                            .action-header {
+                                text-align: right;
+                                width: 50%;
+                            }
+
+                            .actions button {
+                                margin-top: 5px;
+                                padding: 8px 12px;
+                                width: 80px;
+                                border: none;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                font-size: 16px;
+                                transition: background-color 0.3s;
+                            }
+
+                            .actions button.edit {
+                                background-color: #FFD700;
+                                color: #000;
+                            }
+
+                            .actions button.edit:hover {
+                                background-color: #FFC107;
+                            }
+
+                            .actions button.delete {
+                                background-color: #FF0000;
+                                color: #fff;
+                            }
+
+                            .actions button.delete:hover {
+                                background-color: #DC143C;
+                            }
+
+                            tbody tr:nth-child(even) {
+                                background-color: #333;
+                            }
+                        </style>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr style="font-size: 20px; align-item:center;" class="title">
+                                        <th>Question List:</th>
+                                        <th class="action-header">Actions:</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $selQuest = $conn->prepare("SELECT * FROM tbl_quizquestions WHERE quiz_id = ? ORDER BY question_id ASC");
+                                    $selQuest->execute([$quiz_id]);
+
+                                    $counter = 1;
+
+                                    while ($row = $selQuest->fetch(PDO::FETCH_ASSOC)) {
+                                        ?>
+                                        <tr>
+                                            <td class="title">
+                                                <div class="question-container">
+                                                    <p class="question" style="font-size: 30px;">
+                                                        <?= $counter++; ?>.)
+                                                        <?php
+                                                        $quizQuestion = $row['quiz_question'];
+                                                        $brokenText = wordwrap($quizQuestion, 30, "<br />\n", true);
+                                                        echo $brokenText;
+                                                        ?>
+                                                    </p>
+                                                </div>
+                                                <ul class="options-list">
+                                                    <?php
+                                                    for ($optionNumber = 1; $optionNumber <= 4; $optionNumber++) {
+                                                        echo '<li class="option">-' . $row['option_' . $optionNumber] . '</li>';
+                                                    }
+                                                    ?>
+                                                </ul>
+                                            </td>
+                                            <td class="actions">
+                                                <button class="edit">Edit</button>
+                                                <button class="delete">Delete</button>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+
+                        </div>
                         <input type="button" value="Add Question" class="btn" onclick="openModal()">
                     </form>
                 </div>
 
+
+                <!-- MODAL AREA -->
                 <style>
                     .modal {
                         display: none;
@@ -228,25 +360,31 @@ if (isset($_POST['submit'])) {
                             <div id="boxbox" style="text-align: center;">
                                 <form method="post" id="questionForm" onsubmit="return submitQuestionForm();">
                                     <h3 class="title" style="margin-bottom: .5rem; font-size: 25px;">Add Questions</h3>
-                                    <textarea name="question" id="question" class="box" required placeholder="Enter Question"
-                                        cols="30" rows="10"></textarea>
+                                    <textarea name="question" id="question" class="box" required
+                                        placeholder="Enter Question" cols="30" rows="10"
+                                        oninput="updateSelectedOption()"></textarea>
 
-                                    <input type="text" class="box" id="m1" placeholder="Enter Option A." name="opt1">
+                                    <input type="text" class="box" id="m1" placeholder="Enter Option A." name="opt1"
+                                        required oninput="updateSelectedOption()">
                                     <div id="selectedOption1"></div>
 
-                                    <input type="text" class="box" id="m2" placeholder="Enter Option B." name="opt2">
+                                    <input type="text" class="box" id="m2" placeholder="Enter Option B." name="opt2"
+                                        required oninput="updateSelectedOption()">
                                     <div id="selectedOption2"></div>
 
-                                    <input type="text" class="box" id="m3" placeholder="Enter Option C." name="opt3">
+                                    <input type="text" class="box" id="m3" placeholder="Enter Option C." name="opt3"
+                                        required oninput="updateSelectedOption()">
                                     <div id="selectedOption3"></div>
 
-                                    <input type="text" class="box" id="m4" placeholder="Enter Option D." name="opt4">
+                                    <input type="text" class="box" id="m4" placeholder="Enter Option D." name="opt4"
+                                        required oninput="updateSelectedOption()">
                                     <div id="selectedOption4"></div>
 
                                     <p>Select Correct Ans: <span>*</span></p>
-                                    <select name="correct_option" id="correct_option" class="box" onclick="updateSelectedOption()">
-                                      
+                                    <select name="correct_option" id="correct_option" class="box">
+
                                     </select>
+
 
                                     <input type="hidden" name="submit_question" value="1">
                                     <input type="submit" value="Save Question" class="btn" name="submit_question">
@@ -279,7 +417,7 @@ if (isset($_POST['submit'])) {
     </script>
 
     <script>
-      function updateSelectedOption() {
+        function updateSelectedOption() {
             option_1 = document.getElementById('m1').value;
             option_2 = document.getElementById('m2').value;
             option_3 = document.getElementById('m3').value;
@@ -328,46 +466,46 @@ if (isset($_POST['submit'])) {
         }
 
         function submitQuestionForm() {
-        var formData = new FormData(document.getElementById('questionForm'));
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'question_handler.php', true);
+            var formData = new FormData(document.getElementById('questionForm'));
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'question_handler.php', true);
 
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                console.log("Response received");
-                var response = JSON.parse(xhr.responseText);
-              
-                if (response.success == true) {
-                    console.log(response);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Question added successfully',
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log("Response received");
+                    var response = JSON.parse(xhr.responseText);
 
-                    document.getElementById('question').value = "";
-                    document.getElementById('m1').value = "";
-                    document.getElementById('m2').value = "";
-                    document.getElementById('m3').value = "";
-                    document.getElementById('m4').value = "";
-                    document.getElementById('correct_option').value = "";
-                } else {
-                  
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: response.message
-                    });
+                    if (response.success == true) {
+                        console.log(response);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Question added successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+
+                        document.getElementById('question').value = "";
+                        document.getElementById('m1').value = "";
+                        document.getElementById('m2').value = "";
+                        document.getElementById('m3').value = "";
+                        document.getElementById('m4').value = "";
+                        document.getElementById('correct_option').value = "";
+                    } else {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response.message
+                        });
+                    }
                 }
-            }
-        };
+            };
 
-        xhr.send(formData);
+            xhr.send(formData);
 
-        return false; 
-    }
+            return false;
+        }
 
 
     </script>

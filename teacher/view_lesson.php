@@ -3,8 +3,8 @@ session_start();
 
 include '../includes/connection.php';
 
-if (isset($_COOKIE['teacher_id'])) {
-    $teacher_id = $_COOKIE['teacher_id'];
+if (isset($_SESSION['teacher_id'])) {
+    $teacher_id = $_SESSION['teacher_id'];
 } else {
     $teacher_id = '';
     header('location:index.php');
@@ -28,7 +28,7 @@ if (isset($_POST['delete_playlist'])) {
     $delete_bookmark->execute([$delete_id]);
     $delete_playlist = $conn->prepare("DELETE FROM `tbl_lessons` WHERE lesson_id = ?");
     $delete_playlist->execute([$delete_id]);
-    header('locatin:lessons.php');
+    header('location:lessons.php');
 }
 
 if (isset($_POST['delete_file'])) {
@@ -57,6 +57,8 @@ if (isset($_POST['delete_file'])) {
     }
 
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -82,9 +84,10 @@ if (isset($_POST['delete_file'])) {
 
     <section class="playlist-details">
 
-        <h1 class="heading">playlist details</h1>
+        <h1 class="heading">lesson details</h1>
 
         <?php
+        $playlist_id = '';
         $select_playlist = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE lesson_id = ? AND teacher_id = ?");
         $select_playlist->execute([$get_id, $teacher_id]);
         if ($select_playlist->rowCount() > 0) {
@@ -130,7 +133,7 @@ if (isset($_POST['delete_file'])) {
 
     <section class="contents">
 
-        <h1 class="heading">playlist videos</h1>
+        <h1 class="heading">lesson materials</h1>
 
         <div class="box-container">
 
