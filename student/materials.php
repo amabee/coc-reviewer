@@ -172,9 +172,6 @@ $posttest_exists = $posttest_query->rowCount() > 0;
                                 <?= $fetch_tutor['firstname']; ?>
                                 <?= $fetch_tutor['lastname']; ?>
                             </h3>
-                            <!-- <span>
-                            <?= $fetch_tutor['profession']; ?>
-                        </span> -->
                         </div>
                     </div>
                     <div class="details">
@@ -209,14 +206,15 @@ $posttest_exists = $posttest_query->rowCount() > 0;
         <h1 class="heading">Lesson Materials</h1>
         <div class="box-container">
 
+      
             <?php
-            // Pre-test section
+              // START Pre-test section
+
             if ($pretest_exists) {
-                // Fetch pre-test data and display it here
                 while ($fetch_pretest = $pretest_query->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <a href="view_material.php?get_id=<?= $fetch_pretest['quiz_id']; ?>" class="box"
-                        onclick="setTempCookie('get_id', <?= $fetch_pretest['quiz_id']; ?>)">
+                    <a href="take_quiz.php?quiz_id=<?= $fetch_pretest['quiz_id']; ?>" class="box"
+                        onclick="setTempCookie('quiz_id', <?= $fetch_pretest['quiz_id']; ?>)">
                         <h3>
                             <?= $fetch_pretest['quiz_title']; ?>
                         </h3>
@@ -259,7 +257,7 @@ $posttest_exists = $posttest_query->rowCount() > 0;
                
                 while ($fetch_postest = $posttest_query->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <a href="view_material.php?get_id=<?= $fetch_postest['quiz_id']; ?>" class="box"
+                    <a  href="take_quiz.php?quiz_id=<?= $fetch_postest['quiz_id']; ?>" class="box"
                         onclick="setTempCookie('quiz_id', <?= $fetch_postest['quiz_id']; ?>)">
                         <h3>
                             <?= $fetch_postest['quiz_title']; ?>
