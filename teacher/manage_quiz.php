@@ -28,7 +28,7 @@ if (isset($_GET['quiz_id'])) {
 $errors = array();
 $message = array();
 
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit_update'])) {
     $status = filter_var($_POST['status'], FILTER_SANITIZE_STRING);
     $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
     $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
@@ -108,7 +108,7 @@ if (isset($_POST['submit'])) {
         <div class="box-container" style="grid-template-columns: repeat(auto-fit, 55rem);">
             <?php if ($quizDetails): ?>
                 <div class="box" id="boxbox" style="text-align: center;">
-                    <form action="" method="post" onsubmit="return updateSelectedOption() && validateQuestionForm()">
+                    <form action="" method="post" >
                         <h3 class="title" style="margin-bottom: .5rem; font-size: 25px;">Update Quiz</h3>
 
                         <p>Quiz status <span>*</span></p>
@@ -170,7 +170,7 @@ if (isset($_POST['submit'])) {
                                 <?php echo $errors['retryAfter']; ?>
                             </span>
                         <?php endif; ?>
-                        <input type="submit" value="Update Quiz" name="submit" class="btn">
+                        <input type="submit" value="Update Quiz" name="submit_update" class="btn">
                     </form>
                 </div>
 
@@ -290,7 +290,11 @@ if (isset($_POST['submit'])) {
                                                 <ul class="options-list">
                                                     <?php
                                                     for ($optionNumber = 1; $optionNumber <= 4; $optionNumber++) {
-                                                        echo '<li class="option">-' . $row['option_' . $optionNumber] . '</li>';
+                                                        $optionValue = $row['option_' . $optionNumber];
+                                                        $isCorrect = ($optionValue == $row['correct_answer']);
+                                                        
+                                                        $style = ($isCorrect) ? 'color: green; font-weight: bold;' : '';
+                                                        echo '<li class="option" style="' . $style . '">-' . $row['option_' . $optionNumber] . '</li>';
                                                     }
                                                     ?>
                                                 </ul>
