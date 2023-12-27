@@ -16,9 +16,9 @@ if (isset($_SESSION['user_id'])) {
     $user_id = '';
 }
 
-if (isset($_COOKIE['get_id'])){
+if (isset($_COOKIE['get_id'])) {
     $get_id = $_COOKIE['get_id'];
-}else{
+} else {
     $get_id = "";
 }
 
@@ -33,24 +33,23 @@ if (isset($_COOKIE['get_id'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material</title>
 
+    <!-- sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Set Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com; frame-src 'self';">
+
+    <!-- Set Referrer Policy -->
+    <meta name="referrer" content="no-referrer">
+
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
     <!-- custom css file link  -->
     <link rel="stylesheet" href="../styles/style.css">
 
-    <!-- sweet alert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- Set Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com; frame-src 'self';">
-
-    <!-- Set Referrer Policy -->
-    <meta name="referrer" content="no-referrer">
-
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             if (window.location.href.indexOf('get_id=') > -1) {
                 var newUrl = window.location.href.replace(/[\?&]get_id=([^&#]*)/, '');
                 window.history.replaceState({}, document.title, newUrl);
@@ -67,8 +66,7 @@ if (isset($_COOKIE['get_id'])){
 
     <section class="watch-video">
         <div class="video-details">
-            <iframe src="answer_quiz.php?quiz_id=<?= $get_id ?>" width='100%' height="700px" crossorigin="anonymous"
-                frameborder="0"></iframe>
+            <iframe src="answer_quiz.php?quiz_id=<?= $get_id ?>" width='100%' height="700px" crossorigin="anonymous" frameborder="0"></iframe>
 
         </div>
     </section>

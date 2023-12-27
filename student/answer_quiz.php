@@ -24,14 +24,27 @@ $checkAttemptStatement->execute([$quizId, $studentId]);
 $lastAttemptStatus = $checkAttemptStatement->fetchColumn();
 
 if ($lastAttemptStatus == 'completed') {
+
+    $attemptScoreStatement = $conn->prepare("SELECT attempt_score FROM tbl_quizattempt WHERE quiz_id = ? AND student_id = ? ORDER BY attempt_id DESC LIMIT 1");
+    $attemptScoreStatement->execute([$quizId, $studentId]);
+    $lastAttemptScore = $attemptScoreStatement->fetchColumn();
+
+    $totalScoreStatement = $conn->prepare("SELECT COUNT(correct_answer) AS total_score FROM tbl_quizquestions WHERE quiz_id = ?");
+    $totalScoreStatement->execute([$quizId]);
+    $totalScore = $totalScoreStatement->fetchColumn();
+
+    $_SESSION['total_score'] = $totalScore;
+    $_SESSION['quiz_score'] = $lastAttemptScore;
+
     header('Location: success.php');
     exit();
 }
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $quizId = isset($_POST['exam_id']) ? $_POST['exam_id'] : null;
     $studentId = $_SESSION['user_id'];
-    $attemptScore = 10;
+    $attemptScore = 0;
 
     $insertAttemptStatement = $conn->prepare("INSERT INTO tbl_quizattempt (quiz_id, student_id, attempt_status, attempt_score) VALUES (?, ?, 'completed', ?)");
     $insertAttemptStatement->execute([$quizId, $studentId, $attemptScore]);
@@ -40,6 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insertResponseStatement = $conn->prepare("INSERT INTO tbl_quizresponses (quiz_id, question_id, student_id, picked_response) VALUES (?, ?, ?, ?)");
         $insertResponseStatement->execute([$quizId, $questionId, $studentId, $pickedResponse]);
     }
+
+    $_SESSION['quiz_score'] = $attemptScore;
+
 
     header('Location: success.php');
     exit();

@@ -1,7 +1,10 @@
 <?php
+session_start();
+
+$quizScore = isset($_SESSION['quiz_score']) ? $_SESSION['quiz_score'] : 0;
+$totalQuizScore = isset($_SESSION['total_score']) ? $_SESSION['total_score'] : 0;
+
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,7 +46,8 @@
             background-color: #FFF8F5;
             align-items: center;
             justify-content: center;
-            flex-direction: column; /* Align items vertically */
+            flex-direction: column;
+            /* Align items vertically */
         }
 
         #score-container {
@@ -82,7 +86,7 @@
         #score {
             font-size: 100px;
             font-weight: bold;
-            color: #333; 
+            color: #333;
             transition: transform 0.5s ease-in-out;
         }
 
@@ -117,6 +121,8 @@
                 You've Scored
             </div>
             <div id="score">0</div>
+            <input type="hidden" id="attemptScore" value="<?php echo $quizScore; ?>">
+            <input type="hidden" id="totalScore" value="<?php echo $totalQuizScore; ?>">
         </div>
     </div>
 
@@ -4591,19 +4597,21 @@
             const currentScore = parseInt(scoreElement.textContent);
             const scoreDifference = newScore - currentScore;
 
-            
             for (let i = 1; i <= Math.abs(scoreDifference); i++) {
                 setTimeout(() => {
                     const updatedScore = currentScore + (scoreDifference > 0 ? i : -i);
-                    scoreElement.textContent = updatedScore;
-                }, i * 50); 
+                    scoreElement.textContent = updatedScore + " / " + totalScore;
+                }, i * 200);
             }
         }
 
-     
+        newScore = document.getElementById('attemptScore').value;
+        totalScore = document.getElementById('totalScore').value;
+
         setTimeout(() => {
-            updateScoreWithAnimation(20); 
-        }, 1000); 
+            updateScoreWithAnimation(newScore);
+        }, 2500);
+       
     </script>
 
 
