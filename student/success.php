@@ -113,8 +113,6 @@ $totalQuizScore = isset($_SESSION['total_score']) ? $_SESSION['total_score'] : 0
 </head>
 
 <body onload="confettiShooter()">
-
-
     <div class="center">
         <div id="score-container">
             <div id="rounded-box">
@@ -4601,7 +4599,7 @@ $totalQuizScore = isset($_SESSION['total_score']) ? $_SESSION['total_score'] : 0
                 setTimeout(() => {
                     const updatedScore = currentScore + (scoreDifference > 0 ? i : -i);
                     scoreElement.textContent = updatedScore + " / " + totalScore;
-                }, i * 200);
+                }, i * 50);
             }
         }
 
@@ -4610,7 +4608,7 @@ $totalQuizScore = isset($_SESSION['total_score']) ? $_SESSION['total_score'] : 0
 
         setTimeout(() => {
             updateScoreWithAnimation(newScore);
-        }, 2500);
+        }, 500);
        
     </script>
 

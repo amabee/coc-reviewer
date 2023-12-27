@@ -156,9 +156,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                             <?php } ?>
                         <?php } else { ?>
-                            <div class="question" style="text-align: center;">
+                            <!-- <div class="question" style="text-align: center;">
                                 <p><b>No questions at this moment</b></p>
-                            </div>
+                            </div> -->
+                                <?php
+                                header("Location: ../misc/error_page.php");
+                                ?>
                         <?php } ?>
                     </div>
 

@@ -3,7 +3,6 @@
 session_start();
 include '../includes/connection.php';
 
-header('X-Content-Type-Options: nosniff');
 
 if (empty($_SESSION['user_id'])) {
     header("Location: ../unauthorized.php");
