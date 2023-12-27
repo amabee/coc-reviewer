@@ -3,6 +3,8 @@
 session_start();
 include '../includes/connection.php';
 
+header('X-Content-Type-Options: nosniff');
+
 if (empty($_SESSION['user_id'])) {
     header("Location: ../unauthorized.php");
     exit();
@@ -14,7 +16,11 @@ if (isset($_SESSION['user_id'])) {
     $user_id = '';
 }
 
-$get_id = $_COOKIE['get_id'];
+if (isset($_COOKIE['get_id'])){
+    $get_id = $_COOKIE['get_id'];
+}else{
+    $get_id = "";
+}
 
 ?>
 
@@ -33,14 +39,15 @@ $get_id = $_COOKIE['get_id'];
     <!-- custom css file link  -->
     <link rel="stylesheet" href="../styles/style.css">
 
-    <!-- PDF JS CDN LINK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"
-        integrity="sha512-Z8CqofpIcnJN80feS2uccz+pXWgZzeKxDsDNMD/dJ6997/LSRY+W4NmEt9acwR+Gt9OHN0kkI1CTianCwoqcjQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <!-- sweet alert -->
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Set Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com; frame-src 'self';">
+
+    <!-- Set Referrer Policy -->
+    <meta name="referrer" content="no-referrer">
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

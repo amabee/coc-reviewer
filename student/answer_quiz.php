@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../includes/connection.php';
 
 $quizId = isset($_COOKIE['quiz_id']) ? $_COOKIE['quiz_id'] : null;
@@ -8,17 +9,39 @@ if ($quizId) {
     $selExamStatement->execute([$quizId]);
     $selExam = $selExamStatement->fetch(PDO::FETCH_ASSOC);
 
-    if ($selExam) {
-        $selExamTimeLimit = 1;
-
-    } else {
+    if (!$selExam) {
         echo "Error fetching exam details";
-
         exit();
     }
 } else {
     echo "Exam ID not provided";
+    exit();
+}
 
+$studentId = $_SESSION['user_id'];
+$checkAttemptStatement = $conn->prepare("SELECT attempt_status FROM tbl_quizattempt WHERE quiz_id = ? AND student_id = ? ORDER BY attempt_id DESC LIMIT 1");
+$checkAttemptStatement->execute([$quizId, $studentId]);
+$lastAttemptStatus = $checkAttemptStatement->fetchColumn();
+
+if ($lastAttemptStatus == 'completed') {
+    header('Location: success.php');
+    exit();
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $quizId = isset($_POST['exam_id']) ? $_POST['exam_id'] : null;
+    $studentId = $_SESSION['user_id'];
+    $attemptScore = 10;
+
+    $insertAttemptStatement = $conn->prepare("INSERT INTO tbl_quizattempt (quiz_id, student_id, attempt_status, attempt_score) VALUES (?, ?, 'completed', ?)");
+    $insertAttemptStatement->execute([$quizId, $studentId, $attemptScore]);
+
+    foreach ($_POST['responses'] as $questionId => $pickedResponse) {
+        $insertResponseStatement = $conn->prepare("INSERT INTO tbl_quizresponses (quiz_id, question_id, student_id, picked_response) VALUES (?, ?, ?, ?)");
+        $insertResponseStatement->execute([$quizId, $questionId, $studentId, $pickedResponse]);
+    }
+
+    header('Location: success.php');
     exit();
 }
 ?>
@@ -31,11 +54,8 @@ if ($quizId) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <link href="../styles/quiz_style.css" rel="stylesheet">
     <style>
         .option-box {
@@ -49,7 +69,6 @@ if ($quizId) {
 
         .option-box.selected {
             background-color: #cce5ff;
-            /* Change this to the desired selected color */
         }
     </style>
 </head>
@@ -70,12 +89,9 @@ if ($quizId) {
                         </div>
                         <div class="page-title-actions mr-5" style="font-size: 20px;">
                             <form name="cd">
-                                <input type="hidden" name="" id="timeExamLimit"
-                                    value="<?php echo $selExamTimeLimit; ?>">
+                                <input type="hidden" name="" id="timeExamLimit" value="<?php echo $selExamTimeLimit; ?>">
                                 <label>Remaining Time : </label>
-                                <input style="border:none;background-color: transparent;color:blue;font-size: 25px;"
-                                    name="disp" type="text" class="clock" id="txt" value="00:00" size="5"
-                                    readonly="true" />
+                                <input style="border:none;background-color: transparent;color:blue;font-size: 25px;" name="disp" type="text" class="clock" id="txt" value="00:00" size="5" readonly="true" />
                             </form>
                         </div>
                     </div>
@@ -95,8 +111,7 @@ if ($quizId) {
                             $i = 1;
                             while ($selQuestRow = $selQuestStatement->fetch(PDO::FETCH_ASSOC)) { ?>
                                 <?php $questId = $selQuestRow['question_id']; ?>
-                                <div class="question" data-question-id="<?php echo $questId; ?>"
-                                    style="display: none; text-align: center;">
+                                <div class="question" data-question-id="<?php echo $questId; ?>" style="display: none; text-align: center;">
                                     <p><b>
                                             <?php echo $i++; ?> .)
                                             <?php echo $selQuestRow['quiz_question']; ?>
@@ -119,6 +134,9 @@ if ($quizId) {
                                             <?php echo $selQuestRow['option_4']; ?>
                                         </div>
                                     </div>
+
+
+                                    <input type="hidden" name="responses[<?php echo $questId; ?>]" id="response_<?php echo $questId; ?>" value="">
                                 </div>
                             <?php } ?>
                         <?php } else { ?>
@@ -131,11 +149,11 @@ if ($quizId) {
                     <div class="navigation-buttons" style="position: fixed; bottom: 0; right: 0; padding: 10px;">
                         <button type="button" class="btn btn-xlg btn-primary p-3 pl-4 pr-4" id="nextQuestionBtn">Next
                             Question</button>
-                        <input name="submit" type="submit" value="Submit" class="btn btn-xlg btn-primary p-3 pl-4 pr-4"
-                            id="submitAnswerFrmBtn" style="display: none;">
+                        <input name="submit" type="submit" value="Submit" class="btn btn-xlg btn-primary p-3 pl-4 pr-4" id="submitAnswerFrmBtn" style="display: none;">
                     </div>
                 </form>
             </div>
+
         </div>
     </div>
 
@@ -150,13 +168,18 @@ if ($quizId) {
         }
 
         function selectOption(option) {
-            const optionId = option.getAttribute('data-option-id');
+            const optionText = option.textContent.trim();
             const question = option.closest('.question');
+            const questionId = question.getAttribute('data-question-id');
+
             question.querySelectorAll('.option-box').forEach((opt) => {
                 opt.classList.remove('selected');
             });
             option.classList.add('selected');
+            document.getElementById('response_' + questionId).value = optionText;
         }
+
+
 
         function updateButtonLabel() {
             const buttonText = currentQuestionIndex < questions.length - 1 ? 'Next Question' : 'Submit';
@@ -182,9 +205,13 @@ if ($quizId) {
 
 
     <script type="text/javascript">
-        function preventBack() { window.history.forward(); }
+        function preventBack() {
+            window.history.forward();
+        }
         setTimeout("preventBack()", 0);
-        window.onunload = function () { null };
+        window.onunload = function() {
+            null
+        };
     </script>
 
 </body>
