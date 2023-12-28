@@ -1,7 +1,7 @@
 <?php
 
 include('../../includes/connection.php');
-require 'vendor/autoload.php'; 
+require '../../vendor/autoload.php'; 
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -12,7 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $spreadsheet = IOFactory::load($excelFile);
             $worksheet = $spreadsheet->getActiveSheet();
 
-            foreach ($worksheet->getRowIterator() as $row) {
+            $stmt = $conn->prepare("INSERT INTO tbl_students (id, firstname, lastname, gender, email, password, isActive) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+            foreach ($worksheet->getRowIterator() as $index => $row) {
+                if ($index === 1) {
+                    continue;
+                }
+
                 $cellIterator = $row->getCellIterator();
                 $cellIterator->setIterateOnlyExistingCells(FALSE);
 
@@ -20,9 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 foreach ($cellIterator as $cell) {
                     $rowData[] = $cell->getValue();
                 }
-
-                $stmt = $conn->prepare("INSERT INTO tbl_students (student_id, first_name, last_name, gender, email) VALUES (?, ?, ?, ?, ?)");
-                $stmt->execute($rowData);
+          
+                if (count($rowData) === 7) {
+                    $stmt->execute($rowData);
+                } else {
+                    echo json_encode(['error' => 'Invalid number of columns in the Excel file.']);
+                    exit;
+                }
             }
         }
 
@@ -34,3 +44,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['error' => 'Invalid request method']);
 }
+?>
