@@ -22,16 +22,18 @@ $studentId = $_SESSION['user_id'];
 $checkAttemptStatement = $conn->prepare("SELECT attempt_status FROM tbl_quizattempt WHERE quiz_id = ? AND student_id = ? ORDER BY attempt_id DESC LIMIT 1");
 $checkAttemptStatement->execute([$quizId, $studentId]);
 $lastAttemptStatus = $checkAttemptStatement->fetchColumn();
+$selExamTimeLimit = 1;
+
+$totalScoreStatement = $conn->prepare("SELECT COUNT(correct_answer) AS total_score FROM tbl_quizquestions WHERE quiz_id = ?");
+$totalScoreStatement->execute([$quizId]);
+$totalScore = $totalScoreStatement->fetchColumn();
+
 
 if ($lastAttemptStatus == 'completed') {
 
     $attemptScoreStatement = $conn->prepare("SELECT attempt_score FROM tbl_quizattempt WHERE quiz_id = ? AND student_id = ? ORDER BY attempt_id DESC LIMIT 1");
     $attemptScoreStatement->execute([$quizId, $studentId]);
     $lastAttemptScore = $attemptScoreStatement->fetchColumn();
-
-    $totalScoreStatement = $conn->prepare("SELECT COUNT(correct_answer) AS total_score FROM tbl_quizquestions WHERE quiz_id = ?");
-    $totalScoreStatement->execute([$quizId]);
-    $totalScore = $totalScoreStatement->fetchColumn();
 
     $_SESSION['total_score'] = $totalScore;
     $_SESSION['quiz_score'] = $lastAttemptScore;
@@ -46,16 +48,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $studentId = $_SESSION['user_id'];
     $attemptScore = 0;
 
-    $insertAttemptStatement = $conn->prepare("INSERT INTO tbl_quizattempt (quiz_id, student_id, attempt_status, attempt_score) VALUES (?, ?, 'completed', ?)");
-    $insertAttemptStatement->execute([$quizId, $studentId, $attemptScore]);
-
     foreach ($_POST['responses'] as $questionId => $pickedResponse) {
+
+        $correctAnswerStatement = $conn->prepare("SELECT correct_answer FROM tbl_quizquestions WHERE question_id = ?");
+        $correctAnswerStatement->execute([$questionId]);
+        $correctAnswer = $correctAnswerStatement->fetchColumn();
+
+
+        if ($pickedResponse == $correctAnswer) {
+            $attemptScore++;
+        }
+
+
         $insertResponseStatement = $conn->prepare("INSERT INTO tbl_quizresponses (quiz_id, question_id, student_id, picked_response) VALUES (?, ?, ?, ?)");
         $insertResponseStatement->execute([$quizId, $questionId, $studentId, $pickedResponse]);
     }
 
-    $_SESSION['quiz_score'] = $attemptScore;
+    $insertAttemptStatement = $conn->prepare("INSERT INTO tbl_quizattempt (quiz_id, student_id, attempt_status, attempt_score) VALUES (?, ?, 'completed', ?)");
+    $insertAttemptStatement->execute([$quizId, $studentId, $attemptScore]);
 
+    $_SESSION['quiz_score'] = $attemptScore;
+    $_SESSION['total_score'] = $totalScore;
 
     header('Location: success.php');
     exit();
@@ -115,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <div class="col-md-12 p-0 mb-4">
-                <form method="post" id="submitAnswerFrm">
+                <form method="post" id="quizform">
                     <input type="hidden" name="exam_id" id="exam_id" value="<?php echo $quizId; ?>">
                     <input type="hidden" name="examAction" id="examAction">
                     <div class="question-container">
@@ -159,16 +172,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <!-- <div class="question" style="text-align: center;">
                                 <p><b>No questions at this moment</b></p>
                             </div> -->
-                                <?php
-                                header("Location: ../misc/error_page.php");
-                                ?>
+                            <?php
+                            header("Location: ./misc/no_quiz_yet.php");
+                            ?>
                         <?php } ?>
                     </div>
 
                     <div class="navigation-buttons" style="position: fixed; bottom: 0; right: 0; padding: 10px;">
                         <button type="button" class="btn btn-xlg btn-primary p-3 pl-4 pr-4" id="nextQuestionBtn">Next
                             Question</button>
-                        <input name="submit" type="submit" value="Submit" class="btn btn-xlg btn-primary p-3 pl-4 pr-4" id="submitAnswerFrmBtn" style="display: none;">
+                        <input name="submitQuizButton" type="submit" value="Submit" class="btn btn-xlg btn-primary p-3 pl-4 pr-4" id="submitAnswerFrmBtn" style="display: none;">
+
                     </div>
                 </form>
             </div>
@@ -198,6 +212,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             document.getElementById('response_' + questionId).value = optionText;
         }
 
+        const timeLimit = parseInt(document.getElementById('timeExamLimit').value);
+        let timeRemaining = timeLimit * 60; // Convert minutes to seconds
+        let timerInterval;
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('txt').value = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function submitQuizAutomatically() {
+            clearInterval(timerInterval);
+            document.getElementById('quizform').submit();
+        }
 
 
         function updateButtonLabel() {
@@ -211,17 +239,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 showQuestion(currentQuestionIndex);
                 updateButtonLabel();
             } else {
-                document.getElementById('submitAnswerFrmBtn').style.display = 'block';
-                document.getElementById('nextQuestionBtn').style.display = 'none';
+                submitQuizAutomatically(); // Automatically submit the quiz when all questions are answered
             }
         }
+
+        timerInterval = setInterval(function() {
+            if (timeRemaining > 0) {
+                timeRemaining--;
+                updateTimerDisplay();
+            } else {
+                submitQuizAutomatically();
+            }
+        }, 1000);
 
         document.getElementById('nextQuestionBtn').addEventListener('click', nextQuestion);
 
         showQuestion(currentQuestionIndex);
         updateButtonLabel();
     </script>
-
 
     <script type="text/javascript">
         function preventBack() {

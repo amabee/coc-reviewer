@@ -1,264 +1,80 @@
-<!-- Modal For Add Course -->
-<div class="modal fade" id="modalForAddCourse" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <form class="refreshFrm" id="addCourseFrm" method="post">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Course</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Course</label>
-              <input type="" name="course_name" id="course_name" class="form-control" placeholder="Input Course"
-                required="" autocomplete="off">
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
-          </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" id="logoutBtn" onclick="logout()">Logout</button>
+            </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Add Now</button>
-        </div>
-      </div>
-    </form>
-  </div>
+    </div>
 </div>
 
 
-<!-- Modal For Update Course -->
-<div class="modal fade myModal" id="updateCourse-<?php echo $selCourseRow['cou_id']; ?>" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog " role="document">
-    <form class="refreshFrm" id="addCourseFrm" method="post">
-      <div class="modal-content myModal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Update (
-            <?php echo $selCourseRow['cou_name']; ?> )
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+<!-- Add Student Modal -->
+<div class="modal fade" data-backdrop="static" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudentModalLabel">Add Student</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addStudentForm">
+                    <div class="form-group">
+                        <label for="studentId">Student ID</label>
+                        <input type="text" class="form-control" id="studentId" name="studentId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstName">Gender</label>
+                        <select name="gender" id="pickgender" class="form-control" required>
+                            <option value="" disabled selected>-- SELECT GENDER --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <hr>
+                    <!-- Separator: Header and Horizontal Rule -->
+                    <div class="text-center mb-3">
+                        <span class="text-muted font-weight-bold">----------------- OR ADD BY BATCH -------------------</span>
+                    </div>
+                    <hr>
+
+                    <!-- Batch Input (if needed) -->
+                    <div class="form-group">
+                        <label for="excelFile">Upload Excel File</label>
+                        <input type="file" class="d-none" id="excelFile" name="excelFile" accept=".xls, .xlsx">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('excelFile').click()">
+                            Click to Upload Excel File
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="submit" id="addStudentBtn">Add Student</button>
+            </div>
         </div>
-        <div class="modal-body">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Course</label>
-              <input type="" name="course_name" id="course_name" class="form-control"
-                value="<?php echo $selCourseRow['cou_name']; ?>">
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Update Now</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-<!-- Modal For Add Exam -->
-<div class="modal fade" id="modalForExam" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <form class="refreshFrm" id="addExamFrm" method="post">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Exam</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Select Course</label>
-              <select class="form-control" name="courseSelected">
-                <option value="0">Select Course</option>
-                <?php
-                $selCourse = $conn->query("SELECT * FROM tbl_section ORDER BY section_id DESC");
-                if ($selCourse->rowCount() > 0) {
-                  while ($selCourseRow = $selCourse->fetch(PDO::FETCH_ASSOC)) { ?>
-                    <option value="<?php echo $selCourseRow['section_id']; ?>">
-                      <?php echo $selCourseRow['section_id']; ?>
-                    </option>
-                  <?php }
-                } else { ?>
-                  <option value="0">No Course Found</option>
-                <?php }
-                ?>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Exam Time Limit</label>
-              <select class="form-control" name="timeLimit" required="">
-                <option value="0">Select time</option>
-                <option value="10">10 Minutes</option>
-                <option value="20">20 Minutes</option>
-                <option value="30">30 Minutes</option>
-                <option value="40">40 Minutes</option>
-                <option value="50">50 Minutes</option>
-                <option value="60">60 Minutes</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>Question Limit to Display</label>
-              <input type="number" name="examQuestDipLimit" id="" class="form-control"
-                placeholder="Input question limit to display">
-            </div>
-
-            <div class="form-group">
-              <label>Exam Title</label>
-              <input type="" name="examTitle" class="form-control" placeholder="Input Exam Title" required="">
-            </div>
-
-            <div class="form-group">
-              <label>Exam Description</label>
-              <textarea name="examDesc" class="form-control" rows="4" placeholder="Input Exam Description"
-                required=""></textarea>
-            </div>
-
-
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Add Now</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="modal fade" id="yawa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <form class="refreshFrm" id="addExamineeFrm" method="post">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Examinee</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="col-md-12">
-            <div class="form-group">
-              <label>Fullname</label>
-              <input type="" name="fullname" id="fullname" class="form-control" placeholder="Input Fullname"
-                autocomplete="off" required="">
-            </div>
-            <div class="form-group">
-              <label>Birhdate</label>
-              <input type="date" name="bdate" id="bdate" class="form-control" placeholder="Input Birhdate"
-                autocomplete="off">
-            </div>
-            <div class="form-group">
-              <label>Gender</label>
-              <select class="form-control" name="gender" id="gender">
-                <option value="0">Select gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" name="email" id="email" class="form-control" placeholder="Input Email"
-                autocomplete="off" required="">
-            </div>
-            <div class="form-group">
-              <label>Password</label>
-              <input type="password" name="password" id="password" class="form-control" placeholder="Input Password"
-                autocomplete="off" required="">
-            </div>
-            <div class="form-group hr">
-              <hr class="mt-2 mb-3" />
-              <label>OR BATCH REGISTRATION:</label>
-              <button type="button" class="btn btn-primary">Click for Batch registration</button>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Add Now</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-
-<!-- Modal For Add Question -->
-<div class="modal fade" id="modalForAddQuestion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <form class="refreshFrm" id="addQuestionFrm" method="post">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Question for <br>
-            <?php echo $selExamRow['ex_title']; ?>
-          </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form class="refreshFrm" method="post" id="addQuestionFrm">
-          <div class="modal-body">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label>Question</label>
-                <input type="hidden" name="examId" value="<?php echo $exId; ?>">
-                <input type="" name="question" id="course_name" class="form-control" placeholder="Input question"
-                  autocomplete="off">
-              </div>
-
-              <fieldset>
-                <legend>Input word for choice's</legend>
-                <div class="form-group">
-                  <label>Choice A</label>
-                  <input type="" name="choice_A" id="choice_A" class="form-control" placeholder="Input choice A"
-                    autocomplete="off">
-                </div>
-
-                <div class="form-group">
-                  <label>Choice B</label>
-                  <input type="" name="choice_B" id="choice_B" class="form-control" placeholder="Input choice B"
-                    autocomplete="off">
-                </div>
-
-                <div class="form-group">
-                  <label>Choice C</label>
-                  <input type="" name="choice_C" id="choice_C" class="form-control" placeholder="Input choice C"
-                    autocomplete="off">
-                </div>
-
-                <div class="form-group">
-                  <label>Choice D</label>
-                  <input type="" name="choice_D" id="choice_D" class="form-control" placeholder="Input choice D"
-                    autocomplete="off">
-                </div>
-
-                <div class="form-group">
-                  <label>Correct Answer</label>
-                  <input type="" name="correctAnswer" id="" class="form-control" placeholder="Input correct answer"
-                    autocomplete="off">
-                </div>
-              </fieldset>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Add Now</button>
-          </div>
-        </form>
-      </div>
-    </form>
-  </div>
+    </div>
 </div>

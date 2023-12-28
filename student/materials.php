@@ -213,7 +213,16 @@ $posttest_exists = $posttest_query->rowCount() > 0;
             if ($pretest_exists) {
                 while ($fetch_pretest = $pretest_query->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <a href="take_quiz.php?quiz_id=<?= $fetch_pretest['quiz_id']; ?>" class="box"
+                    <!-- <a href="take_quiz.php?quiz_id=<?= $fetch_pretest['quiz_id']; ?>" class="box"
+                        onclick="setTempCookie('quiz_id', <?= $fetch_pretest['quiz_id']; ?>)">
+                        <h3>
+                            <?= $fetch_pretest['quiz_title']; ?>
+                        </h3>
+                    </a> -->
+
+
+
+                    <a href="take_quiz.php" class="box"
                         onclick="setTempCookie('quiz_id', <?= $fetch_pretest['quiz_id']; ?>)">
                         <h3>
                             <?= $fetch_pretest['quiz_title']; ?>
@@ -257,7 +266,10 @@ $posttest_exists = $posttest_query->rowCount() > 0;
                
                 while ($fetch_postest = $posttest_query->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <a  href="take_quiz.php?quiz_id=<?= $fetch_postest['quiz_id']; ?>" class="box"
+                    <!-- IN CASE OF ERROR LMAO! -->
+                      <!-- <a  href="take_quiz.php?quiz_id=<?= $fetch_postest['quiz_id']; ?>" class="box"></a> -->
+
+                    <a  href="take_quiz.php" class="box"
                         onclick="setTempCookie('quiz_id', <?= $fetch_postest['quiz_id']; ?>)">
                         <h3>
                             <?= $fetch_postest['quiz_title']; ?>
