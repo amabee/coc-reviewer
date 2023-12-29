@@ -35,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
-
         $response = ['success' => 'Data added successfully'];
         echo json_encode($response);
     } catch (Exception $e) {

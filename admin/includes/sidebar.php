@@ -58,8 +58,8 @@
         <div id="collapseTeachers" class="collapse" aria-labelledby="headingTeachers" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Manage Teachers:</h6>
-                <a class="collapse-item" href="teacher_list.html">Teacher List</a>
-                <a class="collapse-item" href="add_teacher.html">Add Teacher</a>
+                <a class="collapse-item" href="#" data-toggle="modal" data-target="#addTeacherModal">Add Teacher</a>
+                <a class="collapse-item" href="teacherlist.php">Teacher List</a>
                 <div class="collapse-divider"></div>
             </div>
         </div>
@@ -81,7 +81,7 @@
         <div id="collapseDeans" class="collapse" aria-labelledby="headingDeans" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Manage Faculty:</h6>
-                <a class="collapse-item" href="view_dean_details.html">View Dean Details</a>
+                <a class="collapse-item" href="dean-details.php">View Dean Details</a>
                 <a class="collapse-item" href="view_dean_details.html">View Faculty</a>
                 <div class="collapse-divider"></div>
             </div>

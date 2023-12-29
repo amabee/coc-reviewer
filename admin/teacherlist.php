@@ -7,10 +7,10 @@ if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
 }
 
-$query = "SELECT * FROM tbl_students";
+$query = "SELECT * FROM tbl_teachers";
 $stmt = $conn->prepare($query);
 $stmt->execute();
-$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$teachers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
@@ -27,7 +27,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>COC REVIEWER - Student List</title>
+    <title>COC REVIEWER - Teacher List</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -68,14 +68,14 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Student List</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Teacher List</h1>
                     </div>
 
 
 
                     <div class="row">
 
-                       <!-- STUDENT LIST DATATABLE -->
+                        <!-- STUDENT LIST DATATABLE -->
                         <div class="col-xl-10 col-lg-8 mx-auto">
                             <div class="card shadow mb-4">
                                 <!-- Card Body -->
@@ -84,7 +84,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         <table class="table table-bordered" id="studentTable">
                                             <thead>
                                                 <tr>
-                                                    <th>Student ID</th>
+                                                    <th>Teacher ID</th>
                                                     <th>First Name</th>
                                                     <th>Last Name</th>
                                                     <th>Gender</th>
@@ -93,14 +93,17 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($students as $student) : ?>
+                                                <?php foreach ($teachers as $teacher) : ?>
                                                     <tr>
-                                                        <td><?php echo $student['id']; ?></td>
-                                                        <td><?php echo $student['firstname']; ?></td>
-                                                        <td><?php echo $student['lastname']; ?></td>
-                                                        <td><?php echo $student['gender']; ?></td>
-                                                        <td><?php echo $student['email']; ?></td>
-                                                        <td><button class="btn btn-primary">Update</button></td>
+                                                        <td><?php echo $teacher['teacher_id']; ?></td>
+                                                        <td><?php echo $teacher['firstname']; ?></td>
+                                                        <td><?php echo $teacher['lastname']; ?></td>
+                                                        <td><?php echo $teacher['gender']; ?></td>
+                                                        <td><?php echo $teacher['email']; ?></td>
+                                                        <td><button class="btn btn-primary">Update</button>
+                                                            <button class="btn btn-success" data-toggle="modal" data-target="#teacherProfileModal" onclick="loadTeacherData('<?php echo htmlspecialchars($teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>')">View Details</button>
+
+                                                        </td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
