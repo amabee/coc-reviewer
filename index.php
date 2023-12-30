@@ -26,17 +26,16 @@ if (isset($_POST['submit'])) {
         if ($hashed_password === $row['password']) {
             echo ($_SESSION['user_id']);
             $_SESSION['user_id'] = $row['id'];
+            $_SESSION['student'];
             header('Location: student/home.php');
             exit;
         } else {
-            // Credentials are invalid; set an error message.
             $error_message = 'Incorrect email or password!';
             echo "<script>document.addEventListener('DOMContentLoaded', function() {
                 $('#invalidCredentialsModal').modal('show');
             });</script>";
         }
     } else {
-        // User not found; set an error message.
         $error_message = 'User not found!';
         echo "<script>document.addEventListener('DOMContentLoaded', function() {
             $('#invalidCredentialsModal').modal('show');

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2023 at 02:58 AM
+-- Generation Time: Dec 30, 2023 at 07:16 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -119,6 +119,30 @@ CREATE TABLE `tbl_comments` (
 
 INSERT INTO `tbl_comments` (`comment_id`, `material_id`, `user_id`, `teacher_id`, `comment`, `date`) VALUES
 (12, 19, '02-1234-5678', '02-1920-03954', 'alert(1)', '2023-11-24 11:15:28');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_dean`
+--
+
+CREATE TABLE `tbl_dean` (
+  `dean_id` varchar(50) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `middlename` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `gender` varchar(20) NOT NULL,
+  `email` varchar(128) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `isActive` varchar(30) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_dean`
+--
+
+INSERT INTO `tbl_dean` (`dean_id`, `firstname`, `middlename`, `lastname`, `gender`, `email`, `password`, `isActive`) VALUES
+('1920-2324-12345', 'Paul', 'Smith', 'Sho', 'Male', 'pssm.sho.coc@phinmaed.com', '', 'active');
 
 -- --------------------------------------------------------
 
@@ -326,16 +350,31 @@ CREATE TABLE `tbl_students` (
   `gender` varchar(20) NOT NULL,
   `email` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
-  `image` varchar(100) NOT NULL
+  `image` varchar(100) NOT NULL,
+  `isActive` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_students`
 --
 
-INSERT INTO `tbl_students` (`id`, `firstname`, `lastname`, `gender`, `email`, `password`, `image`) VALUES
-('02-1234-5678', 'Dominic', 'Kionisala', 'Male', 'domskie@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '653bcd1503a85.png'),
-('02-1718-01059', 'Dexter', 'Maghanoy', 'Male', 'depa.maghanoy.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'dexter.jpg');
+INSERT INTO `tbl_students` (`id`, `firstname`, `lastname`, `gender`, `email`, `password`, `image`, `isActive`) VALUES
+('02-1234-5678', 'Dominic', 'Kionisala', 'Male', 'domskie@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '653bcd1503a85.png', 'active'),
+('02-1718-01059', 'Dexter', 'Maghanoy', 'Male', 'depa.maghanoy.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'dexter.jpg', 'active'),
+('12-4567-89012', 'Hanni', 'Pham', 'female', 'hannipham@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('34-9012-34567', 'Min Ji', 'Kim', 'female', 'minjikim@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd9', 'default.png', 'active'),
+('56-7890-12345', 'Danielle', 'Marsh', 'female', 'danielle_marsh@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd10', 'default.png', 'active'),
+('78-2345-67890', 'Haerin', 'Kang', 'female', 'kang.haerin@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd11', 'default.png', 'active'),
+('90-2109-87654', 'Jihyo', 'Park', 'female', 'god_jihyo@koreaboo.net', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd21', 'default.png', 'active'),
+('90-2345-67890', 'Nayeon', 'Im', 'female', 'nayeon_@rocketmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd15', 'default.png', 'active'),
+('90-3456-78901', 'Mina', 'Myoui', 'female', 'mina@mail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd17', 'default.png', 'active'),
+('90-4321-09876', 'Tzuyu', 'Chou', 'female', 'tzuyucute_@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd19', 'default.png', 'active'),
+('90-5678-12345', 'Sana', 'Minatozaki', 'female', 'sanaminatozaki@example.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd13', 'default.png', 'active'),
+('90-6543-21098', 'Momo', 'Hirai', 'female', 'momo_hirai@japanesemail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd18', 'default.png', 'active'),
+('90-6789-01234', 'Hye In', 'Lee', 'female', 'gracelee@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd12', 'default.png', 'active'),
+('90-7890-12345', 'Chaeyoung', 'Son', 'female', 'chae@mail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd20', 'default.png', 'active'),
+('90-8765-43210', 'Jeongyeon', 'Yoo', 'female', 'jeongyeon.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd16', 'default.png', 'active'),
+('90-9876-54321', 'Dahyun', 'Kim', 'female', 'dahyunkim@example.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd14', 'default.png', 'active');
 
 -- --------------------------------------------------------
 
@@ -347,6 +386,7 @@ CREATE TABLE `tbl_teachers` (
   `teacher_id` varchar(30) NOT NULL,
   `firstname` varchar(30) NOT NULL,
   `lastname` varchar(30) NOT NULL,
+  `gender` varchar(30) NOT NULL,
   `email` varchar(128) NOT NULL,
   `password` varchar(128) NOT NULL,
   `active` varchar(30) NOT NULL,
@@ -357,9 +397,14 @@ CREATE TABLE `tbl_teachers` (
 -- Dumping data for table `tbl_teachers`
 --
 
-INSERT INTO `tbl_teachers` (`teacher_id`, `firstname`, `lastname`, `email`, `password`, `active`, `image`) VALUES
-('02-1920-03952', 'Shan', 'Gorra', 'shma.gorra.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'nj.jpg'),
-('02-1920-03954', 'John Paul', 'Orencio', 'joda.orencio.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'nj.jpg');
+INSERT INTO `tbl_teachers` (`teacher_id`, `firstname`, `lastname`, `gender`, `email`, `password`, `active`, `image`) VALUES
+('02-1920-03952', 'Shan', 'Gorra', 'Male', 'shma.gorra.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'nj.jpg'),
+('02-1920-03954', 'John Paul', 'Orencio', 'Male', 'joda.orencio.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'nj.jpg'),
+('02-2324-03955', 'Hanni', 'Pham', 'Female', 'hanp.pham.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png'),
+('02-2324-03956', 'Danielle', 'Marsh', 'Female', 'danm.marsh.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png'),
+('02-2324-03957', 'Min Ji', 'Kim', 'Female', 'mink.kim.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png'),
+('02-2324-03958', 'Haerin', 'Kang', 'Female', 'haek.kang.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png'),
+('02-2324-03959', 'Hye In', 'Lee', 'Female', 'hyel.lee.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png');
 
 --
 -- Indexes for dumped tables
@@ -400,6 +445,12 @@ ALTER TABLE `tbl_comments`
   ADD KEY `user_id` (`user_id`),
   ADD KEY `teacher_id` (`teacher_id`),
   ADD KEY `material_id` (`material_id`);
+
+--
+-- Indexes for table `tbl_dean`
+--
+ALTER TABLE `tbl_dean`
+  ADD UNIQUE KEY `dean_id` (`dean_id`);
 
 --
 -- Indexes for table `tbl_learningmaterials`

@@ -1,7 +1,7 @@
 <?php
 
 include('../../includes/connection.php');
-require '../../vendor/autoload.php'; 
+require '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         if ($_FILES['excelFile']['error'] == UPLOAD_ERR_OK) {
             $excelFile = $_FILES['excelFile']['tmp_name'];
+
             $spreadsheet = IOFactory::load($excelFile);
             $worksheet = $spreadsheet->getActiveSheet();
 
@@ -16,27 +17,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             foreach ($worksheet->getRowIterator() as $index => $row) {
                 if ($index === 1) {
-                    continue;
+                    continue; 
                 }
 
                 $cellIterator = $row->getCellIterator();
-                $cellIterator->setIterateOnlyExistingCells(FALSE);
+                $cellIterator->setIterateOnlyExistingCells(false);
 
                 $rowData = [];
                 foreach ($cellIterator as $cell) {
-                    $rowData[] = $cell->getValue();
+                    $value = filter_var($cell->getValue(), FILTER_SANITIZE_STRING);
+                    $rowData[] = $value;
                 }
-          
-                if (count($rowData) === 7) {
+
+           
+                if (!empty(array_filter($rowData))) {
                     $stmt->execute($rowData);
                 } else {
-                    echo json_encode(['error' => 'Invalid number of columns in the Excel file.']);
-                    exit;
+                
+                    continue;
                 }
             }
+
+            $response = ['success' => 'Data added successfully'];
+            echo json_encode($response);
+        } else {
+            echo json_encode(['error' => 'File upload failed']);
         }
-        $response = ['success' => 'Data added successfully'];
-        echo json_encode($response);
     } catch (Exception $e) {
         echo json_encode(['error' => 'Error processing Excel file: ' . $e->getMessage()]);
     }

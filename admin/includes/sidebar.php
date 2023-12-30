@@ -113,7 +113,26 @@
         </div>
     </li>
 
+    <!-- Divider -->
+    <hr class="sidebar-divider">
 
+    <div class="sidebar-heading">
+        Activity Interface
+    </div>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLog" aria-expanded="true" aria-controls="collapseDeans">
+            <i class="fas fa fa-cog"></i>
+            <span>Activity Log</span>
+        </a>
+        <div id="collapseLog" class="collapse" aria-labelledby="headingDeans" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Manage Activity Log:</h6>
+                <a class="collapse-item" href="#">View Activity Log</a>
+            </div>
+
+        </div>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

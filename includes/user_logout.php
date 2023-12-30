@@ -2,11 +2,12 @@
 include 'connection.php';
 
 session_start();
-session_unset();
 
+if (isset($_SESSION['user_id'])) {
+    unset($_SESSION['user_id']);
+    //session_destroy();
+}
 
-session_destroy();
-setcookie('user_id', '', time() - 1, '/');
 header('location:../index.php');
 
 ?>

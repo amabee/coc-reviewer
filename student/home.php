@@ -11,6 +11,7 @@ if (empty($_SESSION['user_id'])) {
     exit();
 }
 
+
 $select_comments = $conn->prepare("SELECT * FROM `tbl_comments` WHERE user_id = ?");
 $select_comments->execute([$user_id]);
 $total_comments = $select_comments->rowCount();
