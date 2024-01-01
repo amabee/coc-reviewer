@@ -1,129 +1,145 @@
-<div class="app-sidebar sidebar-shadow">
-    <div class="app-header__logo">
-        <div class="logo-src"></div>
-        <div class="header__pane ml-auto">
-            <div>
-                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
-                    data-class="closed-sidebar">
-                    <span class="hamburger-box">
-                        <span class="hamburger-inner"></span>
-                    </span>
-                </button>
+<!-- Sidebar -->
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fa-solid fa-user-tie"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">ADMIN <sup>PAGE</sup></div>
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item active">
+        <a class="nav-link" href="index.php">
+            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <span>Dashboard</span></a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Heading -->
+    <div class="sidebar-heading">
+        Student Interface
+    </div>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>Manage Students</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Manage Students:</h6>
+                <a class="collapse-item" href="#" data-toggle="modal" data-target="#addStudentModal">Add Students</a>
+                <a class="collapse-item" href="studentlist.php">View Student List</a>
             </div>
         </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Teacher Interface -->
+    <div class="sidebar-heading">
+        Teacher Interface
     </div>
-    <div class="app-header__mobile-menu">
-        <div>
-            <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
-                <span class="hamburger-box">
-                    <span class="hamburger-inner"></span>
-                </span>
-            </button>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTeachers" aria-expanded="true" aria-controls="collapseTeachers">
+            <i class="fas fa fa-users"></i>
+            <span>Manage Teachers</span>
+        </a>
+        <div id="collapseTeachers" class="collapse" aria-labelledby="headingTeachers" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Manage Teachers:</h6>
+                <a class="collapse-item" href="#" data-toggle="modal" data-target="#addTeacherModal">Add Teacher</a>
+                <a class="collapse-item" href="teacherlist.php">Teacher List</a>
+                <div class="collapse-divider"></div>
+            </div>
         </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Dean's Interface -->
+    <div class="sidebar-heading">
+        Faculty Interface
     </div>
-    <div class="app-header__menu">
-        <span>
-            <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
-                <span class="btn-icon-wrapper">
-                    <i class="fa fa-ellipsis-v fa-w-6"></i>
-                </span>
-            </button>
-        </span>
-    </div>
-    <div class="scrollbar-sidebar">
-        <div class="app-sidebar__inner">
-            <ul class="vertical-nav-menu">
-                <li class="app-sidebar__heading"><a href="home.php">Dashboards</a></li>
 
-                <li class="app-sidebar__heading">MANAGE SECTION</li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-display2"></i>
-                        Sections
-                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#modalForAddCourse">
-                                <i class="metismenu-icon"></i>
-                                Add Section
-                            </a>
-                        </li>
-                        <li>
-                            <a href="home.php?page=manage-sections">
-                                <i class="metismenu-icon">
-                                </i>Manage Sections
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-
-                <li class="app-sidebar__heading">MANAGE EXAM</li>
-                <li>
-                    <a href="#">
-                        <i class="metismenu-icon pe-7s-display2"></i>
-                        Exam
-                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-                    </a>
-                    <ul>
-                        <li>
-                            <a href="#" data-toggle="modal" data-target="#modalForExam">
-                                <i class="metismenu-icon"></i>
-                                Add Exam
-                            </a>
-                        </li>
-                        <li>
-                            <a href="home.php?page=manage-exam">
-                                <i class="metismenu-icon">
-                                </i>Manage Exam
-                            </a>
-                        </li>
-
-                    </ul>
-                </li>
-
-
-                <li class="app-sidebar__heading">MANAGE STUDENTS</li>
-                <!-- <li>
-                    <a href="#" data-toggle="modal" data-target="#modalForAddExaminee">
-                        <i class="metismenu-icon pe-7s-add-user">
-                        </i>Add Student
-                    </a>
-                </li> -->
-                <li>
-                    <a href="home.php?page=manage-students">
-                        <i class="metismenu-icon pe-7s-users">
-                        </i>Manage Students
-                    </a>
-                </li>
-                <li class="app-sidebar__heading">RANKING</li>
-                <li>
-                    <a href="home.php?page=ranking-exam">
-                        <i class="metismenu-icon pe-7s-cup">
-                        </i>Ranking By Exam
-                    </a>
-                </li>
-
-
-                <li class="app-sidebar__heading">REPORTS</li>
-                <li>
-                    <a href="home.php?page=examinee-result">
-                        <i class="metismenu-icon pe-7s-cup">
-                        </i>Examinee Result
-                    </a>
-                </li>
-
-
-                <li class="app-sidebar__heading">FEEDBACKS</li>
-                <li>
-                    <a href="home.php?page=feedbacks">
-                        <i class="metismenu-icon pe-7s-chat">
-                        </i>All Feedbacks
-                    </a>
-                </li>
-
-            </ul>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDeans" aria-expanded="true" aria-controls="collapseDeans">
+            <i class="fas fa fa-users"></i>
+            <span>Manage Faculty</span>
+        </a>
+        <div id="collapseDeans" class="collapse" aria-labelledby="headingDeans" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Manage Faculty:</h6>
+                <a class="collapse-item" href="dean-details.php">View Dean Details</a>
+                <a class="collapse-item" href="view_dean_details.html">View Faculty</a>
+                <div class="collapse-divider"></div>
+            </div>
         </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <!-- Dean's Interface -->
+    <div class="sidebar-heading">
+        Class Interface
     </div>
-</div>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClass" aria-expanded="true" aria-controls="collapseDeans">
+            <i class="fas fa fa-users"></i>
+            <span>Manage Class</span>
+        </a>
+        <div id="collapseClass" class="collapse" aria-labelledby="headingDeans" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Manage Section:</h6>
+                <a class="collapse-item" href="view_dean_details.html">View Section list</a>
+                <a class="collapse-item" href="view_dean_details.html">Add Section</a>
+                <div class="collapse-divider"></div>
+                <div class="dropdown-divider"></div>
+                <a class="collapse-item" href="view_dean_details.html">Class Performance</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider">
+
+    <div class="sidebar-heading">
+        Activity Interface
+    </div>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLog" aria-expanded="true" aria-controls="collapseDeans">
+            <i class="fas fa fa-cog"></i>
+            <span>Activity Log</span>
+        </a>
+        <div id="collapseLog" class="collapse" aria-labelledby="headingDeans" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Manage Activity Log:</h6>
+                <a class="collapse-item" href="#">View Activity Log</a>
+            </div>
+
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider d-none d-md-block">
+
+    <!-- Sidebar Toggler (Sidebar) -->
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
+</ul>
+<!-- End of Sidebar -->

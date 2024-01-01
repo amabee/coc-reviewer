@@ -1,0 +1,52 @@
+<?php
+
+include('../../includes/connection.php');
+require '../../vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        if ($_FILES['excelFile']['error'] == UPLOAD_ERR_OK) {
+            $excelFile = $_FILES['excelFile']['tmp_name'];
+
+            $spreadsheet = IOFactory::load($excelFile);
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            $stmt = $conn->prepare("INSERT INTO tbl_students (id, firstname, lastname, gender, email, password, isActive) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+            foreach ($worksheet->getRowIterator() as $index => $row) {
+                if ($index === 1) {
+                    continue; 
+                }
+
+                $cellIterator = $row->getCellIterator();
+                $cellIterator->setIterateOnlyExistingCells(false);
+
+                $rowData = [];
+                foreach ($cellIterator as $cell) {
+                    $value = filter_var($cell->getValue(), FILTER_SANITIZE_STRING);
+                    $rowData[] = $value;
+                }
+
+           
+                if (!empty(array_filter($rowData))) {
+                    $stmt->execute($rowData);
+                } else {
+                
+                    continue;
+                }
+            }
+
+            $response = ['success' => 'Data added successfully'];
+            echo json_encode($response);
+        } else {
+            echo json_encode(['error' => 'File upload failed']);
+        }
+    } catch (Exception $e) {
+        echo json_encode(['error' => 'Error processing Excel file: ' . $e->getMessage()]);
+    }
+} else {
+    echo json_encode(['error' => 'Invalid request method']);
+}
+?>
