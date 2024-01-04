@@ -6,7 +6,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fa-solid fa-user-tie"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">ADMIN <sup>PAGE</sup></div>
+        <div class="sidebar-brand-text mx-3">Dean <sup>PAGE</sup></div>
     </a>
 
     <!-- Divider -->
@@ -36,7 +36,7 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Manage Students:</h6>
-                <a class="collapse-item" href="#" data-toggle="modal" data-target="#addStudentModal">Add Students</a>
+                <!-- <a class="collapse-item" href="#" data-toggle="modal" data-target="#addStudentModal">Add Students</a> -->
                 <a class="collapse-item" href="studentlist.php">View Student List</a>
             </div>
         </div>
@@ -58,7 +58,7 @@
         <div id="collapseTeachers" class="collapse" aria-labelledby="headingTeachers" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Manage Teachers:</h6>
-                <a class="collapse-item" href="#" data-toggle="modal" data-target="#addTeacherModal">Add Teacher</a>
+                <!-- <a class="collapse-item" href="#" data-toggle="modal" data-target="#addTeacherModal">Add Teacher</a> -->
                 <a class="collapse-item" href="teacherlist.php">Teacher List</a>
                 <div class="collapse-divider"></div>
             </div>
@@ -80,9 +80,9 @@
         </a>
         <div id="collapseDeans" class="collapse" aria-labelledby="headingDeans" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Manage Faculty:</h6>
-                <a class="collapse-item" href="dean-details.php">View Dean Details</a>
-                <a class="collapse-item" href="view_dean_details.html">View Faculty</a>
+                <h6 class="collapse-header">Manage Program Head:</h6>
+                <!-- <a class="collapse-item" href="dean-details.php">View Dean Details</a> -->
+                <a class="collapse-item" href="view_dean_details.html">View Program Head Info</a>
                 <div class="collapse-divider"></div>
             </div>
         </div>
@@ -105,7 +105,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Manage Section:</h6>
                 <a class="collapse-item" href="view_dean_details.html">View Section list</a>
-                <a class="collapse-item" href="view_dean_details.html">Add Section</a>
+                <!-- <a class="collapse-item" href="view_dean_details.html">Add Section</a> -->
                 <div class="collapse-divider"></div>
                 <div class="dropdown-divider"></div>
                 <a class="collapse-item" href="view_dean_details.html">Class Performance</a>
