@@ -3,7 +3,7 @@
 session_start();
 require('../includes/connection.php');
 
-if (!isset($_SESSION['admin_id'])) {
+if (!isset($_SESSION['dean_id'])) {
     header('Location: login.php');
 }
 
@@ -100,9 +100,10 @@ $teachers = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <td><?php echo $teacher['lastname']; ?></td>
                                                         <td><?php echo $teacher['gender']; ?></td>
                                                         <td><?php echo $teacher['email']; ?></td>
-                                                        <td><button class="btn btn-primary">Update</button>
-                                                            <button class="btn btn-success" data-toggle="modal" data-target="#teacherProfileModal" onclick="loadTeacherData('<?php echo htmlspecialchars($teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>')">View Details</button>
-
+                                                        <td>
+                                                            <!-- <button class="btn btn-primary">Update</button> -->
+                                                            <center> <button class="btn btn-success" data-toggle="modal" data-target="#teacherProfileModal" onclick="loadTeacherData('<?php echo htmlspecialchars($teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>')">View Details</button>
+                                                            </center>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>
