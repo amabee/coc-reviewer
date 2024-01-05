@@ -7,9 +7,15 @@ if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
 }
 
+function sanitizeInput($input)
+{
+    return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $sectionName = $_POST['sectionName'];
-    $teacherId = $_POST['teacherId'];
+
+    $sectionName = sanitizeInput($_POST['sectionName']);
+    $teacherId = sanitizeInput($_POST['teacherId']);
 
     $query = "INSERT INTO `tbl_section`(`section_id`, `teacher_id`) VALUES (:sectionName, :teacherId)";
     $stmt = $conn->prepare($query);
@@ -28,7 +34,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode($response);
     exit;
 }
-
-
 
 ?>

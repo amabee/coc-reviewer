@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 include('../../includes/connection.php');
 
@@ -12,13 +12,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $gender = $_POST['gender'];
         $email = $_POST['email'];
 
+        if (empty($teacherId) || empty($firstName) || empty($lastName) || empty($gender) || empty($email)) {
+            echo json_encode(['error' => 'All fields are required.']);
+            exit;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode(['error' => 'Invalid email format.']);
+            exit;
+        }
+
         $stmtCheck = $conn->prepare("SELECT * FROM tbl_teachers WHERE teacher_id = ? AND active = 'active'");
         $stmtCheck->execute([$teacherId]);
 
         if ($stmtCheck->rowCount() > 0) {
             echo json_encode(['error' => 'Teacher already exists and is active.']);
         } else {
-            $password = sha1('password');
+            $password = password_hash('password', PASSWORD_DEFAULT);
+
             $stmtInsert = $conn->prepare("INSERT INTO tbl_teachers (teacher_id, firstname, lastname, gender, email, password, active) VALUES (?, ?, ?, ?, ?, ?, 'active')");
             $stmtInsert->execute([$teacherId, $firstName, $lastName, $gender, $email, $password]);
 
@@ -33,8 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode($response);
         }
     } catch (PDOException $ex) {
-        echo json_encode(['error' => 'Database error: ' . $ex->getMessage()]);
+        error_log('Database error: ' . $ex->getMessage());
+
+        echo json_encode(['error' => 'An unexpected error occurred.']);
     }
 } else {
     echo json_encode(['error' => 'Invalid request method']);
 }
+?>

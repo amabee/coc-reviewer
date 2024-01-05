@@ -1,8 +1,18 @@
 <?php
+session_start();
 require('../../includes/connection.php');
 
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: login.php');
+}
+
+function sanitizeInput($input)
+{
+    return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
+}
+
 if (isset($_GET['dean_id'])) {
-    $dean_id = $_GET['dean_id'];
+    $dean_id = sanitizeInput($_GET['dean_id']);
 
     $query = "SELECT dean_id, firstname, lastname, email, isActive FROM tbl_dean WHERE dean_id = :dean_id";
     $stmt = $conn->prepare($query);
