@@ -21,7 +21,6 @@ if (isset($_GET['dean_id'])) {
     $deanInfo = $stmt->fetch(PDO::FETCH_ASSOC);
     echo json_encode($deanInfo);
 } else {
-    http_response_code(400);
-    echo 'Invalid request parameters';
+    echo json_encode(['error' => 'Invalid request parameters']);
 }
 ?>

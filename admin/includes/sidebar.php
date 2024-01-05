@@ -85,7 +85,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Manage Faculty:</h6>
                 <a class="collapse-item" href="dean-details.php">View Dean Details</a>
-                <a class="collapse-item" href="view_dean_details.html">View Faculty</a>
+                <a class="collapse-item" href="faculty.php">View Faculty</a>
                 <div class="collapse-divider"></div>
             </div>
         </div>
