@@ -2,8 +2,8 @@
 session_start();
 include '../includes/connection.php';
 
-if (isset($_COOKIE['user_id'])) {
-    $user_id = $_COOKIE['user_id'];
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 } else {
     $user_id = '';
     header('location:../index.php');
@@ -26,9 +26,9 @@ if (isset($_COOKIE['user_id'])) {
     <!-- custom css file link  -->
     <link rel="stylesheet" href="../styles/style.css">
 
-      <!-- sweet alert -->
+    <!-- sweet alert -->
 
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -94,7 +94,7 @@ if (isset($_COOKIE['user_id'])) {
 
     <!-- custom js file link  -->
     <script src="../scripts/script.js"></script>
-    
+
 </body>
 
 </html>

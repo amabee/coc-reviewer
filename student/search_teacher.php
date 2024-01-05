@@ -8,7 +8,7 @@ if (isset($_COOKIE['user_id'])) {
     $user_id = '';
 }
 
-if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
+if (empty($_SESSION['user_id'])) {
     header("Location: ../unauthorized.php");
     exit();
 }
@@ -29,9 +29,9 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
     <!-- custom css file link  -->
     <link rel="stylesheet" href="../styles/style.css">
 
-      <!-- sweet alert -->
+    <!-- sweet alert -->
 
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -69,7 +69,7 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
                         WHERE L.teacher_id = ?");
                         $count_contents->execute([$tutor_id]);
                         $total_contents = $count_contents->rowCount()
-                        ?>
+                            ?>
                         <div class="box">
                             <div class="tutor">
                                 <img src="../tmp/<?= $fetch_tutor['image']; ?>" alt="">

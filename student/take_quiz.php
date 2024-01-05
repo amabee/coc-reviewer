@@ -15,8 +15,8 @@ if (isset($_SESSION['user_id'])) {
     $user_id = '';
 }
 
-if (isset($_COOKIE['get_id'])) {
-    $get_id = $_COOKIE['get_id'];
+if (isset($_SESSION['get_id'])) {
+    $get_id = $_SESSION['get_id'];
 } else {
     $get_id = "";
 }
@@ -36,7 +36,8 @@ if (isset($_COOKIE['get_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Set Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com; frame-src 'self';">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://cdnjs.cloudflare.com; frame-src 'self';">
 
     <!-- Set Referrer Policy -->
     <meta name="referrer" content="no-referrer">
@@ -48,7 +49,7 @@ if (isset($_COOKIE['get_id'])) {
     <link rel="stylesheet" href="../styles/style.css">
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             if (window.location.href.indexOf('get_id=') > -1) {
                 var newUrl = window.location.href.replace(/[\?&]get_id=([^&#]*)/, '');
                 window.history.replaceState({}, document.title, newUrl);
@@ -65,7 +66,8 @@ if (isset($_COOKIE['get_id'])) {
 
     <section class="watch-video">
         <div class="video-details">
-            <iframe src="answer_quiz.php?quiz_id=<?= $get_id ?>" width='100%' height="700px" crossorigin="anonymous" frameborder="0"></iframe>
+            <iframe src="answer_quiz.php?quiz_id=<?= $get_id ?>" width='100%' height="700px" crossorigin="anonymous"
+                frameborder="0"></iframe>
 
         </div>
     </section>

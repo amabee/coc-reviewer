@@ -2,13 +2,13 @@
 session_start();
 include '../includes/connection.php';
 
-if (isset($_COOKIE['user_id'])) {
-    $user_id = $_COOKIE['user_id'];
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
 } else {
     $user_id = '';
 }
 
-if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
+if (empty($_SESSION['user_id'])) {
     header("Location: ../unauthorized.php");
     exit();
 }
@@ -29,9 +29,9 @@ if (empty($_SESSION['user_id']) || (empty($_COOKIE['user_id']))) {
     <!-- custom css file link  -->
     <link rel="stylesheet" href="../styles/style.css">
 
-      <!-- sweet alert -->
+    <!-- sweet alert -->
 
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>

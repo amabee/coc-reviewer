@@ -206,10 +206,10 @@ $posttest_exists = $posttest_query->rowCount() > 0;
         <h1 class="heading">Lesson Materials</h1>
         <div class="box-container">
 
-      
-            <?php
-              // START Pre-test section
 
+            <?php
+            // START Pre-test section
+            
             if ($pretest_exists) {
                 while ($fetch_pretest = $pretest_query->fetch(PDO::FETCH_ASSOC)) {
                     ?>
@@ -222,8 +222,7 @@ $posttest_exists = $posttest_query->rowCount() > 0;
 
 
 
-                    <a href="take_quiz.php" class="box"
-                        onclick="setTempCookie('quiz_id', <?= $fetch_pretest['quiz_id']; ?>)">
+                    <a href="take_quiz.php" class="box" onclick="setTempCookie('quiz_id', <?= $fetch_pretest['quiz_id']; ?>)">
                         <h3>
                             <?= $fetch_pretest['quiz_title']; ?>
                         </h3>
@@ -232,7 +231,7 @@ $posttest_exists = $posttest_query->rowCount() > 0;
                 }
             }
             // END Pre-test section
-
+            
             // Reading materials section
             $select_content = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE lesson_id = ? AND status = ? ORDER BY date_created DESC");
             $select_content->execute([$get_id, 'active']);
@@ -260,26 +259,25 @@ $posttest_exists = $posttest_query->rowCount() > 0;
             }
 
             // END OF READING MATERIALS
-
-             // POST-TEST AREA
+            
+            // POST-TEST AREA
             if ($posttest_exists) {
-               
+
                 while ($fetch_postest = $posttest_query->fetch(PDO::FETCH_ASSOC)) {
                     ?>
                     <!-- IN CASE OF ERROR LMAO! -->
-                      <!-- <a  href="take_quiz.php?quiz_id=<?= $fetch_postest['quiz_id']; ?>" class="box"></a> -->
+                    <!-- <a  href="take_quiz.php?quiz_id=<?= $fetch_postest['quiz_id']; ?>" class="box"></a> -->
 
-                    <a  href="take_quiz.php" class="box"
-                        onclick="setTempCookie('quiz_id', <?= $fetch_postest['quiz_id']; ?>)">
+                    <a href="take_quiz.php" class="box" onclick="setTempCookie('quiz_id', <?= $fetch_postest['quiz_id']; ?>)">
                         <h3>
                             <?= $fetch_postest['quiz_title']; ?>
                         </h3>
                     </a>
                     <?php
                 }
-                
+
             }
-             // END POST-TEST AREA
+            // END POST-TEST AREA
             ?>
 
         </div>

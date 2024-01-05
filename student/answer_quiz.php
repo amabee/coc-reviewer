@@ -83,8 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
     <link href="../styles/quiz_style.css" rel="stylesheet">
     <style>
         .option-box {
@@ -118,9 +121,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <div class="page-title-actions mr-5" style="font-size: 20px;">
                             <form name="cd">
-                                <input type="hidden" name="" id="timeExamLimit" value="<?php echo $selExamTimeLimit; ?>">
+                                <input type="hidden" name="" id="timeExamLimit"
+                                    value="<?php echo $selExamTimeLimit; ?>">
                                 <label>Remaining Time : </label>
-                                <input style="border:none;background-color: transparent;color:blue;font-size: 25px;" name="disp" type="text" class="clock" id="txt" value="00:00" size="5" readonly="true" />
+                                <input style="border:none;background-color: transparent;color:blue;font-size: 25px;"
+                                    name="disp" type="text" class="clock" id="txt" value="00:00" size="5"
+                                    readonly="true" />
                             </form>
                         </div>
                     </div>
@@ -140,7 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $i = 1;
                             while ($selQuestRow = $selQuestStatement->fetch(PDO::FETCH_ASSOC)) { ?>
                                 <?php $questId = $selQuestRow['question_id']; ?>
-                                <div class="question" data-question-id="<?php echo $questId; ?>" style="display: none; text-align: center;">
+                                <div class="question" data-question-id="<?php echo $questId; ?>"
+                                    style="display: none; text-align: center;">
                                     <p><b>
                                             <?php echo $i++; ?> .)
                                             <?php echo $selQuestRow['quiz_question']; ?>
@@ -165,7 +172,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
 
 
-                                    <input type="hidden" name="responses[<?php echo $questId; ?>]" id="response_<?php echo $questId; ?>" value="">
+                                    <input type="hidden" name="responses[<?php echo $questId; ?>]"
+                                        id="response_<?php echo $questId; ?>" value="">
                                 </div>
                             <?php } ?>
                         <?php } else { ?>
@@ -181,7 +189,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="navigation-buttons" style="position: fixed; bottom: 0; right: 0; padding: 10px;">
                         <button type="button" class="btn btn-xlg btn-primary p-3 pl-4 pr-4" id="nextQuestionBtn">Next
                             Question</button>
-                        <input name="submitQuizButton" type="submit" value="Submit" class="btn btn-xlg btn-primary p-3 pl-4 pr-4" id="submitAnswerFrmBtn" style="display: none;">
+                        <input name="submitQuizButton" type="submit" value="Submit"
+                            class="btn btn-xlg btn-primary p-3 pl-4 pr-4" id="submitAnswerFrmBtn"
+                            style="display: none;">
 
                     </div>
                 </form>
@@ -243,7 +253,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        timerInterval = setInterval(function() {
+        timerInterval = setInterval(function () {
             if (timeRemaining > 0) {
                 timeRemaining--;
                 updateTimerDisplay();
@@ -263,7 +273,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             window.history.forward();
         }
         setTimeout("preventBack()", 0);
-        window.onunload = function() {
+        window.onunload = function () {
             null
         };
     </script>
