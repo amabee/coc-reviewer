@@ -29,7 +29,8 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+            aria-controls="collapseTwo">
             <i class="fas fa-graduation-cap"></i>
             <span>Manage Students</span>
         </a>
@@ -51,7 +52,8 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTeachers" aria-expanded="true" aria-controls="collapseTeachers">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTeachers"
+            aria-expanded="true" aria-controls="collapseTeachers">
             <i class="fas fa fa-users"></i>
             <span>Manage Teachers</span>
         </a>
@@ -74,7 +76,8 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDeans" aria-expanded="true" aria-controls="collapseDeans">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDeans" aria-expanded="true"
+            aria-controls="collapseDeans">
             <i class="fas fa fa-users"></i>
             <span>Manage Faculty</span>
         </a>
@@ -97,15 +100,16 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClass" aria-expanded="true" aria-controls="collapseDeans">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseClass" aria-expanded="true"
+            aria-controls="collapseDeans">
             <i class="fas fa fa-users"></i>
             <span>Manage Class</span>
         </a>
         <div id="collapseClass" class="collapse" aria-labelledby="headingDeans" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Manage Section:</h6>
-                <a class="collapse-item" href="view_dean_details.html">View Section list</a>
-                <a class="collapse-item" href="view_dean_details.html">Add Section</a>
+                <a class="collapse-item" href="section_list.php">View Section list</a>
+                <a class="collapse-item" href="#" data-toggle="modal" data-target="#addSectionModal">Add Section</a>
                 <div class="collapse-divider"></div>
                 <div class="dropdown-divider"></div>
                 <a class="collapse-item" href="view_dean_details.html">Class Performance</a>
@@ -121,7 +125,8 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLog" aria-expanded="true" aria-controls="collapseDeans">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseLog" aria-expanded="true"
+            aria-controls="collapseDeans">
             <i class="fas fa fa-cog"></i>
             <span>Activity Log</span>
         </a>

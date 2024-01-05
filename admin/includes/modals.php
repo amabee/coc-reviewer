@@ -1,5 +1,6 @@
 <!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,7 +20,8 @@
 
 
 <!-- Add Student Modal -->
-<div class="modal fade" data-backdrop="static" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" id="addStudentModal" tabindex="-1" role="dialog"
+    aria-labelledby="addStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -57,7 +59,8 @@
                     <hr>
                     <!-- Separator: Header and Horizontal Rule -->
                     <div class="text-center mb-3">
-                        <span class="text-muted font-weight-bold">----------------- OR ADD BY BATCH -------------------</span>
+                        <span class="text-muted font-weight-bold">----------------- OR ADD BY BATCH
+                            -------------------</span>
                     </div>
                     <hr>
 
@@ -65,10 +68,12 @@
                     <div class="form-group">
                         <label for="excelFile">Upload Excel File</label>
                         <input type="file" class="d-none" id="excelFile" name="excelFile" accept=".xls, .xlsx">
-                        <button type="button" class="btn btn-primary" onclick="document.getElementById('excelFile').click()">
-                            Click to Upload Excel File
+                        <button type="button" class="btn btn-primary"
+                            onclick="document.getElementById('excelFile').click()">
+                            <span id="excelFileLabel">Click to Upload Excel File</span>
                         </button>
                     </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -81,7 +86,8 @@
 
 
 <!-- Add Teacher Modal -->
-<div class="modal fade" data-backdrop="static" id="addTeacherModal" tabindex="-1" role="dialog" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" id="addTeacherModal" tabindex="-1" role="dialog"
+    aria-labelledby="addTeacherModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -128,7 +134,8 @@
 
 <!-- TEACHER PROFILE MODAL -->
 
-<div class="modal fade" id="teacherProfileModal" tabindex="-1" role="dialog" aria-labelledby="teacherProfileModalLabel" aria-hidden="true">
+<div class="modal fade" id="teacherProfileModal" tabindex="-1" role="dialog" aria-labelledby="teacherProfileModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -138,10 +145,55 @@
                 </button>
             </div>
             <div class="modal-body text-center" id="teacherProfileModalBody">
-               
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Section Modal -->
+<div class="modal fade" data-backdrop="static" id="addSectionModal" tabindex="-1" role="dialog"
+    aria-labelledby="addSectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSectionModalLabel">Add Section</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addSectionForm">
+                    <div class="form-group">
+                        <label for="sectionName">Section Name</label>
+                        <input type="text" class="form-control" id="sectionName" name="sectionName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherId">Assigned Teacher</label>
+
+                        <select name="teacherId" id="teacherId" class="form-control" required>
+                            <?php
+                            $queryTeachers = "SELECT teacher_id, firstname, lastname FROM tbl_teachers";
+                            $stmtTeachers = $conn->prepare($queryTeachers);
+                            $stmtTeachers->execute();
+                            $availableTeachers = $stmtTeachers->fetchAll(PDO::FETCH_ASSOC);
+                            ?>
+                            <option value="" disabled selected>-- SELECT TEACHER --</option>
+                            <?php foreach ($availableTeachers as $teacher): ?>
+                                <option value="<?php echo $teacher['teacher_id']; ?>">
+                                    <?php echo $teacher['firstname'] . ' ' . $teacher['lastname']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="button" id="addSectionBtn">Add Section</button>
+                </form>
             </div>
         </div>
     </div>

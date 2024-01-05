@@ -13,11 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $spreadsheet = IOFactory::load($excelFile);
             $worksheet = $spreadsheet->getActiveSheet();
 
-            $stmt = $conn->prepare("INSERT INTO tbl_students (id, firstname, lastname, gender, email, password, isActive) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO tbl_students (id, firstname, lastname, gender, email, password, image, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
             foreach ($worksheet->getRowIterator() as $index => $row) {
                 if ($index === 1) {
-                    continue; 
+                    continue;
                 }
 
                 $cellIterator = $row->getCellIterator();
@@ -29,11 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $rowData[] = $value;
                 }
 
-           
+                $hashedPassword = sha1($rowData[5]);
+
+                $rowData[5] = $hashedPassword;
+
                 if (!empty(array_filter($rowData))) {
                     $stmt->execute($rowData);
                 } else {
-                
                     continue;
                 }
             }
