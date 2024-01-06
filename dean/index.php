@@ -163,6 +163,7 @@ $teacherCount = $stmtTeacherCount->fetch(PDO::FETCH_ASSOC)['teacher_count'];
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
+                                    
                                     <div class="table-responsive">
                                         <table class="table table-bordered" id="studentTable">
                                             <thead>
@@ -180,11 +181,13 @@ $teacherCount = $stmtTeacherCount->fetch(PDO::FETCH_ASSOC)['teacher_count'];
                                                         <td><?php echo $student['firstname']; ?></td>
                                                         <td><?php echo $student['lastname']; ?></td>
                                                         <td><?php echo $student['email']; ?></td>
+
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
                                         </table>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

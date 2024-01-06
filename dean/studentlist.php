@@ -7,7 +7,7 @@ if (!isset($_SESSION['dean_id'])) {
     header('Location: login.php');
 }
 
-$query = "SELECT * FROM tbl_students";
+$query = "SELECT `id`, `firstname`, `lastname`, `gender`, `email` FROM `tbl_students`";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -27,7 +27,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>COC REVIEWER - Student List</title>
+    <title>COC REVIEWER - Students List</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -75,7 +75,7 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                     <div class="row">
 
-                       <!-- STUDENT LIST DATATABLE -->
+                        <!-- STUDENT LIST DATATABLE -->
                         <div class="col-xl-10 col-lg-8 mx-auto">
                             <div class="card shadow mb-4">
                                 <!-- Card Body -->
@@ -100,7 +100,11 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <td><?php echo $student['lastname']; ?></td>
                                                         <td><?php echo $student['gender']; ?></td>
                                                         <td><?php echo $student['email']; ?></td>
-                                                        <td><button class="btn btn-primary">Update</button></td>
+                                                        <td>
+                                                            <!-- <button class="btn btn-primary">Update</button> -->
+                                                            <center> <button class="btn btn-success" data-toggle="modal" data-target="#studentProfileModal" onclick="loadStudentDatas('<?php echo htmlspecialchars($student['id'], ENT_QUOTES, 'UTF-8') ?>')">View Details</button>
+                                                            </center>
+                                                        </td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -152,12 +156,57 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <!-- Include DataTables JS and jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-
+    <script src="./vendor/chart.js/Chart.bundle.min.js"></script>
+    <script src="./vendor/chart.js/Chart.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#studentTable').DataTable();
+
         });
     </script>
+<script>
+new Chart(document.getElementById("horizontalBar"), {
+  "type": "horizontalBar",
+  "data": {
+    "labels": ["Subject 1",  "Subject 2", "Subject 3", "Subject 4", "Subject 5", "Subject 6"],
+    "datasets": [
+      {
+        "label": "Pre Test",
+        "data": [22, 33, 55, 12, 86, 23, 14, 22, 33, 55, 12, 86, 23, 14],
+        "fill": false,
+        "backgroundColor": "rgba(54, 162, 235, 0.2)",  // Blue color
+        "borderColor": "rgb(54, 162, 235)",  // Blue color
+        "borderWidth": 1
+      },
+      {
+        "label": "Post Test",
+        "data": [45, 67, 32, 78, 12, 54, 76, 45, 67, 32, 78, 12, 54, 76],
+        "fill": false,
+        "backgroundColor": "rgba(255, 99, 132, 0.2)",  // Red color
+        "borderColor": "rgb(255, 99, 132)",  // Red color
+        "borderWidth": 1
+
+
+      }
+      
+    ]
+  },
+  "options": {
+    "scales": {
+      "xAxes": [{
+        "ticks": {
+          "beginAtZero": true
+          
+        }
+      }]
+    }
+  }
+}).resize({ width: 450, height: 450 });  // Set the desired width and height
+</script>
+
+<!-- Add the word "Average" below the chart -->
+
+
 
 </body>
 
