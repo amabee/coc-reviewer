@@ -13,12 +13,10 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -29,20 +27,17 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Include DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Include DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-
     <!-- sweet alert  -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
 
 </head>
 
@@ -68,13 +63,10 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Student List</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Faculty List</h1>
                     </div>
 
-
-
                     <div class="row">
-
                         <!-- SECTION LIST DATATABLE -->
                         <div class="col-xl-10 col-lg-8 mx-auto">
                             <div class="card shadow mb-4">
@@ -92,7 +84,7 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($faculty_list as $faculty_member): ?>
+                                                <?php foreach ($faculty_list as $faculty_member) : ?>
                                                     <tr>
                                                         <td>
                                                             <?php echo $faculty_member['faculty_id']; ?>
@@ -113,11 +105,9 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                         </table>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
 
                 </div>
                 <!-- /.container-fluid -->
@@ -137,9 +127,7 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </a>
 
     <?php
-
     include('includes/modals.php');
-
     ?>
 
     <!-- Bootstrap core JavaScript-->
@@ -159,9 +147,22 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
+    <!-- Include DataTables Buttons extension JS -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
     <script>
-        $(document).ready(function () {
-            $('#facultyTable').DataTable();
+        $(document).ready(function() {
+            $('#facultyTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                    text: 'Add Faculty User',
+                    action: function(e, dt, node, config) {
+                        alert('Button Clicked');
+                    }
+                }]
+            });
         });
     </script>
 
