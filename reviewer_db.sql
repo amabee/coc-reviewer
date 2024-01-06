@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2023 at 07:16 AM
+-- Generation Time: Jan 06, 2024 at 01:13 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -147,6 +147,22 @@ INSERT INTO `tbl_dean` (`dean_id`, `firstname`, `middlename`, `lastname`, `gende
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_faculty`
+--
+
+CREATE TABLE `tbl_faculty` (
+  `faculty_id` varchar(50) NOT NULL,
+  `faculty_firstname` varchar(50) NOT NULL,
+  `faculty_lastname` varchar(50) NOT NULL,
+  `gender` varchar(20) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `password` varchar(200) NOT NULL,
+  `isActive` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_learningmaterials`
 --
 
@@ -239,7 +255,7 @@ CREATE TABLE `tbl_quizattempt` (
 --
 
 INSERT INTO `tbl_quizattempt` (`attempt_id`, `quiz_id`, `student_id`, `attempt_status`, `attempt_score`) VALUES
-(26, 4, '02-1234-5678', 'completed', 1);
+(27, 4, '02-1234-5678', 'completed', 2);
 
 -- --------------------------------------------------------
 
@@ -296,7 +312,14 @@ INSERT INTO `tbl_quizresponses` (`response_id`, `quiz_id`, `question_id`, `stude
 (112, 4, 37, '02-1234-5678', ''),
 (113, 4, 30, '02-1234-5678', ''),
 (114, 4, 35, '02-1234-5678', ''),
-(115, 4, 36, '02-1234-5678', '');
+(115, 4, 36, '02-1234-5678', ''),
+(116, 4, 32, '02-1234-5678', 'Hanni Pham'),
+(117, 4, 30, '02-1234-5678', 'No'),
+(118, 4, 31, '02-1234-5678', 'Haerin Kang'),
+(119, 4, 37, '02-1234-5678', 'Hyun'),
+(120, 4, 33, '02-1234-5678', 'Minji Kim'),
+(121, 4, 36, '02-1234-5678', ''),
+(122, 4, 35, '02-1234-5678', 'Kim');
 
 -- --------------------------------------------------------
 
@@ -314,8 +337,14 @@ CREATE TABLE `tbl_section` (
 --
 
 INSERT INTO `tbl_section` (`section_id`, `teacher_id`) VALUES
+('CRIM-02G', '02-1920-03952'),
 ('CRIM-02A', '02-1920-03954'),
-('CRIM-02B', '02-1920-03954');
+('CRIM-02B', '02-1920-03954'),
+('CRIM-02D', '02-2324-03955'),
+('Advance Class', '02-2324-03956'),
+('CRIM-02C', '02-2324-03956'),
+('CRIM-02E', '02-2324-03957'),
+('CRIM-02F', '02-2324-03959');
 
 -- --------------------------------------------------------
 
@@ -359,22 +388,19 @@ CREATE TABLE `tbl_students` (
 --
 
 INSERT INTO `tbl_students` (`id`, `firstname`, `lastname`, `gender`, `email`, `password`, `image`, `isActive`) VALUES
-('02-1234-5678', 'Dominic', 'Kionisala', 'Male', 'domskie@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '653bcd1503a85.png', 'active'),
-('02-1718-01059', 'Dexter', 'Maghanoy', 'Male', 'depa.maghanoy.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'dexter.jpg', 'active'),
-('12-4567-89012', 'Hanni', 'Pham', 'female', 'hannipham@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
-('34-9012-34567', 'Min Ji', 'Kim', 'female', 'minjikim@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd9', 'default.png', 'active'),
-('56-7890-12345', 'Danielle', 'Marsh', 'female', 'danielle_marsh@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd10', 'default.png', 'active'),
-('78-2345-67890', 'Haerin', 'Kang', 'female', 'kang.haerin@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd11', 'default.png', 'active'),
-('90-2109-87654', 'Jihyo', 'Park', 'female', 'god_jihyo@koreaboo.net', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd21', 'default.png', 'active'),
-('90-2345-67890', 'Nayeon', 'Im', 'female', 'nayeon_@rocketmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd15', 'default.png', 'active'),
-('90-3456-78901', 'Mina', 'Myoui', 'female', 'mina@mail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd17', 'default.png', 'active'),
-('90-4321-09876', 'Tzuyu', 'Chou', 'female', 'tzuyucute_@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd19', 'default.png', 'active'),
-('90-5678-12345', 'Sana', 'Minatozaki', 'female', 'sanaminatozaki@example.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd13', 'default.png', 'active'),
-('90-6543-21098', 'Momo', 'Hirai', 'female', 'momo_hirai@japanesemail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd18', 'default.png', 'active'),
-('90-6789-01234', 'Hye In', 'Lee', 'female', 'gracelee@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd12', 'default.png', 'active'),
-('90-7890-12345', 'Chaeyoung', 'Son', 'female', 'chae@mail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd20', 'default.png', 'active'),
-('90-8765-43210', 'Jeongyeon', 'Yoo', 'female', 'jeongyeon.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd16', 'default.png', 'active'),
-('90-9876-54321', 'Dahyun', 'Kim', 'female', 'dahyunkim@example.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd14', 'default.png', 'active');
+('02-1234-5678', 'Dominic', 'Kionisala', 'male', 'doen.kionisala.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '653bcd1503a85.png', 'active'),
+('02-1718-01059', 'Dexter', 'Maghanoy', 'male', 'depa.maghanoy.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'dexter.jpg', 'active'),
+('02-1920-03955', 'Hanni', 'Pham', 'female', 'hanni_pham@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03956', 'Minji', 'Kim', 'female', 'minji.kim@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03957', 'Kang', 'Haerin', 'female', 'haerin_kang@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03958', 'Danielle', 'Marsh', 'female', 'marsh_danielle@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03959', 'Hye In', 'Lee', 'female', 'leehyein.nj@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03960', 'Sana', 'Minatozaki', 'female', 'sana_ke@rocketmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03962', 'Da Hyun', 'Kim', 'female', 'dahyunaaa@koreaboo.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-2324-03960', 'Sakura', 'Miyawaki', 'female', 'sakura_@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '', 'active'),
+('02-2324-03961', 'Kazuha', 'Nakamura', 'female', 'kazuhaaaa@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '', 'active'),
+('02-2324-03962', 'Yunjin', 'Huh', 'female', 'lesserafim_cool@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '', 'active'),
+('02-2324-03977', 'Eun Chae', 'Hong', 'female', 'hong_chae@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '', 'active');
 
 -- --------------------------------------------------------
 
@@ -451,6 +477,12 @@ ALTER TABLE `tbl_comments`
 --
 ALTER TABLE `tbl_dean`
   ADD UNIQUE KEY `dean_id` (`dean_id`);
+
+--
+-- Indexes for table `tbl_faculty`
+--
+ALTER TABLE `tbl_faculty`
+  ADD PRIMARY KEY (`faculty_id`);
 
 --
 -- Indexes for table `tbl_learningmaterials`
@@ -571,7 +603,7 @@ ALTER TABLE `tbl_quiz`
 -- AUTO_INCREMENT for table `tbl_quizattempt`
 --
 ALTER TABLE `tbl_quizattempt`
-  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `tbl_quizquestions`
@@ -583,7 +615,7 @@ ALTER TABLE `tbl_quizquestions`
 -- AUTO_INCREMENT for table `tbl_quizresponses`
 --
 ALTER TABLE `tbl_quizresponses`
-  MODIFY `response_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `response_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
 
 --
 -- AUTO_INCREMENT for table `tbl_studentclasses`
