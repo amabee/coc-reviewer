@@ -159,7 +159,8 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 buttons: [{
                     text: 'Add Faculty User',
                     action: function(e, dt, node, config) {
-                        alert('Button Clicked');
+                        var addFacultyModal = new bootstrap.Modal(document.getElementById('addFacultyModal'));
+                        addFacultyModal.show();
                     }
                 }]
             });

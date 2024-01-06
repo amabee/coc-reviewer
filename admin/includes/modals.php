@@ -1,6 +1,5 @@
 <!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -20,8 +19,7 @@
 
 
 <!-- Add Student Modal -->
-<div class="modal fade" data-backdrop="static" id="addStudentModal" tabindex="-1" role="dialog"
-    aria-labelledby="addStudentModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" id="addStudentModal" tabindex="-1" role="dialog" aria-labelledby="addStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -68,8 +66,7 @@
                     <div class="form-group">
                         <label for="excelFile">Upload Excel File</label>
                         <input type="file" class="d-none" id="excelFile" name="excelFile" accept=".xls, .xlsx">
-                        <button type="button" class="btn btn-primary"
-                            onclick="document.getElementById('excelFile').click()">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('excelFile').click()">
                             <span id="excelFileLabel">Click to Upload Excel File</span>
                         </button>
                     </div>
@@ -85,8 +82,7 @@
 </div>
 
 <!-- Update Student Modal -->
-<div class="modal fade" data-backdrop="static" id="updateStudentModal" tabindex="-1" role="dialog"
-    aria-labelledby="updateStudentModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" id="updateStudentModal" tabindex="-1" role="dialog" aria-labelledby="updateStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -138,8 +134,7 @@
 
 
 <!-- Add Teacher Modal -->
-<div class="modal fade" data-backdrop="static" id="addTeacherModal" tabindex="-1" role="dialog"
-    aria-labelledby="addTeacherModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" id="addTeacherModal" tabindex="-1" role="dialog" aria-labelledby="addTeacherModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -186,8 +181,7 @@
 
 <!-- TEACHER PROFILE MODAL -->
 
-<div class="modal fade" id="teacherProfileModal" tabindex="-1" role="dialog" aria-labelledby="teacherProfileModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="teacherProfileModal" tabindex="-1" role="dialog" aria-labelledby="teacherProfileModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -207,8 +201,7 @@
 </div>
 
 <!-- Add Section Modal -->
-<div class="modal fade" data-backdrop="static" id="addSectionModal" tabindex="-1" role="dialog"
-    aria-labelledby="addSectionModalLabel" aria-hidden="true">
+<div class="modal fade" data-backdrop="static" id="addSectionModal" tabindex="-1" role="dialog" aria-labelledby="addSectionModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -234,7 +227,7 @@
                             $availableTeachers = $stmtTeachers->fetchAll(PDO::FETCH_ASSOC);
                             ?>
                             <option value="" disabled selected>-- SELECT TEACHER --</option>
-                            <?php foreach ($availableTeachers as $teacher): ?>
+                            <?php foreach ($availableTeachers as $teacher) : ?>
                                 <option value="<?php echo $teacher['teacher_id']; ?>">
                                     <?php echo $teacher['firstname'] . ' ' . $teacher['lastname']; ?>
                                 </option>
@@ -246,6 +239,55 @@
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                 <button class="btn btn-primary" type="button" id="addSectionBtn">Add Section</button>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL FOR ADDING FACULTY PERSONEL -->
+<div class="modal fade" data-backdrop="static" id="addFacultyModal"  tabindex="-1" role="dialog" aria-labelledby="addFacultyModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFacultyModalLabel">Add New Faculty User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addFacultyForm">
+                    <div class="form-group">
+                        <label for="facultyId">Faculty ID</label>
+                        <input type="text" class="form-control" id="facultyId" name="facultyId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="facultyFirstName">Faculty Firstname</label>
+                        <input type="text" class="form-control" id="facultyFirstName" name="facultyFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="facultyLastName">Faculty Lastname</label>
+                        <input type="text" class="form-control" id="facultyLastName" name="facultyLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select class="form-control" id="gender" name="gender" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="addFaculty()">Add Faculty</button>
             </div>
         </div>
     </div>
