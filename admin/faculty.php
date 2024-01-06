@@ -81,7 +81,7 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <!-- Card Body -->
                                 <div class="card-body ">
                                     <div class="table-responsive ">
-                                        <table class="table table-bordered" id="studentTable">
+                                        <table class="table table-bordered" id="facultyTable">
                                             <thead>
                                                 <tr>
                                                     <th>Faculty ID</th>
@@ -161,7 +161,7 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <script>
         $(document).ready(function () {
-            $('#studentTable').DataTable();
+            $('#facultyTable').DataTable();
         });
     </script>
 

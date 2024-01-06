@@ -2,7 +2,14 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include('../../includes/connection.php');
+session_start();
+require('../../includes/connection.php');
+
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
 
 function sanitizeInput($input)
 {

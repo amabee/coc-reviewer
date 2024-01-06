@@ -268,3 +268,66 @@ $(document).ready(function () {
     });
   });
 });
+
+// GET STUDENT DATA AND PASS TO MODAL
+function loadAndUpdateStudentData(studentId) {
+  $.ajax({
+    url: "queries/getStudentData.php",
+    method: "GET",
+    data: { student_id: studentId },
+    dataType: "json",
+    success: function (data) {
+      document.getElementById("updateStudentId").value = data.id;
+      document.getElementById("updateFirstName").value = data.firstname;
+      document.getElementById("updateLastName").value = data.lastname;
+      document.getElementById("updateEmail").value = data.email;
+      document.getElementById("updateStatus").value = data.isActive;
+      document.getElementById("updateStudentGender").value =
+        data.gender.toLowerCase();
+    },
+
+    error: function () {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to fetch student data.",
+      });
+    },
+  });
+}
+
+// UPDATE STUDENT INFORMATION
+$(document).ready(function () {
+  $("#updateStudentBtn").on("click", function () {
+    var formData = $("#updateStudentForm").serialize();
+
+    $.ajax({
+      url: "queries/updateStudent.php",
+      method: "POST",
+      data: formData,
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Student data updated successfully",
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Failed to update student data. Please try again.",
+          });
+        }
+      },
+      error: function () {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "An error occurred while processing your request.",
+        });
+      },
+    });
+  });
+});

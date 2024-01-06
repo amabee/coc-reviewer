@@ -112,7 +112,13 @@ $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <td>
                                                             <?php echo $student['email']; ?>
                                                         </td>
-                                                        <td><button class="btn btn-primary">Update</button></td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-info" data-toggle="modal"
+                                                                data-target="#updateStudentModal"
+                                                                data-student-id="<?php echo $student['id'] ?>"
+                                                                onclick="loadAndUpdateStudentData(this.getAttribute('data-student-id'))">Update</button>
+
+                                                        </td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>

@@ -84,6 +84,58 @@
     </div>
 </div>
 
+<!-- Update Student Modal -->
+<div class="modal fade" data-backdrop="static" id="updateStudentModal" tabindex="-1" role="dialog"
+    aria-labelledby="updateStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateStudentModalLabel">Update Student Information</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateStudentForm">
+                    <input type="hidden" id="updateStudentId" name="updateStudentId">
+
+                    <div class="form-group">
+                        <label for="updateFirstName">First Name</label>
+                        <input type="text" class="form-control" id="updateFirstName" name="updateFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateLastName">Last Name</label>
+                        <input type="text" class="form-control" id="updateLastName" name="updateLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateGender">Gender</label>
+                        <select name="updateGender" id="updateStudentGender" class="form-control" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateEmail">Email</label>
+                        <input type="email" class="form-control" id="updateEmail" name="updateEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateStatus">Active Status</label>
+                        <select name="updateStatus" class="form-control" id="updateStatus" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="button" id="updateStudentBtn">Update Student</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 <!-- Add Teacher Modal -->
 <div class="modal fade" data-backdrop="static" id="addTeacherModal" tabindex="-1" role="dialog"
