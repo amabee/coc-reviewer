@@ -10,29 +10,40 @@ if (isset($_COOKIE['teacher_id'])) {
 }
 
 if (isset($_POST['delete'])) {
-    $delete_id = $_POST['lesson_id'];
-    $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
+    try {
+        $delete_id = $_POST['lesson_id'];
+        $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
 
-    $verify_playlist = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE lesson_id = ? AND teacher_id = ? LIMIT 1");
-    $verify_playlist->execute([$delete_id, $teacher_id]);
+        $verify_playlist = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE lesson_id = ? AND teacher_id = ? LIMIT 1");
+        $verify_playlist->execute([$delete_id, $teacher_id]);
 
-    if ($verify_playlist->rowCount() > 0) {
+        if ($verify_playlist->rowCount() > 0) {
 
-        $delete_playlist_thumb = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE lesson_id = ? LIMIT 1");
-        $delete_playlist_thumb->execute([$delete_id]);
-        $fetch_thumb = $delete_playlist_thumb->fetch(PDO::FETCH_ASSOC);
-        unlink('../tmp/' . $fetch_thumb['thumb']);
-        $delete_bookmark = $conn->prepare("DELETE FROM `tbl_bookmark` WHERE lesson_id = ?");
-        $delete_bookmark->execute([$delete_id]);
-        $delete_playlist = $conn->prepare("DELETE FROM `tbl_lessons` WHERE lesson_id = ?");
-        $delete_playlist->execute([$delete_id]);
-        $message[] = 'lesson deleted!';
-    } else {
-        $message[] = 'lesson already deleted!';
+            $delete_playlist_thumb = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE lesson_id = ? LIMIT 1");
+            $delete_playlist_thumb->execute([$delete_id]);
+            $fetch_thumb = $delete_playlist_thumb->fetch(PDO::FETCH_ASSOC);
+
+            $thumb_path = '../tmp/' . $fetch_thumb['thumb'];
+            if (!file_exists($thumb_path) && !unlink($thumb_path)) {
+                $message[] = 'Error deleting lesson thumbnail file!';
+            }
+            $delete_bookmark = $conn->prepare("DELETE FROM `tbl_bookmark` WHERE lesson_id = ?");
+            $delete_bookmark->execute([$delete_id]);
+
+            $delete_playlist = $conn->prepare("DELETE FROM `tbl_lessons` WHERE lesson_id = ?");
+            $delete_playlist->execute([$delete_id]);
+            $message[] = 'Lesson deleted!';
+
+        } else {
+            $message[] = 'Lesson already deleted!';
+        }
+    } catch (PDOException $ex) {
+        $message[] = $ex->getMessage();
     }
-}
 
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +85,7 @@ if (isset($_POST['delete'])) {
             $countQuery = $conn->prepare("SELECT COUNT(*) FROM `tbl_lessons` WHERE teacher_id = ?");
             $countQuery->execute([$teacher_id]);
             $totalItems = $countQuery->fetchColumn();
-            
+
             $select_playlist = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE teacher_id = ? ORDER BY date DESC LIMIT $offset, $itemsPerPage");
             $select_playlist->execute([$teacher_id]);
 

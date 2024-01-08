@@ -289,6 +289,14 @@ $posttest_exists = $posttest_query->rowCount() > 0;
 
     <!-- custom js file link  -->
     <script src="../scripts/script.js"></script>
+    <script>
+        function setTempCookie(name, value) {
+            var expires = new Date();
+            expires.setTime(expires.getTime() + (1 * 60 * 1000));
+            document.cookie = name + '=' + value + ';expires=' + expires.toUTCString() + ';path=/';
+        }
+    </script>
+
 
 </body>
 

@@ -15,11 +15,13 @@ if (isset($_POST['submit'])) {
     $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
     $lessons = filter_var($_POST['lessons'], FILTER_SANITIZE_STRING);
     $quiz_type = filter_var($_POST['quiz_type'], FILTER_SANITIZE_STRING);
+    $numberOfItems = filter_var($_POST['numberOfItems'], FILTER_VALIDATE_INT);
+    $passingScore = filter_var($_POST['passingScore'], FILTER_VALIDATE_INT);
     $retryAfter = filter_var($_POST['retryAfter'], FILTER_VALIDATE_INT);
     $retryAfterSeconds = $retryAfter * 3600;
 
-    $add_quiz = $conn->prepare("INSERT INTO `tbl_quiz` (`lesson_id`, `quiz_title`, `quiz_description`, `quiz_type`, `retryAfter`, `quiz_created`, `status`) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
-    $add_quiz->execute([$lessons, $title, $description, $quiz_type, $retryAfterSeconds, $status]);
+    $add_quiz = $conn->prepare("INSERT INTO `tbl_quiz`(`lesson_id`, `status`, `quiz_title`, `quiz_description`, `quiz_type`, `numberOfItems`, `passingScore`, `retryAfter`, `quiz_created`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $add_quiz->execute([$lessons, $status, $title, $description, $quiz_type, $numberOfItems, $passingScore, $retryAfterSeconds]);
 
     $message[] = 'New quiz added!';
 }
@@ -90,23 +92,26 @@ if (isset($_POST['submit'])) {
                 <option value="pre-test">Pre-Test</option>
                 <option value="post-test">Post-Test</option>
             </select>
-            <p>If post-test failed, Retry After (in Hour): <span>*</span></p>
+            <p>Number of Items <span>*</span></p>
+            <input type="text" name="numberOfItems" id="numberOfItems" required placeholder="Enter number of items"
+                class="box">
 
-            <input type="text" name="retryAfter" id="retryAfter" required placeholder="Enter Retry Timer in Hour" class="box">
+            <p>Passing Score <span>*</span></p>
+            <input type="text" name="passingScore" id="passingScore" required placeholder="Enter passing score"
+                class="box">
+
+            <p>If post-test failed, Retry After (in Hour): <span>*</span></p>
+            <input type="text" name="retryAfter" id="retryAfter" required placeholder="Enter Retry Timer in Hour"
+                class="box">
             <input type="submit" value="Create Quiz" name="submit" class="btn">
 
         </form>
 
     </section>
     <script>
-        const input = document.getElementById('retryAfter');
-        const numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        input.addEventListener('keyup', function (event) {
-            if (numbers.indexOf(event.key) == -1) {
-                input.value = input.value.replace(/[^0-9]/g, '');
-            } 
-        });
+
     </script>
+
     <script src="../scripts/script.js"></script>
 
 

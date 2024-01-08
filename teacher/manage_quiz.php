@@ -34,6 +34,8 @@ if (isset($_POST['submit_update'])) {
     $description = filter_var($_POST['description'], FILTER_SANITIZE_STRING);
     $quiz_type = filter_var($_POST['quiz_type'], FILTER_SANITIZE_STRING);
     $retryAfter = filter_var($_POST['retryAfter'], FILTER_VALIDATE_INT);
+    $numberOfItems = filter_var($_POST['numberOfItems'], FILTER_VALIDATE_INT);
+    $passingScore = filter_var($_POST['passingScore'], FILTER_VALIDATE_INT);
 
     if (empty($status)) {
         $errors['status'] = "Quiz status is required";
@@ -53,14 +55,26 @@ if (isset($_POST['submit_update'])) {
 
     if ($retryAfter === false || $retryAfter < 0) {
         $errors['retryAfter'] = "Invalid Retry After value";
-    } else {
+    }
+
+    if ($numberOfItems === false || $numberOfItems <= 0) {
+        $errors['numberOfItems'] = "Invalid Number of Items value";
+    }
+
+    if ($passingScore === false || $passingScore < 0) {
+        $errors['passingScore'] = "Invalid Passing Score value";
+    }
+
+    if (empty($errors)) {
         $retryAfterSeconds = $_POST['retryAfter'];
 
-        $updateStmt = $conn->prepare("UPDATE tbl_quiz SET status = :status, quiz_title = :title, quiz_description = :description, quiz_type = :quiz_type, retryAfter = :retryAfter, last_updated = NOW() WHERE quiz_id = :quiz_id");
+        $updateStmt = $conn->prepare("UPDATE tbl_quiz SET status = :status, quiz_title = :title, quiz_description = :description, quiz_type = :quiz_type, numberOfItems = :numberOfItems, passingScore = :passingScore, retryAfter = :retryAfter, last_updated = NOW() WHERE quiz_id = :quiz_id");
         $updateStmt->bindParam(':status', $status, PDO::PARAM_STR);
         $updateStmt->bindParam(':title', $title, PDO::PARAM_STR);
         $updateStmt->bindParam(':description', $description, PDO::PARAM_STR);
         $updateStmt->bindParam(':quiz_type', $quiz_type, PDO::PARAM_STR);
+        $updateStmt->bindParam(':numberOfItems', $numberOfItems, PDO::PARAM_INT);
+        $updateStmt->bindParam(':passingScore', $passingScore, PDO::PARAM_INT);
         $updateStmt->bindParam(':retryAfter', $retryAfterSeconds, PDO::PARAM_INT);
         $updateStmt->bindParam(':quiz_id', $quiz_id, PDO::PARAM_INT);
 
@@ -73,11 +87,6 @@ if (isset($_POST['submit_update'])) {
         }
     }
 }
-
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -108,7 +117,7 @@ if (isset($_POST['submit_update'])) {
         <div class="box-container" style="grid-template-columns: repeat(auto-fit, 55rem);">
             <?php if ($quizDetails): ?>
                 <div class="box" id="boxbox" style="text-align: center;">
-                    <form action="" method="post" >
+                    <form action="" method="post">
                         <h3 class="title" style="margin-bottom: .5rem; font-size: 25px;">Update Quiz</h3>
 
                         <p>Quiz status <span>*</span></p>
@@ -159,6 +168,26 @@ if (isset($_POST['submit_update'])) {
                             </span>
                         <?php endif; ?>
 
+                        <p>Number of Items <span>*</span></p>
+                        <input type="text" name="numberOfItems" id="numberOfItems" required class="box"
+                            value="<?php echo $quizDetails['numberOfItems']; ?>">
+
+                        <?php if (!empty($errors['numberOfItems'])): ?>
+                            <span style="color: red;">
+                                <?php echo $errors['numberOfItems']; ?>
+                            </span>
+                        <?php endif; ?>
+
+                        <p>Passing Score <span>*</span></p>
+                        <input type="text" name="passingScore" id="passingScore" required class="box"
+                            value="<?php echo $quizDetails['passingScore']; ?>">
+
+                        <?php if (!empty($errors['passingScore'])): ?>
+                            <span style="color: red;">
+                                <?php echo $errors['passingScore']; ?>
+                            </span>
+                        <?php endif; ?>
+
                         <p>Quiz Retry Interval <span>*</span></p>
                         <input type="text" name="retryAfterDisplay" id="retryAfterDisplay" required
                             placeholder="enter Retry After (in hour format)" class="box"
@@ -170,6 +199,7 @@ if (isset($_POST['submit_update'])) {
                                 <?php echo $errors['retryAfter']; ?>
                             </span>
                         <?php endif; ?>
+
                         <input type="submit" value="Update Quiz" name="submit_update" class="btn">
                     </form>
                 </div>
@@ -261,7 +291,7 @@ if (isset($_POST['submit_update'])) {
                         <div class="table-container">
                             <table>
                                 <thead>
-                                    <tr style="font-size: 20px; align-item:center;" class="title">
+                                    <tr style="font-size: 20px; align-items:center;" class="title">
                                         <th>Question List:</th>
                                         <th class="action-header">Actions:</th>
                                     </tr>
@@ -279,7 +309,7 @@ if (isset($_POST['submit_update'])) {
                                             <td class="title">
                                                 <div class="question-container">
                                                     <p class="question" style="font-size: 30px;">
-                                                        <?= $counter++; ?>.)
+                                                        <?= $counter++; ?>.
                                                         <?php
                                                         $quizQuestion = $row['quiz_question'];
                                                         $brokenText = wordwrap($quizQuestion, 30, "<br />\n", true);
@@ -292,7 +322,7 @@ if (isset($_POST['submit_update'])) {
                                                     for ($optionNumber = 1; $optionNumber <= 4; $optionNumber++) {
                                                         $optionValue = $row['option_' . $optionNumber];
                                                         $isCorrect = ($optionValue == $row['correct_answer']);
-                                                        
+
                                                         $style = ($isCorrect) ? 'color: green; font-weight: bold;' : '';
                                                         echo '<li class="option" style="' . $style . '">-' . $row['option_' . $optionNumber] . '</li>';
                                                     }
@@ -467,7 +497,10 @@ if (isset($_POST['submit_update'])) {
                 alert('Please select the correct answer.');
                 return false;
             }
+
+            return true;
         }
+
 
         function submitQuestionForm() {
             var formData = new FormData(document.getElementById('questionForm'));

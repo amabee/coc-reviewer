@@ -9,31 +9,6 @@ if (isset($_SESSION['teacher_id'])) {
     header('location:index.php');
 }
 
-
-// if (isset($_POST['delete_material'])) {
-//     $delete_id = $_POST['material_id'];
-//     $delete_id = filter_var($delete_id, FILTER_SANITIZE_STRING);
-//     $verify_material = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE material_id = ? LIMIT 1");
-//     $verify_material->execute([$delete_id]);
-//     if ($verify_material->rowCount() > 0) {
-//         $delete_material_thumb = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE material_id = ? LIMIT 1");
-//         $delete_material_thumb->execute([$delete_id]);
-//         $fetch_thumb = $delete_material_thumb->fetch(PDO::FETCH_ASSOC);
-//         unlink('../tmp/' . $fetch_thumb['thumbnail']);
-//         $delete_material = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE material_id = ? LIMIT 1");
-//         $delete_material->execute([$delete_id]);
-//         $fetch_material = $delete_material->fetch(PDO::FETCH_ASSOC);
-//         unlink('../tmp/' . $fetch_material['file']);
-//         $delete_comments = $conn->prepare("DELETE FROM `tbl_comments` WHERE material_id = ?");
-//         $delete_comments->execute([$delete_id]);
-//         $delete_content = $conn->prepare("DELETE FROM `tbl_learningmaterials` WHERE material_id = ?");
-//         $delete_content->execute([$delete_id]);
-//         $message[] = 'material deleted!';
-//     } else {
-//         $message[] = 'material already deleted!';
-//     }
-// }
-
 ?>
 
 <!DOCTYPE html>
@@ -116,7 +91,7 @@ if (isset($_SESSION['teacher_id'])) {
                                 </span>
                             </div>
                         </div>
-                     
+
                         <h3 class="title">
                             <?= $fetch_quizzes['quiz_title']; ?>
                         </h3>

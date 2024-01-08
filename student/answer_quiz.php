@@ -24,7 +24,7 @@ $checkAttemptStatement->execute([$quizId, $studentId]);
 $lastAttemptStatus = $checkAttemptStatement->fetchColumn();
 $selExamTimeLimit = 1;
 
-$totalScoreStatement = $conn->prepare("SELECT COUNT(correct_answer) AS total_score FROM tbl_quizquestions WHERE quiz_id = ?");
+$totalScoreStatement = $conn->prepare("SELECT numberOfItems AS total_score FROM tbl_quiz WHERE quiz_id = ?");
 $totalScoreStatement->execute([$quizId]);
 $totalScore = $totalScoreStatement->fetchColumn();
 
@@ -38,7 +38,12 @@ if ($lastAttemptStatus == 'completed') {
     $_SESSION['total_score'] = $totalScore;
     $_SESSION['quiz_score'] = $lastAttemptScore;
 
-    header('Location: success.php');
+    header('Location: misc/success.php');
+    exit();
+}
+
+if ($selExam['quiz_type'] === 'post-test' && $lastAttemptStatus == 'failed') {
+    header('Location: misc/retry_later.php');
     exit();
 }
 
@@ -47,33 +52,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $quizId = isset($_POST['exam_id']) ? $_POST['exam_id'] : null;
     $studentId = $_SESSION['user_id'];
     $attemptScore = 0;
+    $attempt_count = 1;
 
     foreach ($_POST['responses'] as $questionId => $pickedResponse) {
-
         $correctAnswerStatement = $conn->prepare("SELECT correct_answer FROM tbl_quizquestions WHERE question_id = ?");
         $correctAnswerStatement->execute([$questionId]);
         $correctAnswer = $correctAnswerStatement->fetchColumn();
-
 
         if ($pickedResponse == $correctAnswer) {
             $attemptScore++;
         }
 
-
         $insertResponseStatement = $conn->prepare("INSERT INTO tbl_quizresponses (quiz_id, question_id, student_id, picked_response) VALUES (?, ?, ?, ?)");
         $insertResponseStatement->execute([$quizId, $questionId, $studentId, $pickedResponse]);
     }
 
-    $insertAttemptStatement = $conn->prepare("INSERT INTO tbl_quizattempt (quiz_id, student_id, attempt_status, attempt_score) VALUES (?, ?, 'completed', ?)");
-    $insertAttemptStatement->execute([$quizId, $studentId, $attemptScore]);
+    $insertAttemptStatement = $conn->prepare("INSERT INTO tbl_quizattempt (quiz_id, student_id, attempt_status, attempt_score, attempt_count) VALUES (?, ?, 'completed', ?, ?)");
+    $insertAttemptStatement->execute([$quizId, $studentId, $attemptScore, $attempt_count]);
 
     $_SESSION['quiz_score'] = $attemptScore;
     $_SESSION['total_score'] = $totalScore;
 
-    header('Location: success.php');
+    header('Location: misc/success.php');
     exit();
 }
 ?>
+
 
 
 <!DOCTYPE html>
@@ -139,7 +143,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="hidden" name="examAction" id="examAction">
                     <div class="question-container">
                         <?php
-                        $selQuestStatement = $conn->prepare("SELECT * FROM tbl_quizquestions WHERE quiz_id = ? ORDER BY rand()");
+                        $selQuestionLimit = $conn->prepare("SELECT numberOfItems FROM tbl_quiz WHERE quiz_id = ?");
+                        $selQuestionLimit->execute([$quizId]);
+                        $limit = $selQuestionLimit->fetchColumn();
+
+                        $selQuestStatement = $conn->prepare("SELECT * FROM tbl_quizquestions WHERE quiz_id = ? ORDER BY rand() LIMIT $limit");
                         $selQuestStatement->execute([$quizId]);
 
                         if ($selQuestStatement->rowCount() > 0) {
