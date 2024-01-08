@@ -200,74 +200,74 @@ $posttest_exists = $posttest_query->rowCount() > 0;
     <!-- lessons section ends -->
 
     <!-- materials container section starts  -->
-
     <section class="videos-container">
-
         <h1 class="heading">Lesson Materials</h1>
         <div class="box-container">
 
-
             <?php
             // START Pre-test section
-            
+            $pretest_query = $conn->prepare("SELECT * FROM tbl_quiz WHERE lesson_id = ? AND quiz_type = 'pre-test' AND status = 'active'");
+            $pretest_query->execute([$get_id]);
+            $pretest_exists = $pretest_query->rowCount() > 0;
+
             if ($pretest_exists) {
-                while ($fetch_pretest = $pretest_query->fetch(PDO::FETCH_ASSOC)) {
+                $fetch_pretest = $pretest_query->fetch(PDO::FETCH_ASSOC);
+                $pretest_id = $fetch_pretest['quiz_id'];
+
+                $pretest_attempt_query = $conn->prepare("SELECT * FROM tbl_quizattempt WHERE student_id = ? AND quiz_id = ? AND attempt_status = 'completed'");
+                $pretest_attempt_query->execute([$user_id, $pretest_id]);
+                $pretest_attempt_completed = $pretest_attempt_query->rowCount() > 0;
+
+                if (!$pretest_attempt_completed) {
                     ?>
-                    <!-- <a href="take_quiz.php?quiz_id=<?= $fetch_pretest['quiz_id']; ?>" class="box"
-                        onclick="setTempCookie('quiz_id', <?= $fetch_pretest['quiz_id']; ?>)">
-                        <h3>
-                            <?= $fetch_pretest['quiz_title']; ?>
-                        </h3>
-                    </a> -->
-
-
-
-                    <a href="take_quiz.php" class="box" onclick="setTempCookie('quiz_id', <?= $fetch_pretest['quiz_id']; ?>)">
+                    <a href="take_quiz.php" class="box" onclick="setTempCookie('quiz_id', <?= $pretest_id; ?>)">
                         <h3>
                             <?= $fetch_pretest['quiz_title']; ?>
                         </h3>
                     </a>
                     <?php
-                }
-            }
-            // END Pre-test section
-            
-            // Reading materials section
-            $select_content = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE lesson_id = ? AND status = ? ORDER BY date_created DESC");
-            $select_content->execute([$get_id, 'active']);
-            if ($select_content->rowCount() > 0) {
-                while ($fetch_content = $select_content->fetch(PDO::FETCH_ASSOC)) {
+                } else {
                     ?>
-                    <a href="view_material.php?get_id=<?= $fetch_content['material_id']; ?>" class="box"
-                        onclick="setTempCookie('get_id', <?= $fetch_content['material_id']; ?>)">
-                        <i class="fa-solid fa-eye"></i>
-                        <img src="../tmp/<?= $fetch_content['thumbnail']; ?>" alt="">
+                    <a href="take_quiz.php" class="box" onclick="setTempCookie('quiz_id', <?= $pretest_id; ?>)">
                         <h3>
-                            <?= $fetch_content['material_title']; ?>
+                            <?= $fetch_pretest['quiz_title']; ?>
                         </h3>
                     </a>
-
-                    <script>
-                        function setTempCookie(cookieName, cookieValue) {
-                            document.cookie = cookieName + '=' + cookieValue + '; path=/';
-                        }
-                    </script>
                     <?php
                 }
             } else {
-                echo '<p class="empty">no materials added yet!</p>';
+                echo '<p class="empty">Pre-test not available. Materials section disabled.</p>';
+            }
+            // END Pre-test section
+            
+            // Display Reading materials section only if pre-test exists and attempt is completed
+            if ($pretest_exists && $pretest_attempt_completed) {
+                $select_content = $conn->prepare("SELECT * FROM `tbl_learningmaterials` WHERE lesson_id = ? AND status = ? ORDER BY date_created DESC");
+                $select_content->execute([$get_id, 'active']);
+                if ($select_content->rowCount() > 0) {
+                    while ($fetch_content = $select_content->fetch(PDO::FETCH_ASSOC)) {
+                        ?>
+                        <a href="view_material.php?get_id=<?= $fetch_content['material_id']; ?>" class="box"
+                            onclick="setTempCookie('get_id', <?= $fetch_content['material_id']; ?>)">
+                            <i class="fa-solid fa-eye"></i>
+                            <img src="../tmp/<?= $fetch_content['thumbnail']; ?>" alt="">
+                            <h3>
+                                <?= $fetch_content['material_title']; ?>
+                            </h3>
+                        </a>
+                        <?php
+                    }
+                } else {
+                    echo '<p class="empty">no materials added yet!</p>';
+                }
+            } else {
+                echo '<p class="empty">Please take the pre-test first before accessing the reading materials!</p>';
             }
 
-            // END OF READING MATERIALS
-            
             // POST-TEST AREA
-            if ($posttest_exists) {
-
+            if ($posttest_exists && $pretest_attempt_completed) {
                 while ($fetch_postest = $posttest_query->fetch(PDO::FETCH_ASSOC)) {
                     ?>
-                    <!-- IN CASE OF ERROR LMAO! -->
-                    <!-- <a  href="take_quiz.php?quiz_id=<?= $fetch_postest['quiz_id']; ?>" class="box"></a> -->
-
                     <a href="take_quiz.php" class="box" onclick="setTempCookie('quiz_id', <?= $fetch_postest['quiz_id']; ?>)">
                         <h3>
                             <?= $fetch_postest['quiz_title']; ?>
@@ -275,16 +275,13 @@ $posttest_exists = $posttest_query->rowCount() > 0;
                     </a>
                     <?php
                 }
-
+            } else {
+                echo '<p class=empty>Post Test Not available right now.</p>';
             }
             // END POST-TEST AREA
             ?>
-
         </div>
-
     </section>
-
-
     <!-- videos container section ends -->
 
     <!-- custom js file link  -->
