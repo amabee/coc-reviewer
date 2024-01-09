@@ -24,10 +24,11 @@ $checkAttemptStatement->execute([$quizId, $studentId]);
 $lastAttemptStatus = $checkAttemptStatement->fetchColumn();
 $selExamTimeLimit = 1;
 
-$totalScoreStatement = $conn->prepare("SELECT numberOfItems AS total_score FROM tbl_quiz WHERE quiz_id = ?");
+$totalScoreStatement = $conn->prepare("SELECT numberOfItems AS total_score, quiz_type, passingScore FROM tbl_quiz WHERE quiz_id = ?");
 $totalScoreStatement->execute([$quizId]);
-$totalScore = $totalScoreStatement->fetchColumn();
-
+$quizDetails = $totalScoreStatement->fetch(PDO::FETCH_ASSOC);
+$totalScore = $quizDetails['total_score'];
+$passingScore = $quizDetails['passingScore'];
 
 if ($lastAttemptStatus == 'completed') {
 
@@ -46,7 +47,6 @@ if ($selExam['quiz_type'] === 'post-test' && $lastAttemptStatus == 'failed') {
     header('Location: misc/retry_later.php');
     exit();
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $quizId = isset($_POST['exam_id']) ? $_POST['exam_id'] : null;
@@ -67,6 +67,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $insertResponseStatement->execute([$quizId, $questionId, $studentId, $pickedResponse]);
     }
 
+    if ($selExam['quiz_type'] === 'post-test') {
+        if ($attemptScore < $passingScore) {
+            $insertAttemptStatement = $conn->prepare("INSERT INTO tbl_quizattempt (quiz_id, student_id, attempt_status, attempt_score, attempt_count) VALUES (?, ?, 'failed', ?, ?)");
+        } else {
+            $insertAttemptStatement = $conn->prepare("INSERT INTO tbl_quizattempt (quiz_id, student_id, attempt_status, attempt_score, attempt_count) VALUES (?, ?, 'completed', ?, ?)");
+        }
+
+        $insertAttemptStatement->execute([$quizId, $studentId, $attemptScore, $attempt_count]);
+
+        $_SESSION['quiz_score'] = $attemptScore;
+        $_SESSION['total_score'] = $totalScore;
+
+        header('Location: materials.php');
+        exit();
+    }
+
     $insertAttemptStatement = $conn->prepare("INSERT INTO tbl_quizattempt (quiz_id, student_id, attempt_status, attempt_score, attempt_count) VALUES (?, ?, 'completed', ?, ?)");
     $insertAttemptStatement->execute([$quizId, $studentId, $attemptScore, $attempt_count]);
 
@@ -77,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 ?>
+
 
 
 
