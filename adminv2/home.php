@@ -19,7 +19,6 @@ if (!isset($_SESSION['admin_id']) && $_SESSION['loggedin'] != true) {
 
     <!-- MY STYLE -->
     <link rel="stylesheet" href="styles/style.css">
-
     <title>COC REVIEWER - ADMIN</title>
 </head>
 
@@ -50,5 +49,8 @@ if (!isset($_SESSION['admin_id']) && $_SESSION['loggedin'] != true) {
 
 <!-- THE OWN JS -->
 <script src="js/script.js"></script>
+
+<!-- sweet alert  -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </html>
