@@ -1,0 +1,42 @@
+const allSideMenu = document.querySelectorAll("#sidebar .side-menu.top li a");
+
+allSideMenu.forEach((item) => {
+  const li = item.parentElement;
+
+  item.addEventListener("click", function () {
+    allSideMenu.forEach((i) => {
+      i.parentElement.classList.remove("active");
+    });
+    li.classList.add("active");
+  });
+});
+
+// TOGGLE SIDEBAR
+const menuBar = document.querySelector("#content nav .bx.bx-menu");
+const sidebar = document.getElementById("sidebar");
+
+menuBar.addEventListener("click", function () {
+  sidebar.classList.toggle("hide");
+});
+
+if (window.innerWidth < 768) {
+  sidebar.classList.add("hide");
+}
+
+const switchMode = document.getElementById("switch-mode");
+
+switchMode.addEventListener("change", function () {
+  const modeIcon = document.getElementById("modeIcon");
+
+  if (this.checked) {
+    // Night mode
+    document.body.classList.add("dark");
+    modeIcon.classList.remove("bxs-sun");
+    modeIcon.classList.add("bxs-moon");
+  } else {
+    // Day mode
+    document.body.classList.remove("dark");
+    modeIcon.classList.remove("bxs-moon");
+    modeIcon.classList.add("bxs-sun");
+  }
+});

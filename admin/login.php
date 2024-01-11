@@ -35,8 +35,8 @@ try {
     die("Oops! Something went wrong during login. Please try again later.");
 }
 
-if(isset($_SESSION['admin_id'] ) && isset($_SESSION['loggedin'])){
-header('Location: index.php');
+if (isset($_SESSION['admin_id']) && isset($_SESSION['loggedin'])) {
+    header('Location: index.php');
 }
 ?>
 
@@ -56,7 +56,9 @@ header('Location: index.php');
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -71,7 +73,7 @@ header('Location: index.php');
                 <div class="card o-hidden border-0 shadow-lg my-5">
                     <div class="card-body p-0">
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <!-- <div class="col-lg-6 d-none d-lg-block bg-login-image"></div> -->
                             <div class="col-lg-6 h-100">
                                 <div class="p-5 ">
                                     <div class="text-center">
@@ -79,10 +81,14 @@ header('Location: index.php');
                                     </div>
                                     <form class="user" action="login.php" method="post">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user" name="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." required>
+                                            <input type="email" class="form-control form-control-user" name="email"
+                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                                placeholder="Enter Email Address..." required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Password" required>
+                                            <input type="password" class="form-control form-control-user"
+                                                name="password" id="exampleInputPassword" placeholder="Password"
+                                                required>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -98,7 +104,9 @@ header('Location: index.php');
 
                                     </form>
                                     <hr>
-                                    <span class="text-center" style="display: block; color: red;"><?php echo $message; ?></span>
+                                    <span class="text-center" style="display: block; color: red;">
+                                        <?php echo $message; ?>
+                                    </span>
                                 </div>
                             </div>
                         </div>
