@@ -46,7 +46,7 @@
     </div>
 
 
-    <!-- MODAL START -->
+    <!-- ADD MODAL START -->
     <div id="addStudentModal" class="modal">
         <div class="modal-overlay"></div>
         <div class="modal-content">
@@ -59,29 +59,29 @@
 
                 <div class="form-group">
                     <label for="student_id">Student ID:</label>
-                    <input type="text" class="form-control" id="studentId" name="studentId" required>
+                    <input type="text" class="form-control" id="studentId" name="studentId">
                 </div>
 
                 <div class="form-group">
                     <label for="firstname">Firstname:</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                    <input type="text" class="form-control" id="firstName" name="firstName">
                 </div>
 
                 <div class="form-group">
                     <label for="lastname">Lastname:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                    <input type="text" class="form-control" id="lastName" name="lastName">
                 </div>
                 <div class="form-group">
                     <label for="gender">Gender:</label>
-                    <select name="gender" id="pickgender" class="form-control" required>
+                    <select name="gender" id="pickgender" class="form-control">
                         <option value="" selected disabled>-- Select Gender --</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <input type="email" class="form-control" id="email" name="email">
                 </div>
                 <p style="text-align: center;">------------------ OR ADD BY BATCH ----------------------</p>
 
@@ -98,15 +98,63 @@
             </form>
         </div>
     </div>
-    <!-- MODAL END -->
+    <!-- ADD MODAL END -->
+
+    <!-- UPDATE MODAL START -->
+    <div id="updateStudentModal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <h5 class="modal-title">Add Student</h5>
+            </div>
+            <hr style="margin-bottom:10px;">
+            <form id="updateStudentForm" method="POST">
+
+                <div class="form-group">
+                    <label for="student_id">Student ID:</label>
+                    <input type="text" class="form-control" id="studentId" name="studentId">
+                </div>
+
+                <div class="form-group">
+                    <label for="firstname">Firstname:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName">
+                </div>
+
+                <div class="form-group">
+                    <label for="lastname">Lastname:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender:</label>
+                    <select name="gender" id="pickgender" class="form-control">
+                        <option value="" selected disabled>-- Select Gender --</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                </div>
+                <p style="text-align: center;">---------------------------------------------------------</p>
+                <div class="btn-container">
+                    <button type="button" class="btn-cancel btn-danger" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Student</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+    <!-- UPDATE MODAL END -->
+
 
 </main>
 <!-- MAIN -->
-
+<!-- student modal -->
+<script src="js/student-modal.js"></script>
 <!-- JS AND JQUERY FOR PAGINATION -->
 <script src="js/student-datatable-pagination.js"></script>
-<script src="js/student-modal.js"></script>
-
 
 <!-- sweet alert  -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $lastName = isset($_POST['lastName']) ? sanitizeInput($_POST['lastName']) : null;
         $gender = isset($_POST['gender']) ? sanitizeInput($_POST['gender']) : null;
         $email = isset($_POST['email']) ? sanitizeInput($_POST['email']) : null;
-        // Provide a default image if not set
         $image = isset($_POST['image']) ? sanitizeInput($_POST['image']) : "default.png";
         if ($studentId === null || $firstName === null || $lastName === null || $gender === null || $email === null) {
             echo json_encode(['error' => 'Invalid input data']);

@@ -35,9 +35,9 @@ foreach ($students as $student) {
     $rowsHtml .= '</td>
 
     <td>
-    <button type="button" class="btn-primary">Update</button>
-    <button type="button" class="btn-danger">Remove</button>
-</td>
+        <button type="button" class="updateStudentBtn btn-primary">Update</button>
+        <button type="button" class="btn-danger">Remove</button>
+    </td>
           </tr>
           ';
 }

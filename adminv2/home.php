@@ -50,7 +50,5 @@ if (!isset($_SESSION['admin_id']) && $_SESSION['loggedin'] != true) {
 <!-- THE OWN JS -->
 <script src="js/script.js"></script>
 
-<!-- sweet alert  -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </html>
