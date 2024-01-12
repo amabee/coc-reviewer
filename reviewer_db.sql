@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2024 at 01:13 PM
+-- Generation Time: Jan 12, 2024 at 12:51 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -42,6 +42,39 @@ CREATE TABLE `tbl_admin` (
 
 INSERT INTO `tbl_admin` (`admin_id`, `firstname`, `lastname`, `email`, `password`, `image`) VALUES
 ('0101-5552-4177', 'Minji', 'Kim', 'admin_mail@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '1.gif');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_audit`
+--
+
+CREATE TABLE `tbl_audit` (
+  `id` int(11) NOT NULL,
+  `action` text NOT NULL,
+  `table_name` varchar(200) NOT NULL,
+  `log_message` text NOT NULL,
+  `student_id` varchar(50) DEFAULT NULL,
+  `teacher_id` varchar(50) DEFAULT NULL,
+  `admin_id` varchar(50) DEFAULT NULL,
+  `dean_id` varchar(50) DEFAULT NULL,
+  `ph_id` varchar(50) DEFAULT NULL,
+  `timestamp` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tbl_audit`
+--
+
+INSERT INTO `tbl_audit` (`id`, `action`, `table_name`, `log_message`, `student_id`, `teacher_id`, `admin_id`, `dean_id`, `ph_id`, `timestamp`) VALUES
+(70, 'Update', 'tbl_teachers', 'Changed status from \'active\' to \'inactive\'', NULL, '02-2324-03958', '0101-5552-4177', NULL, NULL, '2024-01-12 08:07:01'),
+(71, 'Update', 'tbl_teachers', 'Changed status from \'active\' to \'inactive\'', NULL, '02-2324-03957', '0101-5552-4177', NULL, NULL, '2024-01-12 08:07:03'),
+(72, 'Update', 'tbl_teachers', 'Changed status from \'active\' to \'inactive\'', NULL, '02-2324-03956', '0101-5552-4177', NULL, NULL, '2024-01-12 08:07:05'),
+(73, 'Update', 'tbl_teachers', 'Changed status from \'active\' to \'inactive\'', NULL, '02-2324-03955', '0101-5552-4177', NULL, NULL, '2024-01-12 08:07:06'),
+(74, 'Update', 'tbl_teachers', 'Changed status from \'inactive\' to \'active\'', NULL, '02-2324-03955', '0101-5552-4177', NULL, NULL, '2024-01-12 08:07:13'),
+(75, 'Update', 'tbl_teachers', 'Changed status from \'inactive\' to \'active\'', NULL, '02-2324-03956', '0101-5552-4177', NULL, NULL, '2024-01-12 08:07:14'),
+(76, 'Update', 'tbl_teachers', 'Changed status from \'inactive\' to \'active\'', NULL, '02-2324-03957', '0101-5552-4177', NULL, NULL, '2024-01-12 08:07:16'),
+(77, 'Update', 'tbl_teachers', 'Changed status from \'inactive\' to \'active\'', NULL, '02-2324-03958', '0101-5552-4177', NULL, NULL, '2024-01-12 08:07:18');
 
 -- --------------------------------------------------------
 
@@ -94,9 +127,8 @@ CREATE TABLE `tbl_classlessons` (
 --
 
 INSERT INTO `tbl_classlessons` (`classlesson_id`, `section_name`, `lesson_id`) VALUES
-(4, 'CRIM-02A', 27),
-(5, 'CRIM-02B', 27),
-(6, 'CRIM-02B', 28);
+(10, 'CRIM-02A', 31),
+(11, 'CRIM-02B', 31);
 
 -- --------------------------------------------------------
 
@@ -112,13 +144,6 @@ CREATE TABLE `tbl_comments` (
   `comment` varchar(500) NOT NULL,
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tbl_comments`
---
-
-INSERT INTO `tbl_comments` (`comment_id`, `material_id`, `user_id`, `teacher_id`, `comment`, `date`) VALUES
-(12, 19, '02-1234-5678', '02-1920-03954', 'alert(1)', '2023-11-24 11:15:28');
 
 -- --------------------------------------------------------
 
@@ -147,22 +172,6 @@ INSERT INTO `tbl_dean` (`dean_id`, `firstname`, `middlename`, `lastname`, `gende
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_faculty`
---
-
-CREATE TABLE `tbl_faculty` (
-  `faculty_id` varchar(50) NOT NULL,
-  `faculty_firstname` varchar(50) NOT NULL,
-  `faculty_lastname` varchar(50) NOT NULL,
-  `gender` varchar(20) NOT NULL,
-  `email` varchar(150) NOT NULL,
-  `password` varchar(200) NOT NULL,
-  `isActive` varchar(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `tbl_learningmaterials`
 --
 
@@ -182,8 +191,7 @@ CREATE TABLE `tbl_learningmaterials` (
 --
 
 INSERT INTO `tbl_learningmaterials` (`material_id`, `lesson_id`, `material_title`, `material_description`, `file`, `thumbnail`, `date_created`, `status`) VALUES
-(19, 27, 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 1', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 1', '24112023031917.pdf', '24112023031917.png', '2023-11-24', 'active'),
-(20, 27, 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 2', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 2', '19122023052729.pdf', '19122023052729.png', '2023-12-19', 'active');
+(21, 31, 'Intro to lea chapter 1', 'Intro to lea chapter 1', '08012024171531.pdf', '08012024171531.jpg', '2024-01-09', 'active');
 
 -- --------------------------------------------------------
 
@@ -207,8 +215,23 @@ CREATE TABLE `tbl_lessons` (
 --
 
 INSERT INTO `tbl_lessons` (`lesson_id`, `category_id`, `teacher_id`, `lesson_title`, `lesson_desc`, `thumb`, `date`, `status`) VALUES
-(27, 2, '02-1920-03954', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 1', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION', '24112023031707.png', '2023-11-24', 'active'),
-(28, 2, '02-1920-03954', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 2', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 2', '27112023040911.png', '2023-11-27', 'active');
+(31, 2, '02-1920-03954', 'Intro to lea', 'Intro to lea', '08012024073525.jpg', '2024-01-08', 'active');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_program_head`
+--
+
+CREATE TABLE `tbl_program_head` (
+  `faculty_id` varchar(50) NOT NULL,
+  `faculty_firstname` varchar(50) NOT NULL,
+  `faculty_lastname` varchar(50) NOT NULL,
+  `gender` varchar(20) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `password` varchar(200) NOT NULL,
+  `isActive` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -223,6 +246,8 @@ CREATE TABLE `tbl_quiz` (
   `quiz_title` text NOT NULL,
   `quiz_description` text NOT NULL,
   `quiz_type` varchar(100) NOT NULL,
+  `numberOfItems` int(11) NOT NULL,
+  `passingScore` int(11) NOT NULL,
   `retryAfter` int(11) NOT NULL,
   `quiz_created` datetime NOT NULL,
   `last_updated` datetime NOT NULL
@@ -232,9 +257,9 @@ CREATE TABLE `tbl_quiz` (
 -- Dumping data for table `tbl_quiz`
 --
 
-INSERT INTO `tbl_quiz` (`quiz_id`, `lesson_id`, `status`, `quiz_title`, `quiz_description`, `quiz_type`, `retryAfter`, `quiz_created`, `last_updated`) VALUES
-(1, 27, 'active', 'INTRODUCTION TO LAW ENFORCEMENT ADMINISTRATION Chapter 1 PRE-TEST', 'Do you love newjeans?', 'pre-test', 7200, '2023-12-18 18:20:09', '2023-12-25 10:25:53'),
-(4, 27, 'active', 'INTRODUCTION TO NEW JEANS POST-TEST', 'INTRODUCTION TO NEW JEANS Chapter 1 POST-TEST', 'post-test', 10800, '2023-12-19 13:33:26', '2023-12-26 13:08:13');
+INSERT INTO `tbl_quiz` (`quiz_id`, `lesson_id`, `status`, `quiz_title`, `quiz_description`, `quiz_type`, `numberOfItems`, `passingScore`, `retryAfter`, `quiz_created`, `last_updated`) VALUES
+(5, 31, 'active', 'Intro to lea Pre-test', 'wtf?', 'pre-test', 10, 5, 3600, '2024-01-08 14:35:47', '2024-01-08 18:00:22'),
+(6, 31, 'active', 'Intro to lea Post-test', 'Intro to lea Post-test', 'post-test', 10, 5, 3600, '2024-01-08 14:40:54', '2024-01-08 18:02:05');
 
 -- --------------------------------------------------------
 
@@ -247,15 +272,17 @@ CREATE TABLE `tbl_quizattempt` (
   `quiz_id` int(11) NOT NULL,
   `student_id` varchar(50) NOT NULL,
   `attempt_status` varchar(50) NOT NULL,
-  `attempt_score` int(11) NOT NULL
+  `attempt_score` int(11) NOT NULL,
+  `attempt_count` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_quizattempt`
 --
 
-INSERT INTO `tbl_quizattempt` (`attempt_id`, `quiz_id`, `student_id`, `attempt_status`, `attempt_score`) VALUES
-(27, 4, '02-1234-5678', 'completed', 2);
+INSERT INTO `tbl_quizattempt` (`attempt_id`, `quiz_id`, `student_id`, `attempt_status`, `attempt_score`, `attempt_count`) VALUES
+(42, 5, '02-1234-5678', 'completed', 1, 1),
+(48, 6, '02-1234-5678', 'failed', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -279,13 +306,18 @@ CREATE TABLE `tbl_quizquestions` (
 --
 
 INSERT INTO `tbl_quizquestions` (`question_id`, `quiz_id`, `quiz_question`, `option_1`, `option_2`, `option_3`, `option_4`, `correct_answer`) VALUES
-(30, 4, 'Is Minji Cute?', 'Yes', 'No', 'Maybe', 'I don&#39;t know', 'Yes'),
-(31, 4, 'Who is Paul&#39;s bias in New Jeans?', 'Hanni Pham', 'Minji Kim', 'Danielle Marsh', 'Haerin Kang', 'Hanni Pham'),
-(32, 4, 'Who has the representative color of yellow?', 'Hanni Pham', 'Minji Kim', 'Danielle Marsh', 'Haerin Kang', 'Minji Kim'),
-(33, 4, 'If given a chance, Who would like to go out on a date with?', 'Hanni Pham', 'Minji Kim', 'Danielle Marsh', 'Haerin Kang', 'Minji Kim'),
-(35, 4, 'What is Hye In&#39;s lastname?', 'Park', 'Kim', 'Hyun', 'Lee', 'Lee'),
-(36, 4, 'What is Minji&#39;s lastname?', 'Park', 'Kim', 'Hyun', 'Lee', 'Kim'),
-(37, 4, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'Park', 'Kim', 'Hyun', 'Lee', 'Hyun');
+(38, 5, 'Why Minji?', 'Cute', 'Gorgeous', 'Nice', 'Sexy', 'Gorgeous'),
+(39, 6, 'Is Minji Cute?', 'Yes', 'No', 'Maybe', 'Dunno', 'Yes'),
+(40, 6, 'Who is newjeans&#39; leader?', 'Haerin', 'Hye In', 'Danielle', 'Minji', 'Minji'),
+(41, 6, '1+1', '1', '2', '3', '4', '2'),
+(42, 6, 'What is right?', 'Human Right', 'Direction', 'Correct', 'Opposite of Left', 'Direction'),
+(43, 6, 'Is it possible to drink soda during coffee break?', 'Yes', 'No', 'Depends', 'Maybe', 'Maybe'),
+(44, 6, 'Can you take dinner in a lunchbox?', 'Yes', 'No', 'Maybe', 'Dunno', 'Yes'),
+(45, 6, 'If the poison expires, is it still poisonous?', 'No', 'Maybe', 'Yes', 'HAHA DUNNO', 'HAHA DUNNO'),
+(46, 6, '5*5', '4', '25', '20', '10', '25'),
+(47, 6, 'Who is paul&#39;s bias in newjeans?', 'Hanni', 'Minji', 'Haerin', 'Danielle', 'Minji'),
+(48, 6, 'Last name of newjeans&#39;s Hanni?', 'Park', 'Kim', 'Pham', 'Ngoc', 'Pham'),
+(49, 6, 'Who is newjeans&#39;s maknae?', 'Haerin', 'Hye In', 'Hanni', 'Danielle', 'Hye In');
 
 -- --------------------------------------------------------
 
@@ -306,20 +338,153 @@ CREATE TABLE `tbl_quizresponses` (
 --
 
 INSERT INTO `tbl_quizresponses` (`response_id`, `quiz_id`, `question_id`, `student_id`, `picked_response`) VALUES
-(109, 4, 33, '02-1234-5678', 'Minji Kim'),
-(110, 4, 32, '02-1234-5678', ''),
-(111, 4, 31, '02-1234-5678', ''),
-(112, 4, 37, '02-1234-5678', ''),
-(113, 4, 30, '02-1234-5678', ''),
-(114, 4, 35, '02-1234-5678', ''),
-(115, 4, 36, '02-1234-5678', ''),
-(116, 4, 32, '02-1234-5678', 'Hanni Pham'),
-(117, 4, 30, '02-1234-5678', 'No'),
-(118, 4, 31, '02-1234-5678', 'Haerin Kang'),
-(119, 4, 37, '02-1234-5678', 'Hyun'),
-(120, 4, 33, '02-1234-5678', 'Minji Kim'),
-(121, 4, 36, '02-1234-5678', ''),
-(122, 4, 35, '02-1234-5678', 'Kim');
+(123, 5, 38, '02-1234-5678', 'Cute'),
+(124, 5, 38, '02-1234-5678', 'Gorgeous'),
+(125, 5, 38, '02-1234-5678', 'Gorgeous'),
+(126, 6, 39, '02-1234-5678', 'Yes'),
+(127, 6, 46, '02-1234-5678', '25'),
+(128, 6, 47, '02-1234-5678', 'Minji'),
+(129, 6, 48, '02-1234-5678', 'Pham'),
+(130, 6, 43, '02-1234-5678', 'Depends'),
+(131, 6, 42, '02-1234-5678', 'Human Right'),
+(132, 6, 49, '02-1234-5678', 'Hanni'),
+(133, 6, 40, '02-1234-5678', 'Danielle'),
+(134, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(135, 6, 44, '02-1234-5678', 'No'),
+(136, 6, 46, '02-1234-5678', '10'),
+(137, 6, 40, '02-1234-5678', 'Hye In'),
+(138, 6, 45, '02-1234-5678', 'Yes'),
+(139, 6, 41, '02-1234-5678', '2'),
+(140, 6, 39, '02-1234-5678', 'Dunno'),
+(141, 6, 49, '02-1234-5678', 'Hye In'),
+(142, 6, 47, '02-1234-5678', 'Hanni'),
+(143, 6, 44, '02-1234-5678', 'No'),
+(144, 6, 42, '02-1234-5678', 'Opposite of Left'),
+(145, 6, 43, '02-1234-5678', 'Depends'),
+(146, 6, 39, '02-1234-5678', 'Yes'),
+(147, 6, 48, '02-1234-5678', 'Pham'),
+(148, 6, 40, '02-1234-5678', 'Hye In'),
+(149, 6, 47, '02-1234-5678', 'Danielle'),
+(150, 6, 42, '02-1234-5678', 'Human Right'),
+(151, 6, 44, '02-1234-5678', 'Dunno'),
+(152, 6, 46, '02-1234-5678', '25'),
+(153, 6, 49, '02-1234-5678', 'Haerin'),
+(154, 6, 41, '02-1234-5678', '4'),
+(155, 6, 43, '02-1234-5678', 'Yes'),
+(156, 6, 42, '02-1234-5678', 'Opposite of Left'),
+(157, 6, 47, '02-1234-5678', 'Minji'),
+(158, 6, 44, '02-1234-5678', 'Dunno'),
+(159, 6, 49, '02-1234-5678', 'Danielle'),
+(160, 6, 39, '02-1234-5678', 'Dunno'),
+(161, 6, 46, '02-1234-5678', '10'),
+(162, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(163, 6, 41, '02-1234-5678', '4'),
+(164, 6, 43, '02-1234-5678', 'Maybe'),
+(165, 6, 48, '02-1234-5678', 'Ngoc'),
+(166, 6, 40, '02-1234-5678', 'Minji'),
+(167, 6, 43, '02-1234-5678', 'Maybe'),
+(168, 6, 48, '02-1234-5678', 'Ngoc'),
+(169, 6, 41, '02-1234-5678', '4'),
+(170, 6, 39, '02-1234-5678', 'Dunno'),
+(171, 6, 46, '02-1234-5678', '10'),
+(172, 6, 42, '02-1234-5678', 'Opposite of Left'),
+(173, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(174, 6, 49, '02-1234-5678', 'Danielle'),
+(175, 6, 44, '02-1234-5678', 'Dunno'),
+(176, 6, 44, '02-1234-5678', 'Dunno'),
+(177, 6, 43, '02-1234-5678', 'Maybe'),
+(178, 6, 48, '02-1234-5678', 'Ngoc'),
+(179, 6, 47, '02-1234-5678', 'Danielle'),
+(180, 6, 49, '02-1234-5678', 'Danielle'),
+(181, 6, 39, '02-1234-5678', 'Dunno'),
+(182, 6, 41, '02-1234-5678', '4'),
+(183, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(184, 6, 42, '02-1234-5678', 'Opposite of Left'),
+(185, 6, 46, '02-1234-5678', '10'),
+(186, 6, 43, '02-1234-5678', 'Maybe'),
+(187, 6, 44, '02-1234-5678', 'Dunno'),
+(188, 6, 42, '02-1234-5678', 'Opposite of Left'),
+(189, 6, 49, '02-1234-5678', 'Danielle'),
+(190, 6, 40, '02-1234-5678', 'Hye In'),
+(191, 6, 39, '02-1234-5678', 'Dunno'),
+(192, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(193, 6, 46, '02-1234-5678', '10'),
+(194, 6, 41, '02-1234-5678', '4'),
+(195, 6, 47, '02-1234-5678', 'Danielle'),
+(196, 5, 38, '02-1234-5678', 'Gorgeous'),
+(197, 5, 38, '02-1234-5678', 'Gorgeous'),
+(198, 5, 38, '02-1234-5678', 'Gorgeous'),
+(199, 6, 41, '02-1234-5678', '2'),
+(200, 6, 43, '02-1234-5678', 'Yes'),
+(201, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(202, 6, 39, '02-1234-5678', 'Yes'),
+(203, 6, 49, '02-1234-5678', 'Hye In'),
+(204, 6, 47, '02-1234-5678', 'Minji'),
+(205, 6, 46, '02-1234-5678', '25'),
+(206, 6, 44, '02-1234-5678', 'Yes'),
+(207, 6, 40, '02-1234-5678', 'Minji'),
+(208, 6, 42, '02-1234-5678', 'Direction'),
+(209, 5, 38, '02-1234-5678', 'Gorgeous'),
+(210, 6, 45, '02-1234-5678', 'Maybe'),
+(211, 6, 40, '02-1234-5678', 'Minji'),
+(212, 6, 44, '02-1234-5678', 'Dunno'),
+(213, 6, 48, '02-1234-5678', 'Ngoc'),
+(214, 6, 39, '02-1234-5678', 'Dunno'),
+(215, 6, 43, '02-1234-5678', 'Maybe'),
+(216, 6, 47, '02-1234-5678', 'Danielle'),
+(217, 6, 41, '02-1234-5678', '3'),
+(218, 6, 46, '02-1234-5678', '4'),
+(219, 6, 49, '02-1234-5678', 'Hye In'),
+(220, 6, 44, '02-1234-5678', 'Dunno'),
+(221, 6, 47, '02-1234-5678', 'Danielle'),
+(222, 6, 40, '02-1234-5678', 'Minji'),
+(223, 6, 41, '02-1234-5678', '4'),
+(224, 6, 49, '02-1234-5678', 'Hanni'),
+(225, 6, 42, '02-1234-5678', 'Direction'),
+(226, 6, 46, '02-1234-5678', '4'),
+(227, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(228, 6, 48, '02-1234-5678', 'Pham'),
+(229, 6, 39, '02-1234-5678', 'Yes'),
+(230, 6, 42, '02-1234-5678', 'Human Right'),
+(231, 6, 40, '02-1234-5678', 'Haerin'),
+(232, 6, 48, '02-1234-5678', 'Kim'),
+(233, 6, 41, '02-1234-5678', '2'),
+(234, 6, 44, '02-1234-5678', 'Maybe'),
+(235, 6, 43, '02-1234-5678', 'Yes'),
+(236, 6, 46, '02-1234-5678', '25'),
+(237, 6, 47, '02-1234-5678', 'Danielle'),
+(238, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(239, 6, 49, '02-1234-5678', 'Hanni'),
+(240, 6, 46, '02-1234-5678', '10'),
+(241, 6, 43, '02-1234-5678', 'Depends'),
+(242, 6, 41, '02-1234-5678', '4'),
+(243, 6, 49, '02-1234-5678', 'Hanni'),
+(244, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(245, 6, 44, '02-1234-5678', 'Maybe'),
+(246, 6, 47, '02-1234-5678', 'Minji'),
+(247, 6, 42, '02-1234-5678', 'Opposite of Left'),
+(248, 6, 39, '02-1234-5678', 'Yes'),
+(249, 6, 40, '02-1234-5678', 'Danielle'),
+(250, 6, 49, '02-1234-5678', 'Haerin'),
+(251, 6, 44, '02-1234-5678', 'Dunno'),
+(252, 6, 48, '02-1234-5678', 'Ngoc'),
+(253, 6, 43, '02-1234-5678', 'Maybe'),
+(254, 6, 41, '02-1234-5678', '2'),
+(255, 6, 42, '02-1234-5678', 'Correct'),
+(256, 6, 45, '02-1234-5678', 'Yes'),
+(257, 6, 47, '02-1234-5678', 'Danielle'),
+(258, 6, 40, '02-1234-5678', 'Danielle'),
+(259, 6, 46, '02-1234-5678', '10'),
+(260, 6, 43, '02-1234-5678', 'Maybe'),
+(261, 6, 47, '02-1234-5678', 'Haerin'),
+(262, 6, 49, '02-1234-5678', 'Hanni'),
+(263, 6, 46, '02-1234-5678', '10'),
+(264, 6, 44, '02-1234-5678', 'Dunno'),
+(265, 6, 40, '02-1234-5678', 'Minji'),
+(266, 6, 45, '02-1234-5678', 'HAHA DUNNO'),
+(267, 6, 42, '02-1234-5678', 'Opposite of Left'),
+(268, 6, 39, '02-1234-5678', 'Dunno'),
+(269, 6, 41, '02-1234-5678', '3');
 
 -- --------------------------------------------------------
 
@@ -363,8 +528,8 @@ CREATE TABLE `tbl_studentclasses` (
 --
 
 INSERT INTO `tbl_studentclasses` (`primaryID`, `section_name`, `student_id`) VALUES
-(3, 'CRIM-02A', '02-1234-5678'),
-(4, 'CRIM-02A', '02-1718-01059');
+(4, 'CRIM-02A', '02-1718-01059'),
+(5, 'CRIM-02A', '02-1234-5678');
 
 -- --------------------------------------------------------
 
@@ -390,17 +555,13 @@ CREATE TABLE `tbl_students` (
 INSERT INTO `tbl_students` (`id`, `firstname`, `lastname`, `gender`, `email`, `password`, `image`, `isActive`) VALUES
 ('02-1234-5678', 'Dominic', 'Kionisala', 'male', 'doen.kionisala.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '653bcd1503a85.png', 'active'),
 ('02-1718-01059', 'Dexter', 'Maghanoy', 'male', 'depa.maghanoy.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'dexter.jpg', 'active'),
-('02-1920-03955', 'Hanni', 'Pham', 'female', 'hanni_pham@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
-('02-1920-03956', 'Minji', 'Kim', 'female', 'minji.kim@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
-('02-1920-03957', 'Kang', 'Haerin', 'female', 'haerin_kang@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
-('02-1920-03958', 'Danielle', 'Marsh', 'female', 'marsh_danielle@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
-('02-1920-03959', 'Hye In', 'Lee', 'female', 'leehyein.nj@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
-('02-1920-03960', 'Sana', 'Minatozaki', 'female', 'sana_ke@rocketmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
-('02-1920-03962', 'Da Hyun', 'Kim', 'female', 'dahyunaaa@koreaboo.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
-('02-2324-03960', 'Sakura', 'Miyawaki', 'female', 'sakura_@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '', 'active'),
-('02-2324-03961', 'Kazuha', 'Nakamura', 'female', 'kazuhaaaa@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '', 'active'),
-('02-2324-03962', 'Yunjin', 'Huh', 'female', 'lesserafim_cool@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '', 'active'),
-('02-2324-03977', 'Eun Chae', 'Hong', 'female', 'hong_chae@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', '', 'active');
+('02-1920-03955', 'Hanni', 'Pham', 'Female', 'hanni_pham@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03956', 'Minji', 'Kim', 'Female', 'minji.kim@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03957', 'Kang', 'Haerin', 'Female', 'haerin_kang@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03958', 'Danielle', 'Marsh', 'Female', 'marsh_danielle@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03959', 'Hye In', 'Lee', 'Female', 'leehyein.nj@gmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03960', 'Sana', 'Minatozaki', 'Female', 'sana_ke@rocketmail.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active'),
+('02-1920-03962', 'Da Hyun', 'Kim', 'Female', 'dahyunaaa@koreaboo.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'default.png', 'active');
 
 -- --------------------------------------------------------
 
@@ -430,7 +591,12 @@ INSERT INTO `tbl_teachers` (`teacher_id`, `firstname`, `lastname`, `gender`, `em
 ('02-2324-03956', 'Danielle', 'Marsh', 'Female', 'danm.marsh.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png'),
 ('02-2324-03957', 'Min Ji', 'Kim', 'Female', 'mink.kim.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png'),
 ('02-2324-03958', 'Haerin', 'Kang', 'Female', 'haek.kang.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png'),
-('02-2324-03959', 'Hye In', 'Lee', 'Female', 'hyel.lee.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png');
+('02-2324-03959', 'Hye In', 'Lee', 'Female', 'hyel.lee.coc@phinmaed.com', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'active', 'default.png'),
+('14512312', 'Kazuma', 'Nakamura', 'female', 'nakamura_kazuha@japanmail.com', '$2y$10$yTi5vyA4QU2qlZTMI/TqxOYpZnIFUtzlzqdCglcRvXSNKiJY.xive', 'active', ''),
+('2425-8559-99852', 'Eun Chae', 'Hong', 'female', 'eun.chae@gmail.com', '$2y$10$dET8hx2s8l7i0lTGrTqp8.kMrN5JBCFWN94jqbpcmWFTY.USOrw8G', 'active', 'default.png'),
+('29928', 'Da Hyun', 'Kim', 'female', 'kim_dahyun@rocketmail.com', '$2y$10$1YvuSAt1.gLTAcYkCvzzuO04VrPlZd2PQ2SN9pRw5vJkqBBaUkGAe', 'active', ''),
+('789987', 'Chae Won', 'Kim', 'female', 'kimmy_chae@koreaboo.net', '$2y$10$IT1S1HnJ75UdM36EpVboBe/ynxoX5V.X1p0XColxb95IPQ84JewHy', 'active', 'default.png'),
+('900', 'Yunjin', 'Huh', 'female', 'ynjin_lesserafim@gmail.com', '$2y$10$PlyTR4PEgaXGIK/x.IzJE.Bf6xQbL1D/9VX0kwcbja5TvdvIgJ1gm', 'active', '');
 
 --
 -- Indexes for dumped tables
@@ -441,6 +607,17 @@ INSERT INTO `tbl_teachers` (`teacher_id`, `firstname`, `lastname`, `gender`, `em
 --
 ALTER TABLE `tbl_admin`
   ADD PRIMARY KEY (`admin_id`);
+
+--
+-- Indexes for table `tbl_audit`
+--
+ALTER TABLE `tbl_audit`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `admin_id` (`admin_id`),
+  ADD KEY `dean_id` (`dean_id`),
+  ADD KEY `ph_id` (`ph_id`),
+  ADD KEY `student_id` (`student_id`),
+  ADD KEY `teacher_id` (`teacher_id`);
 
 --
 -- Indexes for table `tbl_bookmark`
@@ -479,12 +656,6 @@ ALTER TABLE `tbl_dean`
   ADD UNIQUE KEY `dean_id` (`dean_id`);
 
 --
--- Indexes for table `tbl_faculty`
---
-ALTER TABLE `tbl_faculty`
-  ADD PRIMARY KEY (`faculty_id`);
-
---
 -- Indexes for table `tbl_learningmaterials`
 --
 ALTER TABLE `tbl_learningmaterials`
@@ -498,6 +669,12 @@ ALTER TABLE `tbl_lessons`
   ADD PRIMARY KEY (`lesson_id`),
   ADD KEY `teacher_id` (`teacher_id`),
   ADD KEY `category_id` (`category_id`);
+
+--
+-- Indexes for table `tbl_program_head`
+--
+ALTER TABLE `tbl_program_head`
+  ADD PRIMARY KEY (`faculty_id`);
 
 --
 -- Indexes for table `tbl_quiz`
@@ -564,6 +741,12 @@ ALTER TABLE `tbl_teachers`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_audit`
+--
+ALTER TABLE `tbl_audit`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+
+--
 -- AUTO_INCREMENT for table `tbl_categories`
 --
 ALTER TABLE `tbl_categories`
@@ -573,7 +756,7 @@ ALTER TABLE `tbl_categories`
 -- AUTO_INCREMENT for table `tbl_classlessons`
 --
 ALTER TABLE `tbl_classlessons`
-  MODIFY `classlesson_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `classlesson_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_comments`
@@ -585,47 +768,57 @@ ALTER TABLE `tbl_comments`
 -- AUTO_INCREMENT for table `tbl_learningmaterials`
 --
 ALTER TABLE `tbl_learningmaterials`
-  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tbl_lessons`
 --
 ALTER TABLE `tbl_lessons`
-  MODIFY `lesson_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `lesson_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `tbl_quiz`
 --
 ALTER TABLE `tbl_quiz`
-  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tbl_quizattempt`
 --
 ALTER TABLE `tbl_quizattempt`
-  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `tbl_quizquestions`
 --
 ALTER TABLE `tbl_quizquestions`
-  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `tbl_quizresponses`
 --
 ALTER TABLE `tbl_quizresponses`
-  MODIFY `response_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=123;
+  MODIFY `response_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=270;
 
 --
 -- AUTO_INCREMENT for table `tbl_studentclasses`
 --
 ALTER TABLE `tbl_studentclasses`
-  MODIFY `primaryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `primaryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `tbl_audit`
+--
+ALTER TABLE `tbl_audit`
+  ADD CONSTRAINT `tbl_audit_ibfk_1` FOREIGN KEY (`dean_id`) REFERENCES `tbl_dean` (`dean_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tbl_audit_ibfk_2` FOREIGN KEY (`ph_id`) REFERENCES `tbl_program_head` (`faculty_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tbl_audit_ibfk_3` FOREIGN KEY (`admin_id`) REFERENCES `tbl_admin` (`admin_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tbl_audit_ibfk_4` FOREIGN KEY (`teacher_id`) REFERENCES `tbl_teachers` (`teacher_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `tbl_audit_ibfk_5` FOREIGN KEY (`student_id`) REFERENCES `tbl_students` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `tbl_bookmark`
@@ -644,7 +837,7 @@ ALTER TABLE `tbl_classlessons`
 -- Constraints for table `tbl_comments`
 --
 ALTER TABLE `tbl_comments`
-  ADD CONSTRAINT `tbl_comments_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `tbl_learningmaterials` (`material_id`),
+  ADD CONSTRAINT `tbl_comments_ibfk_1` FOREIGN KEY (`material_id`) REFERENCES `tbl_learningmaterials` (`material_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `tbl_comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_students` (`id`),
   ADD CONSTRAINT `tbl_comments_ibfk_3` FOREIGN KEY (`teacher_id`) REFERENCES `tbl_teachers` (`teacher_id`);
 
