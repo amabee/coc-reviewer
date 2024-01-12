@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
     $password = $_POST['pass'];
     $hashed_password = sha1($password);
 
-    $select_user = $conn->prepare("SELECT id, password FROM `tbl_students` WHERE email = ? LIMIT 1");
+    $select_user = $conn->prepare("SELECT id, password FROM `tbl_students` WHERE email = ? AND isActive = 'active' LIMIT 1");
     $select_user->execute([$email]);
 
     if ($select_user->rowCount() > 0) {

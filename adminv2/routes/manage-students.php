@@ -5,11 +5,11 @@
             <h1>Manage Students</h1>
             <ul class="breadcrumb">
                 <li>
-                    <a href="#">Dashboard</a>
+                    <a href="#">Manage Students</a>
                 </li>
                 <li><i class='bx bx-chevron-right'></i></li>
                 <li>
-                    <a class="active" href="#">Students</a>
+                    <a class="active" href="#">Student List</a>
                 </li>
             </ul>
         </div>
@@ -106,41 +106,41 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <div class="modal-header">
-                <h5 class="modal-title">Add Student</h5>
+                <h5 class="modal-title">Update Student</h5>
             </div>
             <hr style="margin-bottom:10px;">
             <form id="updateStudentForm" method="POST">
 
                 <div class="form-group">
-                    <label for="student_id">Student ID:</label>
-                    <input type="text" class="form-control" id="studentId" name="studentId">
+                    <label for="updateStudentId">Student ID:</label>
+                    <input type="text" class="form-control" id="updateStudentId" name="updateStudentId" readonly>
                 </div>
 
                 <div class="form-group">
-                    <label for="firstname">Firstname:</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName">
+                    <label for="updateFirstName">Firstname:</label>
+                    <input type="text" class="form-control" id="updateFirstName" name="updateFirstName">
                 </div>
 
                 <div class="form-group">
-                    <label for="lastname">Lastname:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName">
+                    <label for="updateLastName">Lastname:</label>
+                    <input type="text" class="form-control" id="updateLastName" name="updateLastName">
                 </div>
                 <div class="form-group">
-                    <label for="gender">Gender:</label>
-                    <select name="gender" id="pickgender" class="form-control">
+                    <label for="updatGender">Gender:</label>
+                    <select name="updateGender" id="updateStudentGender" class="form-control">
                         <option value="" selected disabled>-- Select Gender --</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email">
+                    <label for="updateEmail">Email:</label>
+                    <input type="email" class="form-control" id="updateEmail" name="updateEmail">
                 </div>
                 <p style="text-align: center;">---------------------------------------------------------</p>
                 <div class="btn-container">
                     <button type="button" class="btn-cancel btn-danger" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn-primary">Add Student</button>
+                    <button type="submit" id="updateStudent" class="btn-primary">Update Student</button>
                 </div>
 
             </form>

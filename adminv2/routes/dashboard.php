@@ -31,7 +31,7 @@
             </span>
         </li>
         <li>
-            <i class='bx bxs-dollar-circle'></i>
+            <i class='bx bxs-bar-chart-alt-2'></i>
             <span class="text">
                 <h3>89%</h3>
                 <p>Passing Rate</p>

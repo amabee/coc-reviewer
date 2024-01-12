@@ -67,7 +67,7 @@ function handleAddStudentResponse(response) {
     Swal.fire({
       icon: "success",
       title: "Success",
-      text: "Student added successfully!",
+      text: "Successfully Added the Students",
     }).then((result) => {
       if (result.isConfirmed) {
         addStudentModal.style.display = "block";
@@ -175,16 +175,134 @@ function uploadExcelFile(file) {
 }
 
 // UPDATE AREA
-var closeUpdateBtn = document.getElementsByClassName("close")[1];
+var updateStudentModal = document.getElementById("updateStudentModal");
+
 $(document).on("click", ".updateStudentBtn", function () {
-  var updateStudentModal = document.getElementById("updateStudentModal");
   updateStudentModal.style.display = "block";
+
+  var studentId = $(this).closest("tr").find("td:eq(1)").text().trim();
+  loadAndUpdateStudentData(studentId);
 });
 
 function closeModal() {
   updateStudentModal.style.display = "none";
 }
 
-closeUpdateBtn.onclick = function () {
-  updateStudentModal.style.display = "none";
-};
+$(document).on("click", ".close", function () {
+  closeModal();
+});
+
+// GET STUDENT DATA AND PASS TO MODAL
+function loadAndUpdateStudentData(studentId) {
+  $.ajax({
+    url: "queries/getStudentData.php",
+    method: "GET",
+    data: { student_id: studentId },
+    dataType: "json",
+    success: function (data) {
+      document.getElementById("updateStudentId").value = data.id;
+      document.getElementById("updateFirstName").value = data.firstname;
+      document.getElementById("updateLastName").value = data.lastname;
+      document.getElementById("updateEmail").value = data.email;
+      document.getElementById("updateStudentGender").value =
+        data.gender.toLowerCase();
+    },
+
+    error: function () {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to fetch student data.",
+      });
+    },
+  });
+}
+
+// UPDATE STUDENT INFORMATION
+$(document).ready(function () {
+  $("#updateStudent").on("click", function (e) {
+    e.preventDefault(); // Prevent the default form submission behavior
+    var formData = $("#updateStudentForm").serialize();
+
+    $.ajax({
+      url: "queries/updateStudent.php",
+      method: "POST",
+      data: formData,
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          handleUpdateStudentResponse(response);
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Failed to update student data. Please try again.",
+          });
+        }
+      },
+      error: function () {
+        closeModal();
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "An error occurred while processing your request.",
+        });
+      },
+    });
+  });
+});
+
+function handleUpdateStudentResponse(response) {
+  if (response.success) {
+    Swal.fire({
+      icon: "success",
+      title: "Success!",
+      text: "Student data updated successfully.",
+    });
+    closeModal();
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Failed to update student data. Please try again.",
+    });
+  }
+}
+
+// ADDING THE STUDENT BACK
+$(document).on("click", ".toggleStudentStatusBtn", function () {
+  var studentId = $(this).data("student-id");
+  var button = $(this);
+
+  $.ajax({
+    url: "queries/AddStudentBack.php",
+    method: "POST",
+    data: { student_id: studentId },
+    dataType: "json",
+    success: function (response) {
+      if (response.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Student status updated successfully.",
+        });
+
+        button.toggleClass("btn-danger btn-success");
+        button.text(response.newStatus == "active" ? "Remove" : "Add Back");
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Failed to update student status. Please try again.",
+        });
+      }
+    },
+    error: function () {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "An error occurred while processing your request.",
+      });
+    },
+  });
+});

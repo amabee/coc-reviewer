@@ -10,7 +10,6 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $teacherId = $_POST['teacherId'];
@@ -36,16 +35,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['error' => 'Teacher already exists and is active.']);
         } else {
             $password = password_hash('password', PASSWORD_DEFAULT);
+            $image = "default.png";
+            $stmtInsert = $conn->prepare("INSERT INTO tbl_teachers (teacher_id, firstname, lastname, gender, email, password, image, active) VALUES (?, ?, ?, ?, ?, ?, ?, 'active')");
+            $stmtInsert->execute([$teacherId, $firstName, $lastName, $gender, $email, $password, $image]);
 
-            $stmtInsert = $conn->prepare("INSERT INTO tbl_teachers (teacher_id, firstname, lastname, gender, email, password, active) VALUES (?, ?, ?, ?, ?, ?, 'active')");
-            $stmtInsert->execute([$teacherId, $firstName, $lastName, $gender, $email, $password]);
+            $action = 'Insert';
+            $tableName = 'tbl_teachers';
+            $adminId = $_SESSION['admin_id'];
+            $timestamp = date("Y-m-d H:i:s");
+            $logMessage = "Added new teacher with ID '{$teacherId}'";
+
+            $insertAuditQuery = "INSERT INTO tbl_audit (action, table_name, teacher_id, admin_id, log_message, timestamp) VALUES (:action, :table_name, :teacher_id, :admin_id, :log_message, :timestamp)";
+            $insertAuditStmt = $conn->prepare($insertAuditQuery);
+            $insertAuditStmt->bindParam(':action', $action, PDO::PARAM_STR);
+            $insertAuditStmt->bindParam(':table_name', $tableName, PDO::PARAM_STR);
+            $insertAuditStmt->bindParam(':teacher_id', $teacherId, PDO::PARAM_STR);
+            $insertAuditStmt->bindParam(':admin_id', $adminId, PDO::PARAM_STR);
+            $insertAuditStmt->bindParam(':log_message', $logMessage, PDO::PARAM_STR);
+            $insertAuditStmt->bindParam(':timestamp', $timestamp, PDO::PARAM_STR);
+
+            $insertAuditStmt->execute();
 
             $response = [
                 'teacherId' => $teacherId,
                 'firstName' => $firstName,
                 'lastName' => $lastName,
                 'gender' => $gender,
-                'email' => $email
+                'email' => $email,
+                'image' => $image
             ];
 
             echo json_encode($response);

@@ -47,7 +47,7 @@
 
         </div>
 
-        <!-- ADD MODAL START -->
+        <!-- ADD MODAL TEACHER START -->
         <div id="addTeacherModal" class="modal" style="width: 0%;">
             <div class="modal-overlay"></div>
             <div class="modal-content">
@@ -94,7 +94,57 @@
                 </form>
             </div>
         </div>
-        <!-- ADD MODAL END -->
+        <!-- ADD MODAL TEACHER END -->
+
+        <!-- UPDATE TEACHER MODAL START -->
+        <div id="updateTeacherModal" class="modal" style="width: 0%;">
+            <div class="modal-overlay"></div>
+            <div class="modal-content">
+                <span class="close close-update">&times;</span>
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Teacher</h5>
+                </div>
+                <hr style="margin-bottom:10px;">
+                <form id="updateTeacherForm" method="POST">
+
+                    <div class="form-group">
+                        <label for="updateTeacherId">Teacher ID:</label>
+                        <input type="text" class="form-control" id="updateTeacherId" name="updateTeacherId" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="updateFirstName">Firstname:</label>
+                        <input type="text" class="form-control" id="updateTeacherFirstName"
+                            name="updateTeacherFirstName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="updateLastName">Lastname:</label>
+                        <input type="text" class="form-control" id="updateTeacherLastName" name="updateTeacherLastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateGender">Gender:</label>
+                        <select name="updateTeacherGender" id="updateTeacherGender" class="form-control">
+                            <option value="" selected disabled>-- Select Gender --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateEmail">Email:</label>
+                        <input type="email" class="form-control" id="updateTeacherEmail" name="updateTeacherEmail">
+                    </div>
+                    <p style="text-align: center;">---------------------------------------------------------</p>
+                    <div class="btn-container">
+                        <button type="button" class="btn-cancel btn-danger close-teacher">Cancel</button>
+                        <button type="submit" id="updateTeacher" class="btn-primary">Update Teacher</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <!-- UPDATE TEACHER MODAL END -->
+
 
 </main>
 <!-- MAIN -->

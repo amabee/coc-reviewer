@@ -35,6 +35,12 @@
                 <span class="text">Manage Class</span>
             </a>
         </li>
+        <li>
+            <a href="routes/activity-log.php" class="sidebar-link">
+                <i class='bx bx-list-ul'></i>
+                <span class="text">Activity Log</span>
+            </a>
+        </li>
     </ul>
     <ul class="side-menu">
         <li>
