@@ -269,40 +269,49 @@ function handleUpdateStudentResponse(response) {
   }
 }
 
-// ADDING THE STUDENT BACK
-$(document).on("click", ".toggleStudentStatusBtn", function () {
-  var studentId = $(this).data("student-id");
-  var button = $(this);
 
-  $.ajax({
-    url: "queries/AddStudentBack.php",
-    method: "POST",
-    data: { student_id: studentId },
-    dataType: "json",
-    success: function (response) {
-      if (response.success) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Student status updated successfully.",
-        });
+$(document).ready(function () {
+  $(document).off("click", ".toggleStudentStatusBtn");
 
-        button.toggleClass("btn-danger btn-success");
-        button.text(response.newStatus == "active" ? "Remove" : "Add Back");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Failed to update student status. Please try again.",
-        });
-      }
-    },
-    error: function () {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "An error occurred while processing your request.",
+  $(document).on("click", ".toggleStudentStatusBtn", function () {
+      var studentId = $(this).data("student-id");
+      var button = $(this);
+
+      button.prop("disabled", true);
+
+      $.ajax({
+          url: "queries/AddStudentBack.php",
+          method: "POST",
+          data: { student_id: studentId },
+          dataType: "json",
+          success: function (response) {
+              if (response.success) {
+                  Swal.fire({
+                      icon: "success",
+                      title: "Success",
+                      text: "Student status updated successfully.",
+                  });
+
+                  button.toggleClass("btn-danger btn-success");
+                  button.text(response.newStatus == "active" ? "Remove" : "Add Back");
+              } else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: "Failed to update student status. Please try again.",
+                  });
+              }
+          },
+          error: function () {
+              Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "An error occurred while processing your request.",
+              });
+          },
+          complete: function () {
+              button.prop("disabled", false);
+          },
       });
-    },
   });
 });

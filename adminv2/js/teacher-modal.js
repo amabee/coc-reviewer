@@ -195,40 +195,48 @@ function handleUpdateTeacherResponse(response) {
   }
 }
 
-// ADDING THE TEACHER BACK (if applicable)
-$(document).on("click", ".toggleTeacherStatusBtn", function () {
-  var teacherId = $(this).data("teacher-id");
-  var button = $(this);
+$(document).ready(function () {
+  $(document).off("click", ".toggleTeacherStatusBtn");
 
-  $.ajax({
-    url: "queries/AddTeacherBack.php",
-    method: "POST",
-    data: { teacher_id: teacherId },
-    dataType: "json",
-    success: function (response) {
-      if (response.success) {
-        Swal.fire({
-          icon: "success",
-          title: "Success",
-          text: "Teacher status updated successfully.",
-        });
+  $(document).on("click", ".toggleTeacherStatusBtn", function () {
+      var teacherId = $(this).data("teacher-id");
+      var button = $(this);
 
-        button.toggleClass("btn-danger btn-success");
-        button.text(response.newStatus == "active" ? "Remove" : "Add Back");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Failed to update teacher status. Please try again.",
-        });
-      }
-    },
-    error: function () {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "An error occurred while processing your request.",
+      button.prop("disabled", true);
+
+      $.ajax({
+          url: "queries/AddTeacherBack.php",
+          method: "POST",
+          data: { teacher_id: teacherId },
+          dataType: "json",
+          success: function (response) {
+              if (response.success) {
+                  Swal.fire({
+                      icon: "success",
+                      title: "Success",
+                      text: "Teacher status updated successfully.",
+                  });
+
+                  button.toggleClass("btn-danger btn-success");
+                  button.text(response.newStatus == "active" ? "Remove" : "Add Back");
+              } else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: "Failed to update teacher status. Please try again.",
+                  });
+              }
+          },
+          error: function () {
+              Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "An error occurred while processing your request.",
+              });
+          },
+          complete: function () {
+              button.prop("disabled", false);
+          },
       });
-    },
   });
 });
