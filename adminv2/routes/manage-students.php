@@ -21,8 +21,7 @@
             <div class="head">
                 <h3>Student List</h3>
                 <button class="btn btn-primary" id="addStudentBtn" style="  font-size: 14px;
-                        padding: 12px 20px; border-radius: 10px;">Add Student<i class='bx bx-add-to-queue'
-                        style='color:white; margin-left: 5px;'></i></button>
+                        padding: 12px 20px; border-radius: 10px;">Add Student<i class='bx bx-add-to-queue' style='color:white; margin-left: 5px;'></i></button>
             </div>
             <table>
                 <thead>
@@ -84,18 +83,21 @@
                     <input type="email" class="form-control" id="email" name="email">
                 </div>
                 <p style="text-align: center;">------------------ OR ADD BY BATCH ----------------------</p>
-
+            </form>
+            <form method="POST" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="fileUpload">Select Excel File:</label>
-                    <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
-
-                </div>
-                <div class="btn-container">
-                    <button type="button" class="btn-cancel btn-danger" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn-primary">Add Student</button>
+                    <div class="input-group">
+                        <input type="file" class="form-control" id="fileUpload" name="fileUpload" accept=".xls, .xlsx">
+                        <button type="button" id="addViaExcel" class="btn-primary">Submit</button>
+                    </div>
                 </div>
 
             </form>
+            <div class="btn-container">
+                <button type="button" class="btn-cancel btn-danger" onclick="closeModal()">Cancel</button>
+                <button type="button" id="submitMe" class="btn-primary">Add Student</button>
+            </div>
         </div>
     </div>
     <!-- ADD MODAL END -->

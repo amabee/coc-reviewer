@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['teacher_id'])) {
 
                 $statusChange = ($newStatus == 'active') ? 'inactive' : 'active';
 
-                $logMessage = "Changed status from '{$statusChange}' to '{$newStatus}'";
+                $logMessage = "Admin Changed status from '{$statusChange}' to '{$newStatus}'";
 
                 $insertAuditQuery = "INSERT INTO tbl_audit (action, table_name, teacher_id, admin_id, log_message, timestamp) VALUES (:action, :table_name, :teacher_id, :admin_id, :log_message, :timestamp)";
                 $insertAuditStmt = $conn->prepare($insertAuditQuery);

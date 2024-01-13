@@ -30,6 +30,12 @@
             </a>
         </li>
         <li>
+            <a href="routes/manage-programhead.php" class="sidebar-link">
+                <i class='bx bxs-user-account'></i>
+                <span class="text">Manage Program Head</span>
+            </a>
+        </li>
+        <li>
             <a href="routes/manage-class.php" class="sidebar-link">
                 <i class='bx bxs-school'></i>
                 <span class="text">Manage Class</span>

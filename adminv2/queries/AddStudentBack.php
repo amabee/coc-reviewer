@@ -14,26 +14,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['student_id'])) {
         $currentStatusResult = $currentStatusStmt->fetch(PDO::FETCH_ASSOC);
 
         if ($currentStatusResult) {
-            // Determine new status
             $newStatus = ($currentStatusResult['isActive'] == 'active') ? 'inactive' : 'active';
 
-            // Update student status
             $updateStatusQuery = "UPDATE tbl_students SET isActive = :newStatus WHERE id = :studentId";
             $updateStatusStmt = $conn->prepare($updateStatusQuery);
             $updateStatusStmt->bindParam(':newStatus', $newStatus, PDO::PARAM_STR);
             $updateStatusStmt->bindParam(':studentId', $studentId, PDO::PARAM_STR);
 
             if ($updateStatusStmt->execute()) {
-                // Log audit information
+               
                 $action = 'Update';
                 $tableName = 'tbl_students';
                 $adminId = $_SESSION['admin_id'];
                 $timestamp = date("Y-m-d H:i:s");
 
-                // Determine the actual status change for the log message
                 $statusChange = ($newStatus == 'active') ? 'inactive' : 'active';
 
-                $logMessage = "Changed status from '{$statusChange}' to '{$newStatus}'";
+                $logMessage = "Admin Changed status from '{$statusChange}' to '{$newStatus}'";
 
                 $insertAuditQuery = "INSERT INTO tbl_audit (action, table_name, student_id, admin_id, log_message, timestamp) VALUES (:action, :table_name, :student_id, :admin_id, :log_message, :timestamp)";
                 $insertAuditStmt = $conn->prepare($insertAuditQuery);

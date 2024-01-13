@@ -2,10 +2,10 @@
 <main>
     <div class="head-title">
         <div class="left">
-            <h1>Manage Dean Account</h1>
+            <h1>Manage Program Head Account</h1>
             <ul class="breadcrumb">
                 <li>
-                    <a href="#">Dean</a>
+                    <a href="#">Program Head</a>
                 </li>
                 <li><i class='bx bx-chevron-right'></i></li>
                 <li>
@@ -18,13 +18,13 @@
     <div class="table-data">
         <div class="order">
             <div class="head">
-                <h3>Dean Accounts</h3>
+                <h3>Program Head Account</h3>
             </div>
             <table id="studentTable">
                 <thead>
                     <tr>
                        
-                        <th>Dean ID</th>
+                        <th>Program Head ID</th>
                         <th>Firstname</th>
                         <th>Lastname</th>
                         <th>Gender</th>
@@ -33,7 +33,7 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody id="dean-data-container">
+                <tbody id="ph-data-container">
                 </tbody>
             </table>
             <div class="pagination">
@@ -46,4 +46,4 @@
 <!-- MAIN -->
 
 <!-- JS AND JQUERY FOR PAGINATION -->
-<script src="js/dean-datatable.js"></script>
+<script src="js/ph-datatable.js"></script>

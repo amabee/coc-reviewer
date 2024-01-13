@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tableName = 'tbl_teachers';
             $adminId = $_SESSION['admin_id'];
             $timestamp = date("Y-m-d H:i:s");
-            $logMessage = "Added new teacher with ID '{$teacherId}'";
+            $logMessage = "Admin Added new teacher with ID '{$teacherId}'";
 
             $insertAuditQuery = "INSERT INTO tbl_audit (action, table_name, teacher_id, admin_id, log_message, timestamp) VALUES (:action, :table_name, :teacher_id, :admin_id, :log_message, :timestamp)";
             $insertAuditStmt = $conn->prepare($insertAuditQuery);

@@ -17,43 +17,51 @@ window.onclick = function (event) {
 };
 
 // AJAX FOR ADDING STUDENT
-$("#addStudentForm").submit(function (e) {
+$("#submitMe").click(function (e) {
   e.preventDefault();
   var selectedGender = $("#pickgender option:selected").val();
-  var excelFile = $("#fileUpload")[0].files[0];
 
-  if (excelFile) {
-    uploadExcelFile(excelFile);
-  } else {
-    if (!validateStudentForm()) {
-      return;
-    }
-
-    var formData = new FormData(this);
-    formData.set("gender", selectedGender);
-
-    $.ajax({
-      url: "queries/addStudent.php",
-      method: "POST",
-      data: formData,
-      dataType: "json",
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        handleAddStudentResponse(response);
-        clearAllStudentInput();
-        addStudentModal.style.display = "none";
-      },
-      error: function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Something went wrong with the AJAX request.",
-        });
-      },
-    });
+  if (!validateStudentForm()) {
+    return;
   }
+
+  var formData = new FormData($("#addStudentForm")[0]);
+  formData.set("gender", selectedGender);
+
+  $.ajax({
+    url: "queries/addStudent.php",
+    method: "POST",
+    data: formData,
+    dataType: "json",
+    contentType: false,
+    processData: false,
+    success: function (response) {
+      handleAddStudentResponse(response);
+      clearAllStudentInput();
+      addStudentModal.style.display = "none";
+    },
+    error: function () {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong with the AJAX request.",
+      });
+    },
+  });
 });
+
+$("#addViaExcel").click(function (e) {
+  e.preventDefault();
+
+  var excelFile = $("#fileUpload")[0].files[0];
+  if (!excelFile) {
+    alert("Nani?");
+  } else {
+    uploadExcelFile(excelFile);
+  }
+
+})
+
 // STUDENT RESPONSE SWAL
 function handleAddStudentResponse(response) {
   console.log(response);
@@ -135,15 +143,6 @@ function validateStudentForm() {
     emailInput.addClass("is-invalid");
   } else {
     emailInput.removeClass("is-invalid");
-  }
-
-  // Additional check for file input
-  var fileInput = $("#fileUpload")[0];
-  if (!fileInput.files.length) {
-    isValid = false;
-    $(fileInput).addClass("is-invalid");
-  } else {
-    $(fileInput).removeClass("is-invalid");
   }
 
   return isValid;
@@ -274,44 +273,44 @@ $(document).ready(function () {
   $(document).off("click", ".toggleStudentStatusBtn");
 
   $(document).on("click", ".toggleStudentStatusBtn", function () {
-      var studentId = $(this).data("student-id");
-      var button = $(this);
+    var studentId = $(this).data("student-id");
+    var button = $(this);
 
-      button.prop("disabled", true);
+    button.prop("disabled", true);
 
-      $.ajax({
-          url: "queries/AddStudentBack.php",
-          method: "POST",
-          data: { student_id: studentId },
-          dataType: "json",
-          success: function (response) {
-              if (response.success) {
-                  Swal.fire({
-                      icon: "success",
-                      title: "Success",
-                      text: "Student status updated successfully.",
-                  });
+    $.ajax({
+      url: "queries/AddStudentBack.php",
+      method: "POST",
+      data: { student_id: studentId },
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Student status updated successfully.",
+          });
 
-                  button.toggleClass("btn-danger btn-success");
-                  button.text(response.newStatus == "active" ? "Remove" : "Add Back");
-              } else {
-                  Swal.fire({
-                      icon: "error",
-                      title: "Oops...",
-                      text: "Failed to update student status. Please try again.",
-                  });
-              }
-          },
-          error: function () {
-              Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: "An error occurred while processing your request.",
-              });
-          },
-          complete: function () {
-              button.prop("disabled", false);
-          },
-      });
+          button.toggleClass("btn-danger btn-success");
+          button.text(response.newStatus == "active" ? "Remove" : "Add Back");
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Failed to update student status. Please try again.",
+          });
+        }
+      },
+      error: function () {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "An error occurred while processing your request.",
+        });
+      },
+      complete: function () {
+        button.prop("disabled", false);
+      },
+    });
   });
 });
