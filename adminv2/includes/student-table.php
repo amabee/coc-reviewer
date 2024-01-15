@@ -23,7 +23,7 @@ foreach ($students as $student) {
             <td>' . $student['firstname'] . '</td>
             <td>' . $student['lastname'] . '</td>
             <td>' . $student['gender'] . '</td>
-            <td>' . $student['email'] . '</td>
+            <td style="word-wrap: break-word; max-width: 200px;">' . $student['email'] . '</td>
             <td>';
 
     if ($student['isActive'] == 'active') {

@@ -28,8 +28,6 @@
                         <th>Action</th>
                         <th>Table Affected</th>
                         <th>Log Message</th>
-                        <th>Student ID</th>
-                        <th>Teacher ID</th>
                         <th>Admin ID</th>
                         <th>Dean ID</th>
                         <th>Program Head ID</th>
