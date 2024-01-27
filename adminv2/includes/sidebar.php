@@ -1,3 +1,4 @@
+
 <!-- SIDEBAR -->
 <section id="sidebar">
     <a href="#" class="brand">
@@ -56,7 +57,7 @@
             </a>
         </li>
         <li>
-            <a href="#" class="logout">
+            <a href="includes/logout.php" class="logout">
                 <i class='bx bxs-log-out-circle'></i>
                 <span class="text">Logout</span>
             </a>

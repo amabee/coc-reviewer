@@ -1,3 +1,4 @@
+
 const allSideMenu = document.querySelectorAll("#sidebar .side-menu.top li a");
 
 allSideMenu.forEach((item) => {
@@ -40,3 +41,4 @@ switchMode.addEventListener("change", function () {
     modeIcon.classList.add("bxs-sun");
   }
 });
+

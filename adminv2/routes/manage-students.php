@@ -1,3 +1,4 @@
+
 <!-- MAIN -->
 <main>
     <div class="head-title">
@@ -15,34 +16,35 @@
         </div>
     </div>
 
-    <!-- TABLE AREA -->
-    <div class="table-data">
-        <div class="order">
-            <div class="head">
-                <h3>Student List</h3>
-                <button class="btn btn-primary" id="addStudentBtn" style="  font-size: 14px;
-                        padding: 12px 20px; border-radius: 10px;">Add Student<i class='bx bx-add-to-queue' style='color:white; margin-left: 5px;'></i></button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Student ID</th>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Gender</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="student-data-container">
-                </tbody>
-            </table>
-            <div class="pagination">
-            </div>
+<!-- TABLE AREA -->
+<div class="table-data">
+    <div class="order">
+        <div class="head">
+            <h3>Student List</h3>
+            <button class="btn btn-primary" id="addStudentBtn" style="font-size: 14px; padding: 12px 20px; border-radius: 10px;">Add Student<i class='bx bx-add-to-queue' style='color:white; margin-left: 5px;'></i></button>
+        </div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Student ID</th>
+                    <th>Firstname</th>
+                    <th>Lastname</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="student-data-container">
+            </tbody>
+        </table>
+        <div class="pagination">
         </div>
     </div>
+</div>
+
 
 
     <!-- ADD MODAL START -->
@@ -153,6 +155,7 @@
 
 </main>
 <!-- MAIN -->
+
 <!-- student modal -->
 <script src="js/student-modal.js"></script>
 <!-- JS AND JQUERY FOR PAGINATION -->
