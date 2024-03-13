@@ -6,7 +6,7 @@ if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
 }
 
-$query = "SELECT * FROM tbl_students";
+$query = "SELECT * FROM tbl_audit ORDER BY timestamp DESC LIMIT 5";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -45,7 +45,7 @@ $teacherCount = $stmtTeacherCount->fetch(PDO::FETCH_ASSOC)['teacher_count'];
 
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-<!-- sweet alert  -->
+    <!-- sweet alert  -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -140,25 +140,12 @@ $teacherCount = $stmtTeacherCount->fetch(PDO::FETCH_ASSOC)['teacher_count'];
                     <!-- Content Row -->
 
                     <div class="row">
-
                         <!-- Bar Chart -->
-                        <div class="col-xl-8 col-lg-7">
+                        <div class="col-xl-12 col-lg-9">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Class Overview</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
+                                    <h6 class="m-0 font-weight-bold text-primary">Activity Overview</h6>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
@@ -166,19 +153,19 @@ $teacherCount = $stmtTeacherCount->fetch(PDO::FETCH_ASSOC)['teacher_count'];
                                         <table class="table table-bordered" id="studentTable">
                                             <thead>
                                                 <tr>
-                                                    <th>Student ID</th>
-                                                    <th>First Name</th>
-                                                    <th>Last Name</th>
-                                                    <th>Email</th>
+                                                    <th>Action</th>
+                                                    <th>Table Name</th>
+                                                    <th>Log Message</th>
+                                                    <th>Timestamp</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php foreach ($students as $student) : ?>
                                                     <tr>
-                                                        <td><?php echo $student['id']; ?></td>
-                                                        <td><?php echo $student['firstname']; ?></td>
-                                                        <td><?php echo $student['lastname']; ?></td>
-                                                        <td><?php echo $student['email']; ?></td>
+                                                        <td><?php echo $student['action']; ?></td>
+                                                        <td><?php echo $student['table_name']; ?></td>
+                                                        <td><?php echo $student['log_message']; ?></td>
+                                                        <td><?php echo $student['timestamp']; ?></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -187,94 +174,57 @@ $teacherCount = $stmtTeacherCount->fetch(PDO::FETCH_ASSOC)['teacher_count'];
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Exam Details</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Exam Taken
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Exam Not Yet Taken
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
 
+                    <!-- /.container-fluid -->
+
                 </div>
-                <!-- /.container-fluid -->
+                <!-- End of Main Content -->
 
             </div>
-            <!-- End of Main Content -->
+            <!-- End of Content Wrapper -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+        <?php
 
-    <?php
+        include('includes/modals.php');
 
-    include('includes/modals.php');
+        ?>
 
-    ?>
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+        <!-- Page level custom scripts -->
+        <script src="js/demo/chart-bar-demo.js"></script>
+        <script src="js/demo/chart-pie-demo.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-bar-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+        <!-- Own Custom Scripts -->
+        <script src="js/myjs.js"></script>
 
-    <!-- Own Custom Scripts -->
-    <script src="js/myjs.js"></script>
-
-    <!-- Include DataTables JS and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+        <!-- Include DataTables JS and jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
 
- 
+
 </body>
 
 </html>

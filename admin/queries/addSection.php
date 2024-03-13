@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 include('../../includes/connection.php');
 
@@ -26,7 +25,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $success = $stmt->execute();
 
     if ($success) {
-        $response = array('status' => 'success', 'message' => 'Section added successfully');
+        $auditQuery = "INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES (:action, :table_name, :log_message, :admin_id, NOW())";
+        $auditStmt = $conn->prepare($auditQuery);
+
+        $action = "Insert";
+        $table_name = "tbl_section";
+        $log_message = "Admin with admin id: {$_SESSION['admin_id']} added new section with section name: $sectionName and teacher id: $teacherId";
+        $adminId = $_SESSION['admin_id'];
+
+        $auditStmt->bindParam(':action', $action, PDO::PARAM_STR);
+        $auditStmt->bindParam(':table_name', $table_name, PDO::PARAM_STR);
+        $auditStmt->bindParam(':log_message', $log_message, PDO::PARAM_STR);
+        $auditStmt->bindParam(':admin_id', $adminId, PDO::PARAM_INT);
+
+        $auditSuccess = $auditStmt->execute();
+
+        if ($auditSuccess) {
+            $response = array('status' => 'success', 'message' => 'Section added successfully');
+        } else {
+            $response = array('status' => 'error', 'message' => 'Failed to log audit information');
+        }
     } else {
         $response = array('status' => 'error', 'message' => 'Failed to add section');
     }
@@ -35,5 +53,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode($response);
     exit;
 }
-
-?>

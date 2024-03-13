@@ -215,18 +215,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // HANDLE ADD TEACHER RESPONSE
 function handleAddSectionResponse(response) {
-  if (response.error) {
+  if (response == "error") {
     Swal.fire({
       icon: "error",
       title: "Error",
-      text: response.error,
+      text: response,
     });
   } else {
     $("#addSectionForm")[0].reset();
     Swal.fire({
       icon: "success",
       title: "Success",
-      text: response.message,
+      text: response,
     });
   }
 }
@@ -376,6 +376,56 @@ function handleAddProgramHeadResponse(response) {
       icon: "error",
       title: "Error",
       text: "An error occurred while adding program head. Please try again.",
+      confirmButtonText: "OK",
+    });
+  }
+}
+
+
+// ADD DEAN
+$("#addDeanBtn").on("click", function () {
+  var formData = $("#addDeanForm").serialize();
+  $.ajax({
+    type: "POST",
+    url: "queries/addDean.php",
+    data: formData,
+    dataType: "json",
+    success: function (response) {
+      handleAddDeanResponse(response);
+    },
+    error: function () {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong with the AJAX request.",
+      });
+    },
+  });
+});
+
+function handleAddDeanResponse(response) {
+  $("#deanId").val("");
+  $("#deanFirstName").val("");
+  $("#deanLastName").val("");
+  $("#deanGender").val("");
+  $("#deanEmail").val("");
+  
+  if (response.status === "success") {
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "Dean added successfully!",
+      confirmButtonText: "OK",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $("#addDeanModal").modal("hide");
+      }
+    });
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "An error occurred while adding dean. Please try again.",
       confirmButtonText: "OK",
     });
   }

@@ -56,7 +56,7 @@ if (!isset($_SESSION['admin_id'])) {
                     <!-- Page Heading -->
                     <h1 class="h3 mb-0 text-gray-800 mt-2 d-flex justify-content-between align-items-center">
                         Dean Information
-                        <button type="submit" class="btn btn-primary ml-auto mt-3">Create New Dean Account</button>
+                        <button type="button" class="btn btn-primary ml-auto mt-3" data-toggle="modal" data-target="#addDeanModal">Create New Dean Account</button>
                     </h1>
 
                     <hr>
@@ -175,6 +175,8 @@ if (!isset($_SESSION['admin_id'])) {
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
+    <!-- myjs script -->
+    <script src="js/myjs.js"></script>
     <!-- own script -->
     <script>
         document.getElementById('selectDean').addEventListener('change', function() {

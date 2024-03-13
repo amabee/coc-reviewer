@@ -1,7 +1,4 @@
 <?php
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-
 session_start();
 require('../../includes/connection.php');
 
@@ -9,7 +6,6 @@ if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit();
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -40,15 +36,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtInsert = $conn->prepare("INSERT INTO tbl_teachers (teacher_id, firstname, lastname, gender, email, password, active) VALUES (?, ?, ?, ?, ?, ?, 'active')");
             $stmtInsert->execute([$teacherId, $firstName, $lastName, $gender, $email, $password]);
 
-            $response = [
-                'teacherId' => $teacherId,
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-                'gender' => $gender,
-                'email' => $email
-            ];
+            if ($stmtInsert->rowCount() > 0) {
+                // Insert audit log entry
+                $logMessage = "Admin with admin id: {$_SESSION['admin_id']} created new teacher with ID: $teacherId";
+                $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES ('insert', 'tbl_teachers', ?, ?, NOW())");
+                $auditStmt->execute([$logMessage, $_SESSION['admin_id']]);
 
-            echo json_encode($response);
+                $response = [
+                    'teacherId' => $teacherId,
+                    'firstName' => $firstName,
+                    'lastName' => $lastName,
+                    'gender' => $gender,
+                    'email' => $email
+                ];
+
+                echo json_encode($response);
+            } else {
+                echo json_encode(['error' => 'Failed to add teacher']);
+            }
         }
     } catch (PDOException $ex) {
         error_log('Database error: ' . $ex->getMessage());

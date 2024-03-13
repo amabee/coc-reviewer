@@ -5,6 +5,12 @@ ini_set('display_errors', 1);
 session_start();
 require('../../includes/connection.php');
 
+// Function to sanitize input
+function sanitizeInput($input)
+{
+    return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
+}
+
 if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
     exit();
@@ -12,11 +18,11 @@ if (!isset($_SESSION['admin_id'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $facultyId = $_POST['facultyId'];
-        $firstName = $_POST['facultyFirstName'];
-        $lastName = $_POST['facultyLastName'];
-        $gender = $_POST['gender'];
-        $email = $_POST['email'];
+        $facultyId = sanitizeInput($_POST['facultyId']);
+        $firstName = sanitizeInput($_POST['facultyFirstName']);
+        $lastName = sanitizeInput($_POST['facultyLastName']);
+        $gender = sanitizeInput($_POST['gender']);
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 
         if (empty($facultyId) || empty($firstName) || empty($lastName) || empty($gender) || empty($email)) {
             echo json_encode(['error' => 'All fields are required.']);
@@ -40,6 +46,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtInsert->execute([$facultyId, $firstName, $lastName, $gender, $email, $password]);
 
             if ($stmtInsert->rowCount() > 0) {
+                // Audit Logging
+                $adminId = $_SESSION['admin_id'];
+                $timestamp = date("Y-m-d H:i:s");
+                $auditLogQuery = "INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES (?, ?, ?, ?, ?)";
+                $auditLogStmt = $conn->prepare($auditLogQuery);
+                $action = "INSERT";
+                $tableName = "tbl_program_head";
+                $logMessage = "Admin with admin id: {$_SESSION['admin_id']} created new program head with faculty ID: $facultyId";
+                $auditLogStmt->execute([$action, $tableName, $logMessage, $adminId, $timestamp]);
+
                 echo json_encode(['status' => 'success']);
             } else {
                 echo json_encode(['error' => 'Failed to insert data.']);

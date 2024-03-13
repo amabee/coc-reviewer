@@ -292,3 +292,52 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL FOR ADDING DEAN -->
+<div class="modal fade" data-backdrop="static" id="addDeanModal" tabindex="-1" role="dialog" aria-labelledby="addDeanModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDeanModalLabel">Add New Dean</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addDeanForm">
+                    <div class="form-group">
+                        <label for="deanId">Dean ID</label>
+                        <input type="text" class="form-control" id="deanId" name="deanId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deanFirstName">Dean Firstname</label>
+                        <input type="text" class="form-control" id="deanFirstName" name="deanFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="deanLastName">Dean Lastname</label>
+                        <input type="text" class="form-control" id="deanLastName" name="deanLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select class="form-control" id="gender" name="deanGender" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="deanEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="addDeanBtn">Add Dean</button>
+            </div>
+        </div>
+    </div>
+</div>

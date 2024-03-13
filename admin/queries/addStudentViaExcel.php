@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require('../../includes/connection.php');
 
@@ -11,6 +10,11 @@ if (!isset($_SESSION['admin_id'])) {
 require '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+
+function sanitizeInput($input)
+{
+    return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
@@ -32,12 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $rowData = [];
                 foreach ($cellIterator as $cell) {
-                    $value = filter_var($cell->getValue(), FILTER_SANITIZE_STRING);
+                    $value = sanitizeInput($cell->getValue());
                     $rowData[] = $value;
                 }
 
                 $hashedPassword = sha1($rowData[5]);
-
                 $rowData[5] = $hashedPassword;
 
                 if (!empty(array_filter($rowData))) {
@@ -46,6 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     continue;
                 }
             }
+
+            // Insert audit log entry
+            $logMessage = "Admin with admin id: {$_SESSION['admin_id']} added students from an Excel file";
+            $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES ('insert', 'tbl_students', ?, ?, NOW())");
+            $auditStmt->execute([$logMessage, $_SESSION['admin_id']]);
 
             $response = ['success' => 'Data added successfully'];
             echo json_encode($response);

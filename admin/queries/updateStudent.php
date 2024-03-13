@@ -62,9 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':studentId', $studentId);
 
         if ($stmt->execute()) {
+            // Insert audit log entry
+            $logMessage = "Admin with ID: {$_SESSION['admin_id']} updated student data for student with ID: $studentId";
+            $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES ('update', 'tbl_students', ?, ?, NOW())");
+            $auditStmt->execute([$logMessage, $_SESSION['admin_id']]);
+
             echo json_encode(["success" => true, "message" => "Student data updated successfully"]);
         } else {
-
             echo json_encode(["success" => false, "message" => "Error updating student data"]);
         }
     } catch (PDOException $e) {
@@ -76,4 +80,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo json_encode(["success" => false, "message" => "Invalid request method"]);
 }
-
+?>

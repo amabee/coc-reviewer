@@ -10,7 +10,6 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
-
 function sanitizeInput($input)
 {
     return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
@@ -35,15 +34,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmtInsert = $conn->prepare("INSERT INTO tbl_students (id, firstname, lastname, gender, email, password, isActive) VALUES (?, ?, ?, ?, ?, ?, 'active')");
             $stmtInsert->execute([$studentId, $firstName, $lastName, $gender, $email, $password]);
 
-            $response = [
-                'studentId' => $studentId,
-                'firstName' => $firstName,
-                'lastName' => $lastName,
-                'gender' => $gender,
-                'email' => $email
-            ];
+            if ($stmtInsert->rowCount() > 0) {
+                // Insert audit log entry
+                $logMessage = "Admin with admin id: {$_SESSION['admin_id']} created new student with ID: $studentId";
+                $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES ('insert', 'tbl_students', ?, ?, NOW())");
+                $auditStmt->execute([$logMessage, $_SESSION['admin_id']]);
 
-            echo json_encode($response);
+                $response = [
+                    'studentId' => $studentId,
+                    'firstName' => $firstName,
+                    'lastName' => $lastName,
+                    'gender' => $gender,
+                    'email' => $email
+                ];
+                echo json_encode($response);
+            } else {
+                echo json_encode(['error' => 'Failed to add student']);
+            }
         }
     } catch (PDOException $ex) {
         echo json_encode(['error' => 'Database error: ' . $ex->getMessage()]);
