@@ -331,3 +331,52 @@ $(document).ready(function () {
     });
   });
 });
+
+// ADD PROGRAM HEAD
+$("#addProgramHeadBtn").on("click", function () {
+  var formData = $("#addFacultyForm").serialize();
+  $.ajax({
+    type: "POST",
+    url: "queries/addProgramhead.php",
+    data: formData,
+    dataType: "json",
+
+    success: function (response) {
+      handleAddProgramHeadResponse(response);
+    },
+    error: function () {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong with the AJAX request.",
+      });
+    },
+  });
+});
+
+function handleAddProgramHeadResponse(response) {
+  $("#teacherId").val("");
+  $("#firstName").val("");
+  $("#lastName").val("");
+  $("#gender").val("");
+  $("#email").val("");
+  if (response.status === "success") {
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "Program head added successfully!",
+      confirmButtonText: "OK",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $("#addFacultyModal").modal("hide");
+      }
+    });
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "An error occurred while adding program head. Please try again.",
+      confirmButtonText: "OK",
+    });
+  }
+}

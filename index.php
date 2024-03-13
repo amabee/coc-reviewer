@@ -120,13 +120,6 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 
-
-    <?php if (isset($error_message)): ?>
-        <div class="alert alert-danger text-center">
-            <?php echo $error_message; ?>
-        </div>
-    <?php endif; ?>
-
     <div id="invalidCredentialsModal" class="modal fade">
         <div class="modal-dialog modal-confirm">
             <div class="modal-content">

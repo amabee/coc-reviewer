@@ -6,7 +6,7 @@ require('../includes/connection.php');
 if (!isset($_SESSION['admin_id'])) {
     header('Location: login.php');
 }
-$query = "SELECT * FROM tbl_faculty";
+$query = "SELECT * FROM tbl_program_head";
 $stmt = $conn->prepare($query);
 $stmt->execute();
 $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -23,7 +23,7 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>COC REVIEWER - Section List</title>
+    <title>COC REVIEWER - Faculty</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -157,7 +157,7 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $('#facultyTable').DataTable({
                 dom: 'Bfrtip',
                 buttons: [{
-                    text: 'Add Faculty User',
+                    text: 'Add New Program Head',
                     action: function(e, dt, node, config) {
                         var addFacultyModal = new bootstrap.Modal(document.getElementById('addFacultyModal'));
                         addFacultyModal.show();

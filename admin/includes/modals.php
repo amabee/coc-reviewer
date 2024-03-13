@@ -244,12 +244,12 @@
     </div>
 </div>
 
-<!-- MODAL FOR ADDING FACULTY PERSONEL -->
-<div class="modal fade" data-backdrop="static" id="addFacultyModal"  tabindex="-1" role="dialog" aria-labelledby="addFacultyModalLabel" aria-hidden="true">
+<!-- MODAL FOR ADDING PROGRAM HEAD -->
+<div class="modal fade" data-backdrop="static" id="addFacultyModal" tabindex="-1" role="dialog" aria-labelledby="addFacultyModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addFacultyModalLabel">Add New Faculty User</h5>
+                <h5 class="modal-title" id="addFacultyModalLabel">Add New Program Head</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -287,7 +287,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="addFaculty()">Add Faculty</button>
+                <button type="button" class="btn btn-primary" id="addProgramHeadBtn">Add Program Head</button>
             </div>
         </div>
     </div>
