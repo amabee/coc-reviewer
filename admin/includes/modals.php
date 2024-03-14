@@ -115,6 +115,10 @@
                         <input type="email" class="form-control" id="updateEmail" name="updateEmail" required>
                     </div>
                     <div class="form-group">
+                        <label for="updatePassword">Password</label>
+                        <input type="password" class="form-control" id="updatePassword" name="updatePassword" required>
+                    </div>
+                    <div class="form-group">
                         <label for="updateStatus">Active Status</label>
                         <select name="updateStatus" class="form-control" id="updateStatus" required>
                             <option value="active">Active</option>

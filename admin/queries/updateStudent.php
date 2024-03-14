@@ -31,6 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lastName = sanitizeInput($_POST["updateLastName"]);
     $gender = sanitizeInput($_POST["updateGender"]);
     $email = sanitizeInput($_POST["updateEmail"]);
+    $password = sanitizeInput($_POST["updatePassword"]);
+    $hashedpassword = sha1($password);
     $status = sanitizeInput($_POST["updateStatus"]);
 
     if (!validateEmail($email)) {
@@ -49,6 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             lastname = :lastName,
             gender = :gender,
             email = :email,
+            password = :password,
             isActive = :status
             WHERE id = :studentId";
 
@@ -58,13 +61,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':lastName', $lastName);
         $stmt->bindParam(':gender', $gender);
         $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $hashedpassword);
         $stmt->bindParam(':status', $status);
         $stmt->bindParam(':studentId', $studentId);
 
         if ($stmt->execute()) {
             // Insert audit log entry
             $logMessage = "Admin with ID: {$_SESSION['admin_id']} updated student data for student with ID: $studentId. IP Address: {$_SERVER['REMOTE_ADDR']}";
-            $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, ip_address, timestamp) VALUES ('update', 'tbl_students', ?, ?, ?, NOW())");
+            $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, ip_addr, timestamp) VALUES ('update', 'tbl_students', ?, ?, ?, NOW())");
             $auditStmt->execute([$logMessage, $_SESSION['admin_id'], $_SERVER['REMOTE_ADDR']]);
 
             echo json_encode(["success" => true, "message" => "Student data updated successfully"]);
