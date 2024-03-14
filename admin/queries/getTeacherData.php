@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['teacherId'])) {
         $teacherId = ($teacherId !== false) ? $teacherId : 0;
         $teacherId = htmlspecialchars($teacherId, ENT_QUOTES, 'UTF-8');
 
-        $stmt = $conn->prepare("SELECT teacher_id, email, firstname, lastname, image FROM tbl_teachers WHERE teacher_id = ?");
+        $stmt = $conn->prepare("SELECT * FROM tbl_teachers WHERE teacher_id = ?");
         $stmt->execute([$teacherId]);
 
         if ($stmt->rowCount() > 0) {

@@ -100,9 +100,11 @@ $teachers = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <td><?php echo $teacher['lastname']; ?></td>
                                                         <td><?php echo $teacher['gender']; ?></td>
                                                         <td><?php echo $teacher['email']; ?></td>
-                                                        <td><button class="btn btn-primary">Update</button>
-                                                            <button class="btn btn-success" data-toggle="modal" data-target="#teacherProfileModal" onclick="loadTeacherData('<?php echo htmlspecialchars($teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>')">View Details</button>
-
+                                                        <td>
+                                                            <div class="d-flex">
+                                                                <button class="btn btn-primary flex-fill" data-toggle="modal" data-target="#updateTeacherModal" onclick="loadAndUpdateTeacherData('<?php echo htmlspecialchars($teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>')">Update</button>
+                                                                <button class="btn btn-success flex-fill ml-1" data-toggle="modal" data-target="#teacherProfileModal" onclick="loadTeacherData('<?php echo htmlspecialchars($teacher['teacher_id'], ENT_QUOTES, 'UTF-8') ?>')">View Details</button>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 <?php endforeach; ?>

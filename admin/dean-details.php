@@ -80,7 +80,7 @@ if (!isset($_SESSION['admin_id'])) {
                                 </div>
                                 <div class="row mt-2">
                                     <select name="selectDean" id="selectDean" class="form-control">
-                                        <option value="" selected disabled>-- SELECT DEAN --</option>
+                                        <option value="null" selected disabled>-- SELECT DEAN --</option>
                                         <?php
                                         $query = "SELECT dean_id, firstname, lastname FROM tbl_dean WHERE isActive = 'active'";
                                         $stmt = $conn->prepare($query);
@@ -103,29 +103,29 @@ if (!isset($_SESSION['admin_id'])) {
                                 <div class="row mt-2">
                                     <div class="col-md-6">
                                         <label class="labels" for="firstname">Firstname</label>
-                                        <input type="text" class="form-control" id="firstname" placeholder="first name" value="">
+                                        <input type="text" class="form-control" id="firstname" placeholder="first name" value="" disabled>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="labels" for="lastname">Lastname</label>
-                                        <input type="text" class="form-control" id="lastname" placeholder="surname" value="">
+                                        <input type="text" class="form-control" id="lastname" placeholder="surname" value="" disabled>
                                     </div>
                                 </div>
 
                                 <div class="row mt-3">
                                     <div class="col-md-12">
                                         <label class="labels" for="dean_id">Dean ID</label>
-                                        <input type="text" class="form-control" id="dean_id" placeholder="enter dean ID" value="">
+                                        <input type="text" class="form-control" id="dean_id" placeholder="enter dean ID" value="" disabled>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="labels" for="email">Email</label>
-                                        <input type="text" class="form-control" id="email" placeholder="enter email" value="">
+                                        <input type="text" class="form-control" id="email" placeholder="enter email" value="" disabled>
                                     </div>
                                 </div>
 
                                 <div class="row mt-3">
                                     <div class="col-md-6">
                                         <label class="labels" for="activeStatus">Active Status</label>
-                                        <select id="activeStatus" class="form-control">
+                                        <select id="activeStatus" class="form-control" disabled>
                                             <option value="" selected disabled>-- SELECT STATUS --</option>
                                             <option value="active">active</option>
                                             <option value="inactive">inactive</option>
@@ -134,7 +134,7 @@ if (!isset($_SESSION['admin_id'])) {
                                 </div>
 
                                 <div class="mt-5 text-center">
-                                    <button class="btn btn-primary profile-button" type="button" onclick="updateProfile()">Update Profile</button>
+                                    <button class="btn btn-primary profile-button" id="updateDeanProfileBtn" type="button" onclick="updateProfile()" disabled>Update Profile</button>
                                 </div>
                             </div>
 
@@ -180,6 +180,29 @@ if (!isset($_SESSION['admin_id'])) {
     <!-- own script -->
     <script>
         document.getElementById('selectDean').addEventListener('change', function() {
+
+            var btn = document.getElementById("updateDeanProfileBtn");
+            var fname = document.getElementById("firstname");
+            var lname = document.getElementById("lastname");
+            var dean_id = document.getElementById("dean_id");
+            var email = document.getElementById("email");
+            var activeStatus = document.getElementById("activeStatus");
+            if (this.value == "") {
+                btn.disabled = true;
+                fname.disabled = true;
+                lname.disabled = true;
+                dean_id.disabled = true;
+                email.disabled = true;
+                activeStatus.disabled = true;
+            } else {
+                btn.disabled = false;
+                fname.disabled = false;
+                lname.disabled = false;
+                dean_id.disabled = false;
+                email.disabled = false;
+                activeStatus.disabled = false;
+            }
+
             var selectedDeanId = this.value;
 
             function setValueById(id, value) {

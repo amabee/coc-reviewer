@@ -345,3 +345,58 @@
         </div>
     </div>
 </div>
+
+
+<!-- Update Teacher Modal -->
+<div class="modal fade" data-backdrop="static" id="updateTeacherModal" tabindex="-1" role="dialog" aria-labelledby="updateTeacherModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateTeacherModalLabel">Update Teacher Information</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateTeacherForm">
+                    <input type="hidden" id="updateTeacherId" name="updateTeacherId">
+
+                    <div class="form-group">
+                        <label for="updateFirstName">First Name</label>
+                        <input type="text" class="form-control" id="updateTeacherFirstName" name="updateTeacherFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateLastName">Last Name</label>
+                        <input type="text" class="form-control" id="updateTeacherLastName" name="updateTeacherLastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateGender">Gender</label>
+                        <select name="updateTeacherGender" id="updateTeacherGender" class="form-control" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateEmail">Email</label>
+                        <input type="email" class="form-control" id="updateTeacherEmail" name="updateTeacherEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updatePassword">Password</label>
+                        <input type="password" class="form-control" id="updateTeacherPassword" name="updateTeacherPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateStatus">Active Status</label>
+                        <select name="updateTeacherStatus" class="form-control" id="updateTeacherStatus" required>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="button" id="updateTeacherBtn">Update Teacher</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -231,6 +231,33 @@ function handleAddSectionResponse(response) {
   }
 }
 
+// GET TEACHER DATA AND PASS TO MODAL
+function loadAndUpdateTeacherData(teacherId) {
+  $.ajax({
+    url: "queries/getTeacherData.php",
+    method: "GET",
+    data: { teacherId: teacherId },
+    dataType: "json",
+    success: function (data) {
+      document.getElementById("updateTeacherId").value = data.teacher_id;
+      document.getElementById("updateTeacherFirstName").value = data.firstname;
+      document.getElementById("updateTeacherLastName").value = data.lastname;
+      document.getElementById("updateTeacherEmail").value = data.email;
+      document.getElementById("updateTeacherStatus").value = data.active;
+      document.getElementById("updateTeacherGender").value =
+        data.gender.toLowerCase();
+    },
+
+    error: function () {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to fetch teacher data.",
+      });
+    },
+  });
+}
+
 // FORM VALIDATION FOR SECTION
 function validateSectionForm() {
   var isValid = true;
@@ -332,6 +359,43 @@ $(document).ready(function () {
   });
 });
 
+// UPDATE TEACHER INFORMATION
+$(document).ready(function () {
+  $("#updateTeacherBtn").on("click", function () {
+    var formData = $("#updateTeacherForm").serialize();
+
+    $.ajax({
+      url: "queries/updateTeacher.php",
+      method: "POST",
+      data: formData,
+      dataType: "json",
+      success: function (response) {
+        if (response.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Teacher data updated successfully",
+          });
+          document.getElementById("updateTeacherPassword").value = "";
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Failed to update teacher data. Please try again.",
+          });
+        }
+      },
+      error: function () {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "An error occurred while processing your request.",
+        });
+      },
+    });
+  });
+});
+
 // ADD PROGRAM HEAD
 $("#addProgramHeadBtn").on("click", function () {
   var formData = $("#addFacultyForm").serialize();
@@ -381,7 +445,6 @@ function handleAddProgramHeadResponse(response) {
   }
 }
 
-
 // ADD DEAN
 $("#addDeanBtn").on("click", function () {
   var formData = $("#addDeanForm").serialize();
@@ -409,7 +472,7 @@ function handleAddDeanResponse(response) {
   $("#deanLastName").val("");
   $("#deanGender").val("");
   $("#deanEmail").val("");
-  
+
   if (response.status === "success") {
     Swal.fire({
       icon: "success",
