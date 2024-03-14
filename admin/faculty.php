@@ -98,7 +98,7 @@ $faculty_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <td>
                                                             <?php echo $faculty_member['isActive']; ?>
                                                         </td>
-                                                        <td><button class="btn btn-primary">Update</button></td>
+                                                        <td><button class="btn btn-primary" data-toggle="modal" data-target="#updateProgramHeadModal" onclick="loadAndUpdateProgramHeadData('<?php echo htmlspecialchars($faculty_member['faculty_id'], ENT_QUOTES, 'UTF-8') ?>')">Update</button></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
