@@ -493,3 +493,52 @@ function handleAddDeanResponse(response) {
     });
   }
 }
+
+
+//UPDATE DEAN
+$(document).ready(function () {
+  $("#updateDeanProfileBtn").on("click", function () {
+      var deanId = $("#dean_id").val();
+      var firstName = $("#firstname").val();
+      var lastName = $("#lastname").val();
+      var email = $("#email").val();
+      var pass = $("#password").val();
+      var activeStatus = $("#activeStatus").val();
+
+      $.ajax({
+          url: "queries/updateDean.php",
+          method: "POST",
+          data: {
+              deanId: deanId,
+              firstName: firstName,
+              lastName: lastName,
+              email: email,
+              password: pass,
+              activeStatus: activeStatus
+          },
+          dataType: "json",
+          success: function (response) {
+              if (response.success) {
+                  Swal.fire({
+                      icon: "success",
+                      title: "Success",
+                      text: "Dean profile updated successfully",
+                  });
+              } else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: "Failed to update dean profile. Please try again.",
+                  });
+              }
+          },
+          error: function () {
+              Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "An error occurred while processing your request.",
+              });
+          },
+      });
+  });
+});

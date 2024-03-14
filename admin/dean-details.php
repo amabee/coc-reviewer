@@ -31,8 +31,6 @@ if (!isset($_SESSION['admin_id'])) {
     <!-- sweet alert  -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
-
 </head>
 
 <body id="page-top">
@@ -76,13 +74,12 @@ if (!isset($_SESSION['admin_id'])) {
                             <div class="p-3 py-2">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h4 class="text-right">Select Dean</h4>
-
                                 </div>
                                 <div class="row mt-2">
                                     <select name="selectDean" id="selectDean" class="form-control">
-                                        <option value="null" selected disabled>-- SELECT DEAN --</option>
+                                        <option value="" selected disabled>-- SELECT DEAN --</option>
                                         <?php
-                                        $query = "SELECT dean_id, firstname, lastname FROM tbl_dean WHERE isActive = 'active'";
+                                        $query = "SELECT dean_id, firstname, lastname FROM tbl_dean";
                                         $stmt = $conn->prepare($query);
                                         $stmt->execute();
                                         $deans = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -120,6 +117,10 @@ if (!isset($_SESSION['admin_id'])) {
                                         <label class="labels" for="email">Email</label>
                                         <input type="text" class="form-control" id="email" placeholder="enter email" value="" disabled>
                                     </div>
+                                    <div class="col-md-12">
+                                        <label class="labels" for="password">Password</label>
+                                        <input type="password" class="form-control" id="password" placeholder="enter password" value="" disabled>
+                                    </div>
                                 </div>
 
                                 <div class="row mt-3">
@@ -134,7 +135,7 @@ if (!isset($_SESSION['admin_id'])) {
                                 </div>
 
                                 <div class="mt-5 text-center">
-                                    <button class="btn btn-primary profile-button" id="updateDeanProfileBtn" type="button" onclick="updateProfile()" disabled>Update Profile</button>
+                                    <button class="btn btn-primary profile-button" id="updateDeanProfileBtn" type="button" disabled>Update Profile</button>
                                 </div>
                             </div>
 
@@ -160,9 +161,7 @@ if (!isset($_SESSION['admin_id'])) {
     </a>
 
     <?php
-
     include('includes/modals.php');
-
     ?>
 
     <!-- Bootstrap core JavaScript-->
@@ -175,6 +174,9 @@ if (!isset($_SESSION['admin_id'])) {
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- myjs script -->
     <script src="js/myjs.js"></script>
     <!-- own script -->
@@ -186,6 +188,7 @@ if (!isset($_SESSION['admin_id'])) {
             var lname = document.getElementById("lastname");
             var dean_id = document.getElementById("dean_id");
             var email = document.getElementById("email");
+            var pass = document.getElementById("password");
             var activeStatus = document.getElementById("activeStatus");
             if (this.value == "") {
                 btn.disabled = true;
@@ -193,6 +196,7 @@ if (!isset($_SESSION['admin_id'])) {
                 lname.disabled = true;
                 dean_id.disabled = true;
                 email.disabled = true;
+                pass.disabled = true;
                 activeStatus.disabled = true;
             } else {
                 btn.disabled = false;
@@ -200,6 +204,7 @@ if (!isset($_SESSION['admin_id'])) {
                 lname.disabled = false;
                 dean_id.disabled = false;
                 email.disabled = false;
+                pass.disabled = false;
                 activeStatus.disabled = false;
             }
 
@@ -243,7 +248,6 @@ if (!isset($_SESSION['admin_id'])) {
             }
         });
     </script>
-
 
 </body>
 
