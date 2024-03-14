@@ -49,12 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Audit Logging
                 $adminId = $_SESSION['admin_id'];
                 $timestamp = date("Y-m-d H:i:s");
-                $auditLogQuery = "INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES (?, ?, ?, ?, ?)";
+                $ipAddress = $_SERVER['REMOTE_ADDR'];
+                $auditLogQuery = "INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp, ip_addr) VALUES (?, ?, ?, ?, ?, ?)";
                 $auditLogStmt = $conn->prepare($auditLogQuery);
                 $action = "INSERT";
                 $tableName = "tbl_program_head";
                 $logMessage = "Admin with admin id: {$_SESSION['admin_id']} created new program head with faculty ID: $facultyId";
-                $auditLogStmt->execute([$action, $tableName, $logMessage, $adminId, $timestamp]);
+                $auditLogStmt->execute([$action, $tableName, $logMessage, $adminId, $timestamp, $ipAddress]);
 
                 echo json_encode(['status' => 'success']);
             } else {
@@ -68,4 +69,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['error' => 'Invalid request method']);
 }
-?>

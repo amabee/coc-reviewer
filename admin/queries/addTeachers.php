@@ -39,8 +39,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmtInsert->rowCount() > 0) {
                 // Insert audit log entry
                 $logMessage = "Admin with admin id: {$_SESSION['admin_id']} created new teacher with ID: $teacherId";
-                $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES ('insert', 'tbl_teachers', ?, ?, NOW())");
-                $auditStmt->execute([$logMessage, $_SESSION['admin_id']]);
+                $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, ip_addr, timestamp) VALUES ('insert', 'tbl_teachers', ?, ?, ?, NOW())");
+                $ipAddress = $_SERVER['REMOTE_ADDR'];
+                $auditStmt->execute([$logMessage, $_SESSION['admin_id'], $ipAddress]);
 
                 $response = [
                     'teacherId' => $teacherId,

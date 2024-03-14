@@ -156,6 +156,7 @@ $teacherCount = $stmtTeacherCount->fetch(PDO::FETCH_ASSOC)['teacher_count'];
                                                     <th>Action</th>
                                                     <th>Table Name</th>
                                                     <th>Log Message</th>
+                                                    <th>IP Address</th>
                                                     <th>Timestamp</th>
                                                 </tr>
                                             </thead>
@@ -165,6 +166,7 @@ $teacherCount = $stmtTeacherCount->fetch(PDO::FETCH_ASSOC)['teacher_count'];
                                                         <td><?php echo $student['action']; ?></td>
                                                         <td><?php echo $student['table_name']; ?></td>
                                                         <td><?php echo $student['log_message']; ?></td>
+                                                        <td><?php echo $student['ip_addr']; ?></td>
                                                         <td><?php echo $student['timestamp']; ?></td>
                                                     </tr>
                                                 <?php endforeach; ?>

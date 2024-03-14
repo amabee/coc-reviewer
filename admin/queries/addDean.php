@@ -43,10 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($stmtInsert->rowCount() > 0) {
                 // Audit Log
+                $userIP = $_SERVER['REMOTE_ADDR'];
                 $logMessage = "Admin with admin id: ".$_SESSION['admin_id']." Created new dean with dean ID: $deanId";
-                $auditQuery = "INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES ('Insert', 'tbl_deans', ?, ?, NOW())";
+                $auditQuery = "INSERT INTO tbl_audit (action, table_name, log_message, admin_id, ip_addr, timestamp) VALUES (?, ?, ?, ?, ?, NOW())";
                 $auditStmt = $conn->prepare($auditQuery);
-                $auditStmt->execute([$logMessage, $_SESSION['admin_id']]);
+                $action = 'Insert';
+                $tableName = 'tbl_deans';
+                $auditStmt->execute([$action, $tableName, $logMessage, $_SESSION['admin_id'], $userIP]);
                 
                 echo json_encode(['status' => 'success']);
             } else {

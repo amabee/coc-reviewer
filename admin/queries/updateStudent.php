@@ -63,9 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt->execute()) {
             // Insert audit log entry
-            $logMessage = "Admin with ID: {$_SESSION['admin_id']} updated student data for student with ID: $studentId";
-            $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES ('update', 'tbl_students', ?, ?, NOW())");
-            $auditStmt->execute([$logMessage, $_SESSION['admin_id']]);
+            $logMessage = "Admin with ID: {$_SESSION['admin_id']} updated student data for student with ID: $studentId. IP Address: {$_SERVER['REMOTE_ADDR']}";
+            $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, ip_address, timestamp) VALUES ('update', 'tbl_students', ?, ?, ?, NOW())");
+            $auditStmt->execute([$logMessage, $_SESSION['admin_id'], $_SERVER['REMOTE_ADDR']]);
 
             echo json_encode(["success" => true, "message" => "Student data updated successfully"]);
         } else {

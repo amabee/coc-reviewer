@@ -25,18 +25,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $success = $stmt->execute();
 
     if ($success) {
-        $auditQuery = "INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp) VALUES (:action, :table_name, :log_message, :admin_id, NOW())";
+        // Audit Logging
+        $auditQuery = "INSERT INTO tbl_audit (action, table_name, log_message, admin_id, timestamp, ip_addr) VALUES (:action, :table_name, :log_message, :admin_id, NOW(), :ip_addr)";
         $auditStmt = $conn->prepare($auditQuery);
 
         $action = "Insert";
         $table_name = "tbl_section";
         $log_message = "Admin with admin id: {$_SESSION['admin_id']} added new section with section name: $sectionName and teacher id: $teacherId";
         $adminId = $_SESSION['admin_id'];
+        $ipAddress = $_SERVER['REMOTE_ADDR'];
 
         $auditStmt->bindParam(':action', $action, PDO::PARAM_STR);
         $auditStmt->bindParam(':table_name', $table_name, PDO::PARAM_STR);
         $auditStmt->bindParam(':log_message', $log_message, PDO::PARAM_STR);
         $auditStmt->bindParam(':admin_id', $adminId, PDO::PARAM_INT);
+        $auditStmt->bindParam(':ip_addr', $ipAddress, PDO::PARAM_STR);
 
         $auditSuccess = $auditStmt->execute();
 
@@ -53,3 +56,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode($response);
     exit;
 }
+?>
