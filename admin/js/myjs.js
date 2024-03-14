@@ -418,32 +418,32 @@ $("#addProgramHeadBtn").on("click", function () {
   });
 });
 
-function handleAddProgramHeadResponse(response) {
-  $("#teacherId").val("");
-  $("#firstName").val("");
-  $("#lastName").val("");
-  $("#gender").val("");
-  $("#email").val("");
-  if (response.status === "success") {
-    Swal.fire({
-      icon: "success",
-      title: "Success",
-      text: "Program head added successfully!",
-      confirmButtonText: "OK",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $("#addFacultyModal").modal("hide");
-      }
-    });
-  } else {
-    Swal.fire({
-      icon: "error",
-      title: "Error",
-      text: "An error occurred while adding program head. Please try again.",
-      confirmButtonText: "OK",
-    });
-  }
-}
+// function handleAddProgramHeadResponse(response) {
+//   $("#teacherId").val("");
+//   $("#firstName").val("");
+//   $("#lastName").val("");
+//   $("#gender").val("");
+//   $("#email").val("");
+//   if (response.status === "success") {
+//     Swal.fire({
+//       icon: "success",
+//       title: "Success",
+//       text: "Program head added successfully!",
+//       confirmButtonText: "OK",
+//     }).then((result) => {
+//       if (result.isConfirmed) {
+//         $("#addFacultyModal").modal("hide");
+//       }
+//     });
+//   } else {
+//     Swal.fire({
+//       icon: "error",
+//       title: "Error",
+//       text: "An error occurred while adding program head. Please try again.",
+//       confirmButtonText: "OK",
+//     });
+//   }
+// }
 
 // ADD DEAN
 $("#addDeanBtn").on("click", function () {
@@ -542,3 +542,96 @@ $(document).ready(function () {
       });
   });
 });
+
+// handleAddProgramHeadResponse
+function handleAddProgramHeadResponse(response) {
+  $("#teacherId").val("");
+  $("#firstName").val("");
+  $("#lastName").val("");
+  $("#gender").val("");
+  $("#email").val("");
+  if (response.status === "success") {
+    Swal.fire({
+      icon: "success",
+      title: "Success",
+      text: "Program head added successfully!",
+      confirmButtonText: "OK",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $("#addFacultyModal").modal("hide");
+      }
+    });
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Error",
+      text: "An error occurred while adding program head. Please try again.",
+      confirmButtonText: "OK",
+    });
+  }
+}
+
+// UPDATE PROGRAM HEAD
+$(document).ready(function () {
+  $("#updateProgramHeadBtn").on("click", function () {
+      var formData = $("#updateProgramHeadForm").serialize();
+
+      $.ajax({
+          url: "queries/updateProgramHead.php",
+          method: "POST",
+          data: formData,
+          dataType: "json",
+          success: function (response) {
+              if (response.success) {
+                  Swal.fire({
+                      icon: "success",
+                      title: "Success",
+                      text: "Program head data updated successfully",
+                  });
+                  $("#updateProgramHeadPassword").val(""); 
+                  $("#updateProgramHeadModal").modal("hide");
+              } else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: "Failed to update program head data. Please try again.",
+                  });
+              }
+          },
+          error: function () {
+              Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "An error occurred while processing your request.",
+              });
+          },
+      });
+  });
+});
+
+// GET TEACHER DATA AND PASS TO MODAL
+function loadAndUpdateProgramHeadData(phid) {
+  $.ajax({
+    url: "queries/getProgramHeadData.php",
+    method: "GET",
+    data: { phid: phid },
+    dataType: "json",
+    success: function (data) {
+      document.getElementById("updateProgramHeadId").value = data.faculty_id;
+      document.getElementById("updateProgramHeadFirstName").value = data.faculty_firstname;
+      document.getElementById("updateProgramHeadLastName").value = data.faculty_lastname;
+      document.getElementById("updateProgramHeadEmail").value = data.email;
+      document.getElementById("updateProgramHeadStatus").value = data.isActive;
+      document.getElementById("updateProgramHeadGender").value =
+        data.gender.toLowerCase();
+    },
+
+    error: function () {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to fetch Program Head data.",
+      });
+    },
+  });
+}
