@@ -65,7 +65,14 @@ if (isset($_SESSION['admin_id']) && isset($_SESSION['loggedin'])) {
 
 </head>
 
-<body class="bg-gradient-primary">
+<body style="font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: linear-gradient(135deg, #F3E0E0, #E4F2CB,  #C7ECDD);">
 
     <div class="container">
         <div class="row justify-content-center">
@@ -77,7 +84,7 @@ if (isset($_SESSION['admin_id']) && isset($_SESSION['loggedin'])) {
                             <div class="col-lg-6 h-100">
                                 <div class="p-5 ">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4"> <b>Admin Login</b> </h1>
                                     </div>
                                     <form class="user" action="login.php" method="post">
                                         <div class="form-group">
@@ -108,6 +115,10 @@ if (isset($_SESSION['admin_id']) && isset($_SESSION['loggedin'])) {
                                         <?php echo $message; ?>
                                     </span>
                                 </div>
+                            </div>
+                            <div class="col-lg-6 h-100">
+                            <center><img style="height: 410px;" src="https://scontent.fcgy2-1.fna.fbcdn.net/v/t39.30808-6/353832082_590289946586763_3338392738682972305_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEw87IyDVvsp_wvd-8TDhYw4sTCzPSrp3jixMLM9KuneDQH4QvqHuXjlytLkiWPGmR1T2t4NqfcV21CzOTQTf5c&_nc_ohc=v4mCj6xNntEAX8D5gM2&_nc_ht=scontent.fcgy2-1.fna&oh=00_AfDuy-QlmMDLjRW-AQ7IeN4GcpvLOj-eB4O890jxLyVa3Q&oe=65F86DD5" alt="COC SHIT">
+      </center>    </div>
                             </div>
                         </div>
                     </div>

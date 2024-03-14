@@ -56,7 +56,7 @@ $total_comments = $select_comments->rowCount();
         <div class="box-container">
 
             <div class="box">
-                <h3>welcome!</h3>
+                <h3>Welcome!</h3>
                 <p>
                     <?= $fetch_profile['firstname']; ?>
                     <?= $fetch_profile['lastname']; ?>

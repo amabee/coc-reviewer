@@ -16,7 +16,7 @@ if (isset($message)) {
 
     <section class="flex">
 
-        <a href="dashboard.php" class="logo">Faculty</a>
+        <a href="dashboard.php" class="logo">Teacher</a>
 
         <form action="search_page.php" method="post" class="search-form">
             <input type="text" name="search" placeholder="search here..." required maxlength="100">

@@ -2,7 +2,7 @@
 
 body {
   font-family: 'Open Sans', sans-serif;
-  background: #f9faff;
+  background: #3b8351;
   color: #3a3c47;
   line-height: 1.6;
   display: flex;
@@ -20,7 +20,10 @@ form {
   background: #fff;
   max-width: 360px;
   width: 100%;
-  padding: 58px 44px;
+  padding-left: 200px;
+  padding-right: 200px;
+  padding-top: 100px;
+  padding-bottom: 100px;
   border: 1px solid #e1e2f0;
   border-radius: 4px;
   box-shadow: 0 0 5px 0 rgba(42, 45, 48, 0.12);
@@ -31,6 +34,7 @@ form {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  margin-right: 150px;
 }
 
 .row label {
