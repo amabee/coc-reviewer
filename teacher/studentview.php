@@ -25,6 +25,10 @@ $select_students = $conn->prepare("SELECT tbl_studentclasses.student_id, tbl_stu
 $select_students->execute([$section_id]);
 $students = $select_students->fetchAll(PDO::FETCH_ASSOC);
 
+$get_students = $conn->prepare("SELECT * FROM tbl_students");
+$get_students->execute();
+$allstudents = $get_students->fetchAll(PDO::FETCH_ASSOC);
+
 if (isset($_POST['remove_student'])) {
     try {
         $remove_student = $_POST['remove_student'];
@@ -59,9 +63,7 @@ $currentPageStudents = array_slice($students, $offset, $studentsPerPage);
     <title>Student List</title>
 
     <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Include jQuery before DataTables -->
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -91,7 +93,7 @@ $currentPageStudents = array_slice($students, $offset, $studentsPerPage);
 
             <div class="box">
 
-                <button class="btn" style="width:auto; float: right; margin-bottom: 20px">Add Student</button>
+                <button class="btn" style="width:auto; float: right; margin-bottom: 20px" onclick="openModal()">Add Student</button>
                 <table id="myTable" class="display" style="font-size: 16px;">
                     <thead>
                         <tr>
@@ -103,7 +105,7 @@ $currentPageStudents = array_slice($students, $offset, $studentsPerPage);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($currentPageStudents as $student): ?>
+                        <?php foreach ($currentPageStudents as $student) : ?>
                             <tr>
                                 <td>
                                     <?= $student['student_id'] ?>
@@ -132,21 +134,111 @@ $currentPageStudents = array_slice($students, $offset, $studentsPerPage);
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <!-- MODAL AREA -->
+                <style>
+                    .modal {
+                        display: none;
+                        position: fixed;
+                        z-index: 1000;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        overflow: auto;
+                        background-color: rgba(0, 0, 0, 0.7);
+                    }
 
+                    .modal-content {
+                        margin: 0 auto;
+                        width: 100%;
+                        max-width: 500px;
+                        box-sizing: border-box;
+                    }
+
+                    .close {
+                        color: #aaa;
+                        float: right;
+                        font-size: 28px;
+                        font-weight: bold;
+                    }
+
+                    .close:hover,
+                    .close:focus {
+                        color: black;
+                        text-decoration: none;
+                        cursor: pointer;
+                    }
+
+                    .side-bar,
+                    .navbar {
+                        z-index: 999;
+                    }
+                </style>
+
+                <div id="myModal" class="modal">
+                    <div class="modal-content">
+                        <div class="box" style="width: 600px;">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <div id="boxbox" style="text-align: center;">
+                                <h3 class="title" style="margin-bottom: .5rem; font-size: 25px;">Students List</h3>
+                                <table id="studentTable" class="display" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Student ID</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($allstudents as $student) : ?>
+                                            <tr>
+                                                <td><?= $student['id'] ?></td>
+                                                <td><?= $student['firstname'] ?></td>
+                                                <td><?= $student['lastname'] ?></td>
+                                                <td><?= $student['email'] ?></td>
+                                                <td><button class="btn" style="height: 50px; width: 100px; font-size: 12px;">Add Student</button></td>
+
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
-
+        </div>
         </div>
     </section>
 
 
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#myTable').DataTable({
                 responsive: true
             });
         });
+
+        $(document).ready(function() {
+            $('#studentTable').DataTable({
+                responsive: true
+            });
+        });
+
+        function openModal() {
+            var modal = document.getElementById('myModal');
+            var modalContent = document.querySelector('.modal-content');
+            modal.style.display = 'block';
+            modalContent.style.marginTop = '10%';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
     </script>
     <script src="../scripts/script.js"></script>
 
