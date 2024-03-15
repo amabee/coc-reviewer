@@ -455,3 +455,43 @@
         </div>
     </div>
 </div>
+
+<!-- Update Section Modal -->
+<div class="modal fade" data-backdrop="static" id="updateSectionModal" tabindex="-1" role="dialog" aria-labelledby="updateSectionModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateSectionModalLabel">Update Section</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="updateSectionForm">
+                    <div class="form-group">
+                        <label for="updateSectionName">Section Name</label>
+                        <input type="text" class="form-control" id="updateSectionName" name="updateSectionName" required>
+                        <input type="text" class="form-control" id="currentSectionName" name="currentSectionId">
+                    </div>
+                    <div class="form-group">
+                        <label for="updateTeacherId">Assigned Teacher</label>
+
+                        <select name="updateTeacherId" id="updateTeacherId" class="form-control" required>
+                            <option value = "" selected disabled>-- SELECT NEW TEACHER --</option>
+                            <?php foreach ($availableTeachers as $teacher) : ?>
+                                <option value="<?php echo $teacher['teacher_id']; ?>">
+                                    <?php echo $teacher['firstname'] . ' ' . $teacher['lastname']; ?>
+                                </option>
+                            <?php endforeach; ?>
+
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" type="button" id="updateSectionBtn">Update Section</button>
+            </div>
+        </div>
+    </div>
+</div>

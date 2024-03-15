@@ -42,9 +42,7 @@ $section_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -104,7 +102,7 @@ $section_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($section_list as $section): ?>
+                                                <?php foreach ($section_list as $section) : ?>
                                                     <tr>
                                                         <td>
                                                             <?php echo $section['section_id']; ?>
@@ -115,7 +113,7 @@ $section_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                                         <td>
                                                             <?php echo $section['student_count']; ?>
                                                         </td>
-                                                        <td><button class="btn btn-primary">Update</button></td>
+                                                        <td><button class="btn btn-primary" data-toggle="modal" data-target="#updateSectionModal" data-section-id="<?php echo $section['section_id'] ?>" onclick="loadAndUpdateSection(this.getAttribute('data-section-id'))">Update</button></td>
                                                     </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
@@ -169,7 +167,7 @@ $section_list = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#studentTable').DataTable();
         });
     </script>

@@ -635,3 +635,63 @@ function loadAndUpdateProgramHeadData(phid) {
     },
   });
 }
+
+
+// GET SECTION DATA AND PASS TO MODAL
+function loadAndUpdateSection(sectionId) {
+  $.ajax({
+    url: "queries/getSectionData.php",
+    method: "GET",
+    data: { sectionId: sectionId },
+    dataType: "json",
+    success: function (data) {
+      document.getElementById("updateSectionName").value = data.section_id;
+      document.getElementById("currentSectionName").value = data.section_id;
+      document.getElementById("updateTeacherId").value = data.teacher_id;
+    },
+    error: function () {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Failed to fetch Section data.",
+      });
+    },
+  });
+}
+
+// UPDATE SECTION
+$(document).ready(function () {
+  $("#updateSectionBtn").on("click", function () {
+      var formData = $("#updateSectionForm").serialize();
+
+      $.ajax({
+          url: "queries/updateSection.php",
+          method: "POST",
+          data: formData,
+          dataType: "json",
+          success: function (response) {
+              if (response.success) {
+                  Swal.fire({
+                      icon: "success",
+                      title: "Success",
+                      text: "Section data updated successfully",
+                  });
+                  $("#updateSectionModal").modal("hide");
+              } else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: "Failed to update section data. Please try again.",
+                  });
+              }
+          },
+          error: function () {
+              Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "An error occurred while processing your request.",
+              });
+          },
+      });
+  });
+});
