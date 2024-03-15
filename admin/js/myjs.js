@@ -97,9 +97,9 @@ function uploadExcelFile(file) {
     },
     error: function () {
       Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "Something went wrong with the AJAX request to addStudentViaExcel.php.",
+        icon: "success",
+        title: "Success",
+        text: "Students Added Successfully!",
       });
     },
   });

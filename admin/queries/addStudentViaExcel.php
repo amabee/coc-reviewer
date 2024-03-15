@@ -26,8 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt = $conn->prepare("INSERT INTO tbl_students (id, firstname, lastname, gender, email, password, image, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
+            $firstRow = true;
             foreach ($worksheet->getRowIterator() as $index => $row) {
-                if ($index === 1) {
+                if ($firstRow) {
+                    $firstRow = false;
                     continue;
                 }
 
@@ -50,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
 
+
             // Insert audit log entry
             $logMessage = "Admin with admin id: {$_SESSION['admin_id']} added students from an Excel file";
             $auditStmt = $conn->prepare("INSERT INTO tbl_audit (action, table_name, log_message, admin_id, ip_addr, timestamp) VALUES ('insert', 'tbl_students', ?, ?, ?, NOW())");
@@ -67,4 +70,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['error' => 'Invalid request method']);
 }
-?>
