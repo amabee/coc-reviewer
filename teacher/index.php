@@ -56,7 +56,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
 
     <div class="container">
         <div class="form-container">
-            <h1> <b>TEACHER LOGIN</b> </h1>
+           <center> <h1> <b>TEACHER LOGIN</b> </h1></center>
             <br> 
             <form method="POST">
                 <div class="form-group">
