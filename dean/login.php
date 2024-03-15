@@ -83,7 +83,7 @@ if (isset($_SESSION['dean_id']) && isset($_SESSION['loggedin'])) {
                             <div class="col-lg-6 h-100">
                                 <div class="p-5 ">
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Dean Login</h1>
+                                        <h1 class="h1 text-gray-900 mb-4"> <b>DEAN LOGIN</b> </h1>
                                     </div>
                                     <form class="user" action="login.php" method="post">
                                         <div class="form-group">

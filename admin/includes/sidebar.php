@@ -1,10 +1,14 @@
+
+<link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
         <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fa-solid fa-user-tie"></i>
+            <!-- <i class="fa-solid fa-user-tie"></i> -->
+            <!-- <FontAwesomeIcon icon="fa-solid fa-user" /> -->
             
         </div>
         <div class="sidebar-brand-text mx-3">ADMIN</div>
@@ -73,20 +77,19 @@
 
     <!-- Dean's Interface -->
     <div class="sidebar-heading">
-        Faculty Interface
+         Dean Interface
     </div>
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDeans" aria-expanded="true"
             aria-controls="collapseDeans">
             <i class="fas fa fa-users"></i>
-            <span>Manage Faculty</span>
+            <span>Manage Dean</span>
         </a>
         <div id="collapseDeans" class="collapse" aria-labelledby="headingDeans" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Manage Faculty:</h6>
+                <h6 class="collapse-header">Manage Dean Info:</h6>
                 <a class="collapse-item" href="dean-details.php">View Dean Details</a>
-                <a class="collapse-item" href="faculty.php">View Faculty</a>
                 <div class="collapse-divider"></div>
             </div>
         </div>
@@ -113,7 +116,7 @@
                 <a class="collapse-item" href="#" data-toggle="modal" data-target="#addSectionModal">Add Section</a>
                 <div class="collapse-divider"></div>
                 <div class="dropdown-divider"></div>
-                <a class="collapse-item" href="view_dean_details.html">Class Performance</a>
+                <a class="collapse-item" href="">Class Performance</a>
             </div>
         </div>
     </li>

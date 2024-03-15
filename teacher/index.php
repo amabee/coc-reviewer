@@ -56,7 +56,8 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
 
     <div class="container">
         <div class="form-container">
-            <h1>Teacher Login</h1>
+            <h1> <b>TEACHER LOGIN</b> </h1>
+            <br> 
             <form method="POST">
                 <div class="form-group">
                     <label for="email">Email</label>
@@ -66,6 +67,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
                     <label for="password">Password</label>
                     <input type="password" name="pass" placeholder="Enter your password">
                 </div>
+                <br> 
                 <button type="submit" name="submit">Login</button>
             </form>
         </div>

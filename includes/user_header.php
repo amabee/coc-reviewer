@@ -19,7 +19,10 @@ if (isset($message)) {
 <header class="header">
 
     <section class="flex">
-
+    <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+         
+        </div>
         <a href="home.php" class="logo">PHINMA COC</a>
 
         <form action="search_lesson.php" method="post" class="search-form">
@@ -28,7 +31,6 @@ if (isset($message)) {
         </form>
 
         <div class="icons">
-            <div id="menu-btn" class="fas fa-bars"></div>
             <div id="search-btn" class="fas fa-search"></div>
             <div id="user-btn" class="fas fa-user"></div>
             <div id="toggle-btn" class="fas fa-sun"></div>
