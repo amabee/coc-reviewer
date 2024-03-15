@@ -198,7 +198,12 @@ $currentPageStudents = array_slice($students, $offset, $studentsPerPage);
                                                 <td><?= $student['firstname'] ?></td>
                                                 <td><?= $student['lastname'] ?></td>
                                                 <td><?= $student['email'] ?></td>
-                                                <td><button class="btn" style="height: 50px; width: 100px; font-size: 12px;">Add Student</button></td>
+                                                <td>
+                                                    <button class="btn add-student-btn" style="height: 50px; width: 100px; font-size: 12px;" data-student-id="<?= $student['id'] ?>" onclick="addStudentNow(this.getAttribute('data-student-id'))">
+
+                                                        Add Student
+                                                    </button>
+                                                </td>
 
                                             </tr>
                                         <?php endforeach; ?>
@@ -227,7 +232,54 @@ $currentPageStudents = array_slice($students, $offset, $studentsPerPage);
             $('#studentTable').DataTable({
                 responsive: true
             });
+
+            $('#studentTable tbody tr').each(function() {
+                var studentId = $(this).find('td:first').text();
+                checkStudentPresence(studentId);
+            });
+
+
+
         });
+
+        function addStudentNow(studentId) {
+            addStudentToClass(studentId);
+        }
+
+        function checkStudentPresence(studentId) {
+            $.ajax({
+                url: 'check_student_presence.php',
+                type: 'POST',
+                data: {
+                    student_id: studentId,
+                    section_id: '<?= $section_id ?>'
+                },
+                success: function(response) {
+                    if (response === 'true') {
+                        $('.add-student-btn[data-student-id="' + studentId + '"]').text('Already in Class');
+                    }
+                },
+                error: function(response) {
+                    alert(response);
+                }
+            });
+        }
+
+
+        function addStudentToClass(studentId) {
+            $.ajax({
+                url: 'add_student_to_class.php',
+                type: 'POST',
+                data: {
+                    student_id: studentId,
+                    section_id: '<?= $section_id ?>'
+                },
+                success: function(response) {
+                    alert(response);
+                    location.reload();
+                }
+            });
+        }
 
         function openModal() {
             var modal = document.getElementById('myModal');
