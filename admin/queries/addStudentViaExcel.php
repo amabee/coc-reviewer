@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt = $conn->prepare("INSERT INTO tbl_students (id, firstname, lastname, gender, email, password, image, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
+            $processedIds = [];
             $firstRow = true;
             foreach ($worksheet->getRowIterator() as $index => $row) {
                 if ($firstRow) {
@@ -42,16 +43,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $rowData[] = $value;
                 }
 
+                // Check if any data in the row is blank
+                if (in_array('', $rowData, true)) {
+                    continue; // Skip this row if any data is blank
+                }
+
                 $hashedPassword = sha1($rowData[5]);
                 $rowData[5] = $hashedPassword;
 
+                $id = $rowData[0]; // Assuming ID is in the first column
+                if (in_array($id, $processedIds)) {
+                    continue; // Skip this row if ID has already been processed
+                }
+
                 if (!empty(array_filter($rowData))) {
                     $stmt->execute($rowData);
+                    $processedIds[] = $id; // Add processed ID to the list
                 } else {
                     continue;
                 }
             }
-
 
             // Insert audit log entry
             $logMessage = "Admin with admin id: {$_SESSION['admin_id']} added students from an Excel file";
@@ -70,3 +81,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(['error' => 'Invalid request method']);
 }
+?>
