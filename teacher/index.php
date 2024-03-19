@@ -41,41 +41,44 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
 }
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teacher Login</title>
-    <link rel="stylesheet" href="./styles/login.css">
-
+    <title>Faculty Login</title>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 
 <body>
 
-    <div class="container">
-        <div class="form-container">
-           <center> <h1> <b>TEACHER LOGIN</b> </h1></center>
-            <br> 
-            <form method="POST">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" autocomplete="off" placeholder="Enter your email">
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" name="pass" placeholder="Enter your password">
-                </div>
-                <br> 
-                <button type="submit" name="submit">Login</button>
-            </form>
+    <?php
+    if (isset($message)) {
+        foreach ($message as $message) {
+            echo '
+      <div class="message form">
+         <span>' . $message . '</span>
+         <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+      </div>
+      ';
+        }
+    }
+    ?>
+    <h1>Login</h1>
+    <form method="POST">
+        <div class="row">
+            <label for="email">Email</label>
+            <input type="email" name="email" autocomplete="off" placeholder="email@example.com">
         </div>
-        <div class="image-container">
-          <center><img style="height: 450px;" src="https://scontent.fcgy2-1.fna.fbcdn.net/v/t39.30808-6/353832082_590289946586763_3338392738682972305_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEw87IyDVvsp_wvd-8TDhYw4sTCzPSrp3jixMLM9KuneDQH4QvqHuXjlytLkiWPGmR1T2t4NqfcV21CzOTQTf5c&_nc_ohc=v4mCj6xNntEAX8D5gM2&_nc_ht=scontent.fcgy2-1.fna&oh=00_AfDuy-QlmMDLjRW-AQ7IeN4GcpvLOj-eB4O890jxLyVa3Q&oe=65F86DD5" alt="COC SHIT">
-      </center>    </div>
-    </div>
-
+        <div class="row">
+            <label for="password">Password</label>
+            <input type="password" name="pass">
+        </div>
+        <button type="submit" name="submit">Login</button>
+    </form>
 </body>
 
 </html>
