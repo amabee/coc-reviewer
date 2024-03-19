@@ -1,45 +1,64 @@
 <?php
 include 'includes/connection.php';
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
 
 session_start();
 
-if (isset($_COOKIE['user_id']) || isset($_SESSION['user_id'])) {
-    $user_id = $_COOKIE['user_id'];
-    header('Location: student/home.php');
-    exit;
-}
+// reCAPTCHA site key
+$recaptcha_site_key = "6LfNJ54pAAAAANHeD0Y2X-mEdH9Q1vRR4KruAZAq";
 
 if (isset($_POST['submit'])) {
-    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
-    $password = $_POST['pass'];
-    $hashed_password = sha1($password);
 
-    $select_user = $conn->prepare("SELECT id, password FROM `tbl_students` WHERE email = ? AND isActive = 'active' LIMIT 1");
-    $select_user->execute([$email]);
+    $recaptcha_response = $_POST['g-recaptcha-response'];
+    $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+    $recaptcha_secret = '6LfNJ54pAAAAAEV1VLve6BtG1PnlJBAeh8wULGni';
+    $recaptcha_data = array(
+        'secret' => $recaptcha_secret,
+        'response' => $recaptcha_response
+    );
 
-    if ($select_user->rowCount() > 0) {
-        $row = $select_user->fetch(PDO::FETCH_ASSOC);
+    $recaptcha_options = array(
+        'http' => array(
+            'method' => 'POST',
+            'content' => http_build_query($recaptcha_data)
+        )
+    );
 
-        if ($hashed_password === $row['password']) {
-            echo ($_SESSION['user_id']);
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['student'];
-            header('Location: student/home.php');
-            exit;
+    $recaptcha_context = stream_context_create($recaptcha_options);
+    $recaptcha_result = file_get_contents($recaptcha_url, false, $recaptcha_context);
+    $recaptcha_json = json_decode($recaptcha_result);
+
+    if ($recaptcha_json->success) {
+        // reCAPTCHA verification successful
+        $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+        $password = $_POST['pass'];
+        $hashed_password = sha1($password);
+
+        $select_user = $conn->prepare("SELECT id, password, login_attempts, last_attempt_time FROM `tbl_students` WHERE email = ? AND isActive = 'active' LIMIT 1");
+        $select_user->execute([$email]);
+
+        if ($select_user->rowCount() > 0) {
+            $row = $select_user->fetch(PDO::FETCH_ASSOC);
+
+            // Check if the user has exceeded login attempts
+            if ($row['login_attempts'] >= 3 && time() - strtotime($row['last_attempt_time']) < 600) { // 10 minutes lockout
+                $error_message = 'You have exceeded the maximum login attempts. Please try again later.';
+            } elseif ($hashed_password === $row['password']) {
+                // Successful login
+                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['student'];
+                header('Location: student/home.php');
+                exit;
+            } else {
+                // Incorrect password
+                $error_message = 'Incorrect email or password!';
+            }
         } else {
-            $error_message = 'Incorrect email or password!';
-            echo "<script>document.addEventListener('DOMContentLoaded', function() {
-                $('#invalidCredentialsModal').modal('show');
-            });</script>";
+            // User not found
+            $error_message = 'User not found!';
         }
     } else {
-        $error_message = 'User not found!';
-        echo "<script>document.addEventListener('DOMContentLoaded', function() {
-            $('#invalidCredentialsModal').modal('show');
-        });</script>";
+        // reCAPTCHA verification failed
+        $error_message = 'reCAPTCHA verification failed!';
     }
 }
 
@@ -51,21 +70,14 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/index_style.css">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
-    <title>Login</title>
+    <!-- Google reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=<?php echo $recaptcha_site_key; ?>" async defer></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles/index_style.css">
 </head>
 
 <body>
@@ -91,6 +103,10 @@ if (isset($_POST['submit'])) {
                                         <input id="inputPassword" type="password" placeholder="Password" name="pass"
                                             required
                                             class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
+                                    </div>
+                                    <!-- Add reCAPTCHA widget -->
+                                    <div class="form-group mb-3">
+                                        <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_site_key; ?>"></div>
                                     </div>
                                     <div
                                         class="custom-control custom-checkbox mb-3 d-flex justify-content-between align-items-center">
@@ -120,6 +136,7 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 
+    <!-- Modal for invalid credentials -->
     <div id="invalidCredentialsModal" class="modal fade">
         <div class="modal-dialog modal-confirm">
             <div class="modal-content">
@@ -137,7 +154,7 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 
-
+    <!-- Modal for account problem -->
     <div id="accountProblem" class="modal fade">
         <div class="modal-dialog modal-confirm">
             <div class="modal-content">
@@ -153,7 +170,12 @@ if (isset($_POST['submit'])) {
         </div>
     </div>
 
-
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </body>
 
 </html>
