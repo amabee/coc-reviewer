@@ -4,6 +4,7 @@ include('../includes/connection.php');
 
 try {
     $message = "";
+    $email = isset($_POST["email"]) ? $_POST["email"] : "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST["email"];
@@ -25,7 +26,16 @@ try {
             header("Location: index.php");
             exit();
         } else {
-            $message = "Invalid Credentials";
+            // Check if login attempts exceed 3
+            if (!isset($_SESSION['login_attempts'])) {
+                $_SESSION['login_attempts'] = 1;
+            } else {
+                $_SESSION['login_attempts']++;
+                if ($_SESSION['login_attempts'] >= 3) {
+                    $_SESSION['login_locked'] = time() + 10; // Lock login for 10 seconds
+                }
+            }
+            $message = "Invalid Username or Password!!";
         }
 
         $stmt->closeCursor();
@@ -37,6 +47,7 @@ try {
 
 if (isset($_SESSION['dean_id']) && isset($_SESSION['loggedin'])) {
     header('Location: index.php');
+    exit();
 }
 ?>
 
@@ -61,7 +72,13 @@ if (isset($_SESSION['dean_id']) && isset($_SESSION['loggedin'])) {
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+        .timer-button.disabled {
+            cursor: not-allowed;
+        }
+    </style>
 </head>
+
 <body style="font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
@@ -87,33 +104,27 @@ if (isset($_SESSION['dean_id']) && isset($_SESSION['loggedin'])) {
                                     </div>
                                     <form class="user" action="login.php" method="post">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user" name="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." required>
+                                            <input type="email" class="form-control form-control-user" name="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." required value="<?php echo $email; ?>">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Password" required>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-block mt-5">
+
+                                        <button id="loginButton" type="submit" class="btn btn-primary btn-user btn-block mt-5">
                                             Login
                                         </button>
 
 
                                     </form>
                                     <hr>
-                                    <span class="text-center" style="display: block; color: red;">
+                                    <span id="error-message" class="text-center" style="display: block; color: red;">
                                         <?php echo $message; ?>
                                     </span>
                                 </div>
                             </div>
                             <div class="col-lg-6 h-100">
                                 <div style="height: 410px;">
-                                <img src="https://scontent.fcgy2-1.fna.fbcdn.net/v/t39.30808-6/353832082_590289946586763_3338392738682972305_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEw87IyDVvsp_wvd-8TDhYw4sTCzPSrp3jixMLM9KuneDQH4QvqHuXjlytLkiWPGmR1T2t4NqfcV21CzOTQTf5c&_nc_ohc=v4mCj6xNntEAX8D5gM2&_nc_ht=scontent.fcgy2-1.fna&oh=00_AfDuy-QlmMDLjRW-AQ7IeN4GcpvLOj-eB4O890jxLyVa3Q&oe=65F86DD5" alt="COC SHIT" style="max-height: 100%; max-width: 100%;">
+                                    <img style="height: 420px;" src="https://scontent.fcgy2-2.fna.fbcdn.net/v/t39.30808-6/353832082_590289946586763_3338392738682972305_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEw87IyDVvsp_wvd-8TDhYw4sTCzPSrp3jixMLM9KuneDQH4QvqHuXjlytLkiWPGmR1T2t4NqfcV21CzOTQTf5c&_nc_ohc=o587yaeXTL8AX9dnlNO&_nc_ht=scontent.fcgy2-2.fna&oh=00_AfBgGtx-Ew9svkG8F8qQXBrX657GIMIPe8Rece9PBPz50g&oe=65FE5C95" alt="">
                                 </div>
                             </div>
 
@@ -134,6 +145,43 @@ if (isset($_SESSION['dean_id']) && isset($_SESSION['loggedin'])) {
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        <?php if (isset($_SESSION['login_locked']) && $_SESSION['login_locked'] > time()): ?>
+        var time_left = <?php echo $_SESSION['login_locked'] - time(); ?>;
+        var loginButton = document.getElementById("loginButton");
+
+        loginButton.disabled = true;
+        loginButton.innerText = 'Try again in ' + time_left + ' seconds';
+        loginButton.style.cursor = 'not-allowed'; // Add cursor style
+
+        var countdown_interval = setInterval(function() {
+            if (time_left <= 0) {
+                clearInterval(countdown_interval);
+                loginButton.disabled = false;
+                loginButton.style.cursor = 'pointer'; // Restore cursor style
+                loginButton.innerText = 'Login';
+            } else {
+                loginButton.innerText = 'Try again in ' + time_left + ' seconds';
+                time_left--;
+            }
+        }, 1000);
+        <?php endif; ?>
+
+        // Clear error message when username or password input field is clicked
+        var usernameInput = document.getElementById("exampleInputEmail");
+        var passwordInput = document.getElementById("exampleInputPassword");
+        var errorMessage = document.getElementById("error-message");
+
+        usernameInput.addEventListener("click", clearErrorMessage);
+        passwordInput.addEventListener("click", clearErrorMessage);
+
+        function clearErrorMessage() {
+            errorMessage.innerText = "";
+        }
+    });
+</script>
 
 </body>
 

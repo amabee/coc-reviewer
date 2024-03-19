@@ -65,6 +65,18 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
         .error-message {
             color: red;
         }
+
+  
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 100px;
+            transition: background-color 0.3s;
+        }
     </style>
 </head>
 
@@ -82,10 +94,11 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" name="pass" placeholder="Enter your password" value="<?php echo isset($_POST['pass']) ? htmlspecialchars($_POST['pass']) : ''; ?>" onclick="hideErrorMessage()">
+                    <input type="password" name="pass" placeholder="Enter your password" onclick="hideErrorMessage()">
                 </div>
                 <br>
-                <button type="submit" name="submit" id="loginButton">Login</button>
+                <button type="submit" name="submit" id="loginButton" class="btn btn-primary btn-user btn-block mt-5">Login</button>
+
                 <?php if (!empty($message)): ?>
                     <p class="error-message"><?php echo $message; ?></p>
                 <?php endif; ?>
@@ -103,12 +116,12 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
             var seconds = 10;
             var interval = setInterval(function() {
                 document.getElementById('loginButton').textContent = 'Try Again in ' + seconds + ' seconds';
-                document.getElementById('loginButton').disabled = true; // Disable button
+                document.getElementById('loginButton').classList.add('disabled');
                 seconds--;
                 if (seconds < 0) {
                     clearInterval(interval);
                     document.getElementById('loginButton').textContent = 'Login';
-                    document.getElementById('loginButton').disabled = false; // Enable button
+                    document.getElementById('loginButton').classList.remove('disabled');
                 }
             }, 1000);
         </script>
@@ -116,9 +129,36 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
 
     <script>
         function hideErrorMessage() {
-            document.querySelector('.error-message').style.display = 'none';
+            document.querySelector('.error-message').textContent = '';
         }
     </script>
 </body>
 
 </html>
+<script>
+    var attempts = <?php echo isset($_SESSION['consecutive_failed_attempts']) ? $_SESSION['consecutive_failed_attempts'] : 0; ?>;
+    var timerInterval;
+
+    function startTimer() {
+        var seconds = 10;
+        document.getElementById('loginButton').setAttribute('disabled', 'disabled');
+        document.getElementById('loginButton').style.backgroundColor = '#8CA4EA'; // Change button color to light gray
+        document.getElementById('loginButton').style.cursor = 'not-allowed'; // Disable mouse pointer
+        timerInterval = setInterval(function() {
+            document.getElementById('loginButton').textContent = 'Try Again in ' + seconds + ' seconds';
+            seconds--;
+            if (seconds < 0) {
+                clearInterval(timerInterval);
+                document.getElementById('loginButton').textContent = 'Login';
+                document.getElementById('loginButton').removeAttribute('disabled');
+                document.getElementById('loginButton').style.backgroundColor = '#007bff'; // Restore original button color
+                document.getElementById('loginButton').style.cursor = 'pointer'; // Restore mouse pointer
+            }
+        }, 1000);
+    }
+
+    if (attempts >= 3) {
+        startTimer();
+    }
+</script>
+
