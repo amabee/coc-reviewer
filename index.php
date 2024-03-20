@@ -45,12 +45,13 @@ if (isset($_POST['submit'])) {
                     // Successful login
                     $_SESSION['user_id'] = $row['id'];
                     $_SESSION['student'];
+                    $_SESSION['student_password'] = $hashed_password;
                     header('Location: student/home.php');
                     exit;
                 } else {
                     // Incorrect password
                     $error_message = 'Incorrect email or password!';
-                    // Trigger the display of the invalidCredentialsModal
+
                     echo '<script type="text/javascript">$("#invalidCredentialsModal").modal("show");</script>';
                 }
             } else {
@@ -62,6 +63,7 @@ if (isset($_POST['submit'])) {
         } else {
             // reCAPTCHA verification failed
             $error_message = 'reCAPTCHA verification failed!';
+            echo "<script>alert($error_message)</script>";
         }
     }
 }

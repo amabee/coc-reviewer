@@ -2,69 +2,58 @@
 session_start();
 include '../includes/connection.php';
 
-if (isset($_SESSION['teacher_id']) || isset($_COOKIE['teacher_id'])) {
-    header('location: dashboard.php');
-    exit();
-}
-
-$message = '';
+// reCAPTCHA site key
+$recaptcha_site_key = "6LfNJ54pAAAAANHeD0Y2X-mEdH9Q1vRR4KruAZAq";
 
 if (isset($_POST['submit'])) {
-    $email = $_POST['email'];
-    $email = filter_var($email, FILTER_SANITIZE_STRING);
-    $pass = sha1($_POST['pass']);
-    $pass = filter_var($pass, FILTER_SANITIZE_STRING);
-
-    // Check if consecutive failed attempts session variable is set
-    if (!isset($_SESSION['consecutive_failed_attempts'])) {
-        $_SESSION['consecutive_failed_attempts'] = 0;
-    }
-
-    // Increment the count of consecutive failed attempts
-    $_SESSION['consecutive_failed_attempts']++;
-
-    if ($_SESSION['consecutive_failed_attempts'] >= 3) {
-        $_SESSION['show_timer'] = true;
-    }
-
-    // Verify reCAPTCHA response
-    $recaptcha_secret = "6LfNJ54pAAAAAEV1VLve6BtG1PnlJBAeh8wULGni"; // Replace with your actual reCAPTCHA secret key
-    $recaptcha_response = $_POST['recaptcha_response'];
-    $url = 'https://www.google.com/recaptcha/api/siteverify';
-    $data = [
-        'secret' => $recaptcha_secret,
-        'response' => $recaptcha_response
-    ];
-    $options = [
-        'http' => [
-            'header' => "Content-Type: application/x-www-form-urlencoded\r\n",
-            'method' => 'POST',
-            'content' => http_build_query($data)
-        ]
-    ];
-    $context = stream_context_create($options);
-    $result = file_get_contents($url, false, $context);
-    $resultJson = json_decode($result);
-
-    if ($resultJson->success) {
-        $select_tutor = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE email = ? AND password = ? LIMIT 1");
-        $select_tutor->execute([$email, $pass]);
-        $row = $select_tutor->fetch(PDO::FETCH_ASSOC);
-
-        if ($select_tutor->rowCount() > 0) {
-            $_SESSION['teacher_id'] = $row['teacher_id'];
-            $_SESSION['last_activity'] = time();
-            $_SESSION['consecutive_failed_attempts'] = 0; // Reset consecutive failed attempts
-
-            setcookie('teacher_id', $row['teacher_id'], time() + 60 * 60 * 24 * 30, '/');
-
-            header('location: dashboard.php');
-            exit();
-        } else {
-            $message = 'Incorrect email or password!';
-        }
-    } else {
+    if (!isset($_POST['g-recaptcha-response'])) {
+        // Handle the case where reCAPTCHA response is not set
         $message = 'reCAPTCHA verification failed!';
+    } else {
+        $recaptcha_response = $_POST['g-recaptcha-response'];
+        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+        $recaptcha_secret = '6LfNJ54pAAAAAEV1VLve6BtG1PnlJBAeh8wULGni';
+        $recaptcha_data = array(
+            'secret' => $recaptcha_secret,
+            'response' => $recaptcha_response
+        );
+
+        $recaptcha_options = array(
+            'http' => array(
+                'method' => 'POST',
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'content' => http_build_query($recaptcha_data)
+            )
+        );
+
+        $recaptcha_context = stream_context_create($recaptcha_options);
+        $recaptcha_result = file_get_contents($recaptcha_url, false, $recaptcha_context);
+        $recaptcha_json = json_decode($recaptcha_result);
+
+        if ($recaptcha_json->success) {
+            // reCAPTCHA verification successful
+            $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_STRING);
+            $pass = sha1($_POST['pass']);
+            $select_tutor = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE email = ? AND password = ? LIMIT 1");
+            $select_tutor->execute([$email, $pass]);
+            $row = $select_tutor->fetch(PDO::FETCH_ASSOC);
+
+            if ($select_tutor->rowCount() > 0) {
+                $_SESSION['teacher_id'] = $row['teacher_id'];
+                $_SESSION['last_activity'] = time();
+                $_SESSION['consecutive_failed_attempts'] = 0;
+
+                setcookie('teacher_id', $row['teacher_id'], time() + 60 * 60 * 24 * 30, '/');
+
+                header('location: dashboard.php');
+                exit();
+            } else {
+                $message = 'Incorrect email or password!';
+            }
+        } else {
+            // reCAPTCHA verification failed
+            $message = 'reCAPTCHA verification failed!';
+        }
     }
 }
 
@@ -75,7 +64,6 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
     exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -119,7 +107,7 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 
                     <input type="password" name="pass" placeholder="Enter your password" onclick="hideErrorMessage()">
                 </div>
                 <br>
-                <div class="g-recaptcha" data-sitekey="6LfNJ54pAAAAANHeD0Y2X-mEdH9Q1vRR4KruAZAq"></div>
+                <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_site_key; ?>"></div>
                 <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
                 <br>
                 <button type="submit" name="submit" id="loginButton" class="btn btn-primary btn-user btn-block mt-5">Login</button>

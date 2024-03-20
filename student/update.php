@@ -91,8 +91,12 @@ if (isset($_POST['submit'])) {
     $cpass = sha1($_POST['cpass']);
     $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
 
+    $password_pattern = '/^(?=.*[!@#$%^&*])(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$/';
+
     if ($old_pass != $empty_pass) {
-        if ($old_pass != $prev_pass) {
+        if (!preg_match($password_pattern, $_POST['new_pass'])) {
+            $message[] = 'New password must contain at least one special character, one number, and be at least 8 characters long!';
+        } elseif ($old_pass != $prev_pass) {
             $message[] = 'old password not matched!';
         } elseif ($new_pass != $cpass) {
             $message[] = 'confirm password not matched!';
@@ -106,7 +110,6 @@ if (isset($_POST['submit'])) {
             }
         }
     }
-
 }
 
 ?>
@@ -142,39 +145,31 @@ if (isset($_POST['submit'])) {
             <div class="flex">
                 <div class="col">
                     <p>your firstname</p>
-                    <input type="text" name="firstname" placeholder="<?= $fetch_profile['firstname']; ?>"
-                        maxlength="100" class="box">
+                    <input type="text" name="firstname" placeholder="<?= $fetch_profile['firstname']; ?>" maxlength="100" class="box">
                     <p>your lastname</p>
-                    <input type="text" name="lastname" placeholder="<?= $fetch_profile['lastname']; ?>" maxlength="100"
-                        class="box">
+                    <input type="text" name="lastname" placeholder="<?= $fetch_profile['lastname']; ?>" maxlength="100" class="box">
                     <p>your email</p>
-                    <input type="email" name="email" placeholder="<?= $fetch_profile['email']; ?>" maxlength="100"
-                        class="box">
+                    <input type="email" name="email" placeholder="<?= $fetch_profile['email']; ?>" maxlength="100" class="box">
                     <p>update pic</p>
                     <input type="file" name="image" accept="image/*" class="box">
                 </div>
                 <div class="col">
                     <p>old password</p>
-                    <input type="password" name="old_pass" placeholder="enter your old password" maxlength="50"
-                        class="box">
+                    <input type="password" name="old_pass" placeholder="enter your old password" maxlength="50" class="box">
                     <p>new password</p>
-                    <input type="password" name="new_pass" placeholder="enter your new password" maxlength="50"
-                        class="box">
+                    <input type="password" name="new_pass" placeholder="enter your new password" maxlength="50" class="box">
                     <p>confirm password</p>
-                    <input type="password" name="cpass" placeholder="confirm your new password" maxlength="50"
-                        class="box">
+                    <input type="password" name="cpass" placeholder="confirm your new password" maxlength="50" class="box">
                 </div>
             </div>
             <input type="submit" name="submit" value="update profile" class="btn">
         </form>
-
     </section>
 
     <!-- update profile section ends -->
 
     <!-- custom js file link  -->
     <script src="../scripts/script.js"></script>
-
 </body>
 
 </html>
