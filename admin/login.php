@@ -2,44 +2,71 @@
 session_start();
 include('../includes/connection.php');
 
+// reCAPTCHA site key and secret key
+$recaptcha_site_key = "6LfNJ54pAAAAANHeD0Y2X-mEdH9Q1vRR4KruAZAq";
+$recaptcha_secret_key = "6LfNJ54pAAAAAEV1VLve6BtG1PnlJBAeh8wULGni";
+
 try {
     $message = "";
     $email = isset($_POST["email"]) ? $_POST["email"] : "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $password = $_POST["password"];
+        // Verify reCAPTCHA response
+        $recaptcha_response = $_POST['g-recaptcha-response'];
+        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+        $recaptcha_data = array(
+            'secret' => $recaptcha_secret_key,
+            'response' => $recaptcha_response
+        );
+        $recaptcha_options = array(
+            'http' => array(
+                'method' => 'POST',
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'content' => http_build_query($recaptcha_data)
+            )
+        );
+        $recaptcha_context = stream_context_create($recaptcha_options);
+        $recaptcha_result = file_get_contents($recaptcha_url, false, $recaptcha_context);
+        $recaptcha_json = json_decode($recaptcha_result);
 
-        $email = htmlspecialchars($email);
+        if ($recaptcha_json->success) {
+            // reCAPTCHA verification successful
+            $password = $_POST["password"];
+            $email = htmlspecialchars($email);
+            $hashedPassword = sha1($password);
 
-        $hashedPassword = sha1($password);
-
-        // Track login attempts
-        if (!isset($_SESSION['login_attempts'])) {
-            $_SESSION['login_attempts'] = 1;
-        } else {
-            $_SESSION['login_attempts']++;
-        }
-
-        $stmt = $conn->prepare("SELECT `admin_id`, `email` FROM `tbl_admin` WHERE `email`=:email AND `password`=:password");
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $hashedPassword);
-        $stmt->execute();
-
-        if ($stmt->rowCount() == 1) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $_SESSION['loggedin'] = true;
-            $_SESSION['admin_id'] = $row['admin_id'];
-            $_SESSION['login_attempts'] = 0; // Reset login attempts on successful login
-            header("Location: index.php");
-            exit();
-        } else {
-            $message = "Invalid Username or Password!!";
-            if ($_SESSION['login_attempts'] >= 3) {
-                $_SESSION['login_locked'] = time() + 10; // Lock login for 10 seconds
+            // Your existing login logic
+            // Track login attempts
+            if (!isset($_SESSION['login_attempts'])) {
+                $_SESSION['login_attempts'] = 1;
+            } else {
+                $_SESSION['login_attempts']++;
             }
-        }
 
-        $stmt->closeCursor();
+            $stmt = $conn->prepare("SELECT `admin_id`, `email` FROM `tbl_admin` WHERE `email`=:email AND `password`=:password");
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $hashedPassword);
+            $stmt->execute();
+
+            if ($stmt->rowCount() == 1) {
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $_SESSION['loggedin'] = true;
+                $_SESSION['admin_id'] = $row['admin_id'];
+                $_SESSION['login_attempts'] = 0; // Reset login attempts on successful login
+                header("Location: index.php");
+                exit();
+            } else {
+                $message = "Invalid Username or Password!!";
+                if ($_SESSION['login_attempts'] >= 3) {
+                    $_SESSION['login_locked'] = time() + 120; // Lock login for 10 seconds
+                }
+            }
+
+            $stmt->closeCursor();
+        } else {
+            // reCAPTCHA verification failed
+            $message = "reCAPTCHA verification failed!";
+        }
     }
 } catch (PDOException $ex) {
     error_log("Login failed: " . $ex->getMessage(), 0);
@@ -76,28 +103,29 @@ if (isset($_SESSION['login_locked']) && $_SESSION['login_locked'] > time()) {
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <!-- jQuery -->
     <script src="vendor/jquery/jquery.min.js"></script>
+    <!-- Add the reCAPTCHA script -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script>
-    $(document).ready(function() {
-        <?php if (isset($_SESSION['login_locked']) && $_SESSION['login_locked'] > time()): ?>
-            var time_left = <?php echo $_SESSION['login_locked'] - time(); ?>;
-            $('button[type="submit"]').prop('disabled', true);
-            $('button[type="submit"]').css('cursor', 'not-allowed'); // Add cursor style
-            $('button[type="submit"]').text('Try again in ' + time_left + ' seconds');
-            var countdown_interval = setInterval(function() {
-                if (time_left <= 0) {
-                    clearInterval(countdown_interval);
-                    $('button[type="submit"]').prop('disabled', false);
-                    $('button[type="submit"]').css('cursor', 'pointer'); // Restore cursor style
-                    $('button[type="submit"]').text('Login');
-                } else {
-                    $('button[type="submit"]').text('Try again in ' + time_left + ' seconds');
-                    time_left--;
-                }
-            }, 1000);
-        <?php endif; ?>
-    });
-</script>
-
+        $(document).ready(function() {
+            <?php if (isset($_SESSION['login_locked']) && $_SESSION['login_locked'] > time()) : ?>
+                var time_left = <?php echo $_SESSION['login_locked'] - time(); ?>;
+                $('button[type="submit"]').prop('disabled', true);
+                $('button[type="submit"]').css('cursor', 'not-allowed'); // Add cursor style
+                $('button[type="submit"]').text('Try again in ' + time_left + ' seconds');
+                var countdown_interval = setInterval(function() {
+                    if (time_left <= 0) {
+                        clearInterval(countdown_interval);
+                        $('button[type="submit"]').prop('disabled', false);
+                        $('button[type="submit"]').css('cursor', 'pointer'); // Restore cursor style
+                        $('button[type="submit"]').text('Login');
+                    } else {
+                        $('button[type="submit"]').text('Try again in ' + time_left + ' seconds');
+                        time_left--;
+                    }
+                }, 1000);
+            <?php endif; ?>
+        });
+    </script>
 </head>
 
 <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #F3E0E0, #E4F2CB, #C7ECDD);">
@@ -119,13 +147,16 @@ if (isset($_SESSION['login_locked']) && $_SESSION['login_locked'] > time()) {
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user" name="password" id="exampleInputPassword" placeholder="Password" required>
                                         </div>
+
+                                        <!-- Add the reCAPTCHA widget -->
+                                        <div class="g-recaptcha" data-sitekey="<?php echo $recaptcha_site_key; ?>"></div>
                                         <br>
                                         <button type="submit" class="btn btn-primary btn-user btn-block" <?php if (isset($_SESSION['login_locked']) && $_SESSION['login_locked'] > time()) echo 'disabled'; ?>>
                                             Login
                                         </button>
                                         <span id="error-message" class="text-center" style="display: block; color: red;">
-    <br>  <?php echo $message; ?>
-</span>
+                                            <br><?php echo $message; ?>
+                                        </span>
                                     </form>
                                 </div>
                             </div>
@@ -144,7 +175,6 @@ if (isset($_SESSION['login_locked']) && $_SESSION['login_locked'] > time()) {
 
 </html>
 
-
 <script>
     // Add event listeners to clear the error message when username or password inputs are clicked
     document.addEventListener("DOMContentLoaded", function() {
@@ -157,9 +187,9 @@ if (isset($_SESSION['login_locked']) && $_SESSION['login_locked'] > time()) {
     }
 
     // Display the error message again if the login attempt fails
-    <?php if (!empty($message)): ?>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("error-message").style.display = "block"; // Show the error message
-    });
+    <?php if (!empty($message)) : ?>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("error-message").style.display = "block"; // Show the error message
+        });
     <?php endif; ?>
 </script>
