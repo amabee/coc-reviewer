@@ -11,6 +11,23 @@ if (empty($_SESSION['user_id'])) {
     exit();
 }
 
+$default_pass = sha1("password");
+
+$select_password = $conn->prepare("SELECT password FROM tbl_students WHERE id = ?");
+$select_password->execute([$user_id]);
+$user = $select_password->fetch(PDO::FETCH_ASSOC);
+
+if ($user['password'] == $default_pass) {
+    $_SESSION['update_password_message'] = 'Please update your default password';
+    header("Location: update.php");
+    exit();
+}
+
+if (isset($_SESSION['update_password_message'])) {
+    echo "<script>alert('{$_SESSION['update_password_message']}')</script>";
+    unset($_SESSION['update_password_message']); // Clear the session variable
+}
+
 ?>
 
 <!DOCTYPE html>

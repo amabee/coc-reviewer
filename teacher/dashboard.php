@@ -8,6 +8,18 @@ if (isset($_COOKIE['teacher_id'])) {
     header('location:login.php');
 }
 
+$select_teacher = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ? LIMIT 1");
+$select_teacher->execute([$teacher_id]);
+$fetch_teacher = $select_teacher->fetch(PDO::FETCH_ASSOC);
+
+$prev_pass = $fetch_teacher['password'];
+
+$default_pass = sha1("password");
+
+if ($prev_pass === $default_pass) {
+    header('location:update.php');
+}
+
 $select_contents = $conn->prepare("SELECT L.teacher_id, LM.* 
                                    FROM `tbl_learningmaterials` LM
                                    INNER JOIN `tbl_lessons` L ON LM.lesson_id = L.lesson_id
@@ -36,9 +48,7 @@ $total_comments = $select_comments->rowCount();
     <title>Dashboard</title>
 
     <!-- font awesome cdn link  -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- custom css file link  -->
     <link rel="stylesheet" href="styles/main_style.css">

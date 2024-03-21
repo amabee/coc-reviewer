@@ -10,6 +10,23 @@ if (empty($_SESSION['user_id'])) {
     header("Location: ../unauthorized.php");
     exit();
 }
+
+
+$default_pass = sha1("password");
+
+$select_password = $conn->prepare("SELECT password FROM tbl_students WHERE id = ?");
+$select_password->execute([$user_id]);
+$user = $select_password->fetch(PDO::FETCH_ASSOC);
+if ($user['password'] == $default_pass) {
+    $_SESSION['update_password_message'] = 'Please update your default password';
+    header("Location: update.php");
+    exit();
+}
+
+if (isset($_SESSION['update_password_message'])) {
+    echo "<script>alert('{$_SESSION['update_password_message']}')</script>";
+    unset($_SESSION['update_password_message']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,9 +44,9 @@ if (empty($_SESSION['user_id'])) {
     <!-- custom css file link  -->
     <link rel="stylesheet" href="../styles/style.css">
 
-      <!-- sweet alert -->
+    <!-- sweet alert -->
 
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>
@@ -80,7 +97,7 @@ if (empty($_SESSION['user_id'])) {
                     $count_comments = $conn->prepare("SELECT * FROM `tbl_comments` WHERE teacher_id = ?");
                     $count_comments->execute([$tutor_id]);
                     $total_comments = $count_comments->rowCount();
-                    ?>
+            ?>
                     <div class="box">
                         <div class="tutor">
                             <img src="../tmp/<?= $fetch_tutor['image']; ?>" alt="">
@@ -103,7 +120,7 @@ if (empty($_SESSION['user_id'])) {
                             <input type="submit" value="view profile" name="tutor_fetch" class="inline-btn">
                         </form>
                     </div>
-                    <?php
+            <?php
                 }
             } else {
                 echo '<p class="empty">no teachers found!</p>';

@@ -38,6 +38,16 @@ if (isset($_POST['submit'])) {
             $select_tutor->execute([$email, $pass]);
             $row = $select_tutor->fetch(PDO::FETCH_ASSOC);
 
+
+            if ($select_tutor->rowCount() > 0 && sha1("password") === $pass) {
+                $_SESSION['update_pass_alert'] = true;
+                $_SESSION['teacher_id'] = $row['teacher_id'];
+                $_SESSION['last_activity'] = time();
+                $_SESSION['consecutive_failed_attempts'] = 0;
+                setcookie('teacher_id', $row['teacher_id'], time() + 60 * 60 * 24 * 30, '/');
+                header('location: update.php');
+                exit();
+            }
             if ($select_tutor->rowCount() > 0) {
                 $_SESSION['teacher_id'] = $row['teacher_id'];
                 $_SESSION['last_activity'] = time();

@@ -9,6 +9,18 @@ if (isset($_COOKIE['teacher_id'])) {
     header('location:index.php');
 }
 
+$select_teacher = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ? LIMIT 1");
+$select_teacher->execute([$teacher_id]);
+$fetch_teacher = $select_teacher->fetch(PDO::FETCH_ASSOC);
+
+$prev_pass = $fetch_teacher['password'];
+
+$default_pass = sha1("password");
+
+if ($prev_pass === $default_pass) {
+    header('location:update.php');
+}
+
 if (isset($_POST['delete'])) {
     try {
         $delete_id = $_POST['lesson_id'];

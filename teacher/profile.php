@@ -9,6 +9,18 @@ if (isset($_COOKIE['teacher_id'])) {
     header('location:login.php');
 }
 
+$select_teacher = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ? LIMIT 1");
+$select_teacher->execute([$teacher_id]);
+$fetch_teacher = $select_teacher->fetch(PDO::FETCH_ASSOC);
+
+$prev_pass = $fetch_teacher['password'];
+
+$default_pass = sha1("password");
+
+if ($prev_pass === $default_pass) {
+    header('location:update.php');
+}
+
 $select_playlists = $conn->prepare("SELECT * FROM `tbl_lessons` WHERE teacher_id = ?");
 $select_playlists->execute([$teacher_id]);
 $total_playlists = $select_playlists->rowCount();

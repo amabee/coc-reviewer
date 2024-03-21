@@ -17,8 +17,14 @@ $select_password = $conn->prepare("SELECT password FROM tbl_students WHERE id = 
 $select_password->execute([$user_id]);
 $user = $select_password->fetch(PDO::FETCH_ASSOC);
 if ($user['password'] == $default_pass) {
+    $_SESSION['update_password_message'] = 'Please update your default password';
     header("Location: update.php");
     exit();
+}
+
+if (isset($_SESSION['update_password_message'])) {
+    echo "<script>alert('{$_SESSION['update_password_message']}')</script>";
+    unset($_SESSION['update_password_message']); // Clear the session variable
 }
 
 $select_comments = $conn->prepare("SELECT * FROM `tbl_comments` WHERE user_id = ?");
@@ -56,7 +62,7 @@ $total_bookmarked = $select_bookmark->rowCount();
         <div class="box-container">
             <?php
             if ($user_id != '') {
-                ?>
+            ?>
                 <div class="box">
                     <h3 class="title">Comments And Bookmarks</h3>
                     <p>Total Comments : <span><?= $total_comments; ?></span></p>
@@ -64,9 +70,9 @@ $total_bookmarked = $select_bookmark->rowCount();
                     <p>Saved Materials : <span><?= $total_bookmarked; ?></span></p>
                     <a href="bookmark.php" class="inline-btn">view bookmark</a>
                 </div>
-                <?php
+            <?php
             } else {
-                ?>
+            ?>
                 <div class="box" style="text-align: center;">
                     <h3 class="title">please login or register</h3>
                     <div class="flex-btn" style="padding-top: .5rem;">
@@ -74,7 +80,7 @@ $total_bookmarked = $select_bookmark->rowCount();
                         <a href="register.php" class="option-btn">register</a>
                     </div>
                 </div>
-                <?php
+            <?php
             }
             ?>
 
@@ -113,7 +119,7 @@ $total_bookmarked = $select_bookmark->rowCount();
                     $select_tutor = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ?");
                     $select_tutor->execute([$fetch_course['teacher_id']]);
                     $fetch_tutor = $select_tutor->fetch(PDO::FETCH_ASSOC);
-                    ?>
+            ?>
                     <div class="box">
                         <div class="tutor">
                             <img src="../tmp/<?= $fetch_tutor['image']; ?>" alt="">
@@ -126,7 +132,7 @@ $total_bookmarked = $select_bookmark->rowCount();
                         <h3 class="title"><?= $fetch_course['lesson_title']; ?></h3>
                         <a href="materials.php?get_id=<?= $course_id; ?>" class="inline-btn">view materials</a>
                     </div>
-                    <?php
+            <?php
                 }
             } else {
                 echo '<p class="empty">no lessons added yet!</p>';

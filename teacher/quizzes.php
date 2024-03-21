@@ -9,6 +9,20 @@ if (isset($_SESSION['teacher_id'])) {
     header('location:index.php');
 }
 
+$select_teacher = $conn->prepare("SELECT * FROM `tbl_teachers` WHERE teacher_id = ? LIMIT 1");
+$select_teacher->execute([$teacher_id]);
+$fetch_teacher = $select_teacher->fetch(PDO::FETCH_ASSOC);
+
+$prev_pass = $fetch_teacher['password'];
+
+$default_pass = sha1("password");
+
+
+if ($prev_pass === $default_pass) {
+    $_SESSION["update_pass_alert"];
+    header('location:update.php');
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -65,22 +79,22 @@ if (isset($_SESSION['teacher_id'])) {
             if ($select_quiz->rowCount() > 0) {
                 while ($fetch_quizzes = $select_quiz->fetch(PDO::FETCH_ASSOC)) {
                     $material_id = $fetch_quizzes['quiz_id'];
-                    ?>
+            ?>
                     <div class="box">
                         <div class="flex">
                             <div>
                                 <i class="fas fa-dot-circle" style="<?php
-                                if ($fetch_quizzes['status'] == 'active') {
-                                    echo 'color:limegreen';
-                                } else {
-                                    echo 'color:red';
-                                } ?>"></i>
+                                                                    if ($fetch_quizzes['status'] == 'active') {
+                                                                        echo 'color:limegreen';
+                                                                    } else {
+                                                                        echo 'color:red';
+                                                                    } ?>"></i>
                                 <span style="<?php
-                                if ($fetch_quizzes['status'] == 'active') {
-                                    echo 'color:limegreen';
-                                } else {
-                                    echo 'color:red';
-                                } ?>">
+                                                if ($fetch_quizzes['status'] == 'active') {
+                                                    echo 'color:limegreen';
+                                                } else {
+                                                    echo 'color:red';
+                                                } ?>">
                                     <?= $fetch_quizzes['status']; ?>
                                 </span>
                             </div>
@@ -97,12 +111,11 @@ if (isset($_SESSION['teacher_id'])) {
                         </h3>
                         <form action="" method="post" class="flex-btn">
                             <input type="hidden" name="material_id" value="<?= $material_id; ?>">
-                            <input type="submit" value="delete" class="delete-btn"
-                                onclick="return confirm('remove this quiz?');" name="delete_material">
+                            <input type="submit" value="delete" class="delete-btn" onclick="return confirm('remove this quiz?');" name="delete_material">
                         </form>
                         <a href="manage_quiz.php?quiz_id=<?= $material_id; ?>" class="btn">manage quiz</a>
                     </div>
-                    <?php
+            <?php
                 }
             } else {
                 echo '<p class="empty">no quizzes made yet!</p>';
