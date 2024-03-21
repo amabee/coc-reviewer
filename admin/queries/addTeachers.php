@@ -7,13 +7,18 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
+function sanitizeInput($input)
+{
+    return htmlspecialchars(trim($input), ENT_QUOTES, 'UTF-8');
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
-        $teacherId = $_POST['teacherId'];
-        $firstName = $_POST['firstName'];
-        $lastName = $_POST['lastName'];
-        $gender = $_POST['gender'];
-        $email = $_POST['email'];
+        $teacherId = sanitizeInput($_POST['teacherId']);
+        $firstName = sanitizeInput($_POST['firstName']);
+        $lastName = sanitizeInput($_POST['lastName']);
+        $gender = sanitizeInput($_POST['gender']);
+        $email = sanitizeInput($_POST['email']);
 
         if (empty($teacherId) || empty($firstName) || empty($lastName) || empty($gender) || empty($email)) {
             echo json_encode(['error' => 'All fields are required.']);
